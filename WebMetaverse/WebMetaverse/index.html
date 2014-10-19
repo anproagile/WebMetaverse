@@ -3,13 +3,20 @@
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <title>TypeScript HTML App</title>
+    <title>TypeScript WebVR App</title>
     <link rel="stylesheet" href="app.css" type="text/css" />
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r68/three.js"></script>
+    <script src="http://threejs.org/examples/js/controls/PointerLockControls.js"></script>
     <script src="app.js"></script>
 </head>
 <body>
-    <h1>TypeScript HTML App</h1>
+    <div id="blocker">
+        <div id="instructions">
+            <span style="font-size:40px">Click to play</span>
+            <br />(W, A, S, D = Move, SPACE = Jump, MOUSE = Look around)
+        </div>
+    </div>
 
-    <div id="content"></div>
 </body>
 </html>
