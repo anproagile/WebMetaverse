@@ -96,10 +96,11 @@ module WebMetaverse {
             this.fromPortal.toPortal = this.toPortal;
             this.toPortal.toPortal = this.fromPortal;
 
-            
+            //this.toPortal.rotateY(-0.25 * Math.PI);
             this.toPortal.updateMatrix();
 
-            this.fromPortal.rotateY(0.25 * Math.PI);
+            this.fromPortal.rotateY(0.5 * Math.PI);
+            this.fromPortal.rotateX(0.1 * Math.PI);
             this.fromPortal.position.y = 15;
             this.fromPortal.updateMatrix();
 
@@ -187,7 +188,8 @@ module WebMetaverse {
 
             gl.stencilFunc(gl.LESS, 0, 0xff);
 
-            camera.matrixWorld = this.getPortalViewMatrix(camera, this.toPortal);
+            camera.matrixWorld = this.getPortalViewMatrix(camera, this, this.toPortal);
+
             renderer.render(this.toScene, camera);
 
             gl.disable(gl.STENCIL_TEST);
@@ -204,8 +206,9 @@ module WebMetaverse {
 
         }
         
-        getPortalViewMatrix(cam, dst) {
-             return dst.matrix.clone().multiply(cam.matrixWorld);
+        getPortalViewMatrix(cam: THREE.Camera, src: THREE.Mesh, dst: THREE.Mesh) {
+            var mat = new THREE.Matrix4().getInverse(dst.matrix.clone().makeRotationFromEuler(src.rotation));
+            return mat.multiply(cam.matrixWorld);
         }
 
     }
