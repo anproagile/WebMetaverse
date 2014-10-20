@@ -96,15 +96,11 @@ module WebMetaverse {
             this.fromPortal.toPortal = this.toPortal;
             this.toPortal.toPortal = this.fromPortal;
 
-
-           // this.toPortal.position.y = 10;
-            //this.toPortal.position.x = 1;
-            this.toPortal.rotateY(1);
+            
             this.toPortal.updateMatrix();
 
-            this.fromPortal.position.x = 1;
-            this.fromPortal.rotateY(0.5);
-            //this.fromPortal.position.y = 15;
+            this.fromPortal.rotateY(0.25 * Math.PI);
+            this.fromPortal.position.y = 15;
             this.fromPortal.updateMatrix();
 
         }
