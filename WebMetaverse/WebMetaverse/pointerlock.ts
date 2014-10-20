@@ -1,4 +1,31 @@
-﻿class PointerLock {
+﻿interface Document {
+    pointerLockElement: any;
+    mozPointerLockElement: any;
+    webkitPointerLockElement: any;
+    fullscreenElement: any;
+    mozFullscreenElement: any;
+    mozFullScreenElement: any;
+    webkitFullscreenElement: any;
+}
+interface HTMLElement {
+    requestPointerLock: any;
+    mozRequestPointerLock: any;
+    webkitRequestPointerLock: any;
+    requestFullScreen: any;
+    requestFullscreen: any;
+    mozRequestFullScreen: any;
+    mozRequestFullscreen: any;
+    webkitRequestFullscreen: any;
+}
+
+declare module THREE {
+    export class PointerLockControls {
+        constructor(a: any);
+    }
+}
+
+
+class PointerLock {
 
     blocker: HTMLElement;
     instructions: HTMLElement;
