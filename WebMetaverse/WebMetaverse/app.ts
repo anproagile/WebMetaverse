@@ -1,5 +1,7 @@
 ﻿/// <reference path="Scripts/typings/threejs/three.d.ts"/>
 /// <reference path="pointerlock.ts"/>
+/// <reference path="portal.ts"/>
+/// <reference path="Scripts/typings/WebGL.d.ts"/>
 
 module WebMetaverse {
     class WebVR {
@@ -7,7 +9,8 @@ module WebMetaverse {
         time: number = Date.now();
         renderer: THREE.WebGLRenderer;
         camera: THREE.PerspectiveCamera;
-        cameraObject: any;
+        cameraObject: THREE.Object3D;
+        prevPos: THREE.Vector3; //Camera position previous frame
         controls: any;
         originalCameraMatrixWorld: any;
 
@@ -44,7 +47,7 @@ module WebMetaverse {
             this.controls = new THREE.PointerLockControls(this.camera);
             this.cameraObject = this.controls.getObject();
             this.cameraObject.position.z = 30;
-            this.cameraObject.matrixAutoUpdater = true;
+           // this.cameraObject.matrixAutoUpdater = true;
             new PointerLock(this.controls);
             this.fromScene.add(this.cameraObject);
         }
@@ -60,7 +63,7 @@ module WebMetaverse {
             var grid = new THREE.GridHelper(100, 10);
             this.fromScene.add(grid);
 
-            var g = new THREE.CubeGeometry(100, 20, 10);
+            var g = new THREE.BoxGeometry(100, 20, 10);
             var m = new THREE.MeshNormalMaterial();
             var cube = new THREE.Mesh(g, m);
             cube.position.set(0, 10, -95);
@@ -70,38 +73,59 @@ module WebMetaverse {
 
         setupToScene() {
             this.toScene = new THREE.Scene();
-            var g = new THREE.CubeGeometry(100, 20, 10);
+            var g = new THREE.BoxGeometry(60, 20, 10);
             var m = new THREE.MeshPhongMaterial();
             var cube = new THREE.Mesh(g, m);
             cube.position.set(0, 10, -95);
             this.toScene.add(cube);
-            var sphereGeom = new THREE.SphereGeometry(1000);
-            var sphereMat = new THREE.MeshBasicMaterial({ color: 0x202020 });
+
+            var sphereGeom = new THREE.SphereGeometry(10);
+            var sphereMat = new THREE.MeshBasicMaterial({ color: 0x20F020 });
             var sphere = new THREE.Mesh(sphereGeom, sphereMat);
+            sphere.position.x = 50;
+            sphere.updateMatrix();
             sphereMat.side = THREE.BackSide;
             this.toScene.add(sphere);
+
+            var sphereMat2 = new THREE.MeshBasicMaterial({ color: 0xF0F020 });
+            var sphere2 = new THREE.Mesh(sphereGeom, sphereMat2);
+            sphere2.position.x = -50;
+            sphere2.updateMatrix();
+            this.toScene.add(sphere2);
+
+
+
+
+
+
             var light = new THREE.DirectionalLight(0xffffff, 2);
             var light2 = new THREE.AmbientLight(0x303030);
             light.position.set(1, 1, 1).normalize();
             this.toScene.add(light);
             this.toScene.add(light2);
             var grid = new THREE.GridHelper(100, 10);
-            grid.setColors(0xff0000, 0xcc0000);
+            grid.setColors(0xff0000, 0x00aacc);
             this.toScene.add(grid);
         }
 
         setupPortals() {
+
             this.toPortal = new Portal(this.fromScene);
+
             this.fromPortal = new Portal(this.toScene);
-            this.fromPortal.toPortal = this.toPortal;
-            this.toPortal.toPortal = this.fromPortal;
+
+            this.fromPortal.toPortal = this.fromPortal;
+            this.toPortal.toPortal = this.toPortal;
 
             //this.toPortal.rotateY(-0.25 * Math.PI);
+            this.toPortal.position.x = 5;
             this.toPortal.updateMatrix();
 
-            this.fromPortal.rotateY(0.5 * Math.PI);
-            this.fromPortal.rotateX(0.1 * Math.PI);
-            this.fromPortal.position.y = 15;
+           // this.fromPortal.rotateY(0.5 * Math.PI);
+           // this.fromPortal.rotateX(-Math.PI);
+            //this.fromPortal.rotateY(-0.3)
+            this.fromPortal.position.x = -5;
+            this.fromPortal.position.y = 5;
             this.fromPortal.updateMatrix();
 
         }
@@ -116,7 +140,7 @@ module WebMetaverse {
         }
 
         tick = () => {
-            
+            this.camera.updateMatrixWorld(true);
             this.update();
             this.render();
             this.time = Date.now();
@@ -126,92 +150,55 @@ module WebMetaverse {
 
         update() {
             this.controls.update(Date.now() - this.time);
+            this.checkPortalIntersection();
         }
 
+
         render() {
-            var gl = this.renderer.context;
-            this.camera.updateMatrixWorld(true);
+            var gl: WebGLRenderingContext = this.renderer.context;
             
             this.renderer.clear(true, true, true); //Clear scene, autoclear is disabled.
+            //this.toPortal.draw(gl, this.renderer, this.camera);
             this.fromPortal.draw(gl, this.renderer, this.camera);
-            
+        
             gl.colorMask(true, true, true, true);
-            gl.depthMask(false); // gl.enable(gl.DEPTH_TEST) ?
+            gl.depthMask(false);
+
             this.renderer.render(this.fromScene, this.camera);
 
 
-
         }
+
+        checkPortalIntersection() {
+
+            var caster = new THREE.Raycaster();
+            var curPos = new THREE.Vector3().setFromMatrixPosition(this.camera.matrixWorld);
+
+
+            if (this.prevPos) {
+                var dir = new THREE.Vector3().copy(curPos).sub(this.prevPos);
+                caster.set(this.prevPos, dir);
+
+                var intersect = caster.intersectObject(this.fromPortal);
+
+                if (intersect.length > 0) {
+                    for (var i = 0; i < intersect.length; i++) {
+                        if (intersect[i].distance < dir.length()) {
+                            console.log(intersect[i]);
+                        }
+                    }
+                }
+            }
+
+            this.prevPos = curPos;
+        }
+
 
 
     }
 
 
-    class Portal extends THREE.Mesh{
-
-        stencilScene: THREE.Scene;
-        toScene: THREE.Scene;
-        toPortal: Portal;
-
-
-        constructor(toScene: THREE.Scene) {
-            super(new THREE.PlaneGeometry(20, 40), new THREE.MeshBasicMaterial());
-            this.stencilScene = new THREE.Scene();
-
-            this.toScene = toScene;
-
-            var p = this.clone();
-            p.updateMatrixWorld(true);
-            this.stencilScene.add(this);
-        }
-
-        public draw(gl: any, renderer: any, camera: any) { //Remixed from http://gamedev.stackexchange.com/questions/71510/first-person-camera-world-matrix-issue-in-three-js-and-webgl
-
-            var originalCameraMatrixWorld = camera.matrixWorld.clone();
-
-            // 1: draw portal mesh into stencil buffer
-            gl.colorMask(false, false, false, false);
-            gl.depthMask(false);
-            gl.enable(gl.STENCIL_TEST);
-            gl.stencilMask(0xFF);
-            gl.stencilFunc(gl.NEVER, 0, 0xFF);
-            gl.stencilOp(gl.INCR, gl.KEEP, gl.KEEP);
-
-            renderer.render(this.stencilScene, camera);
-
-            gl.colorMask(true, true, true, true);
-            gl.depthMask(true);
-            gl.stencilOp(gl.KEEP, gl.KEEP, gl.KEEP);
-
-            // 2: draw toScene on scencil
-            renderer.clear(false, true, false);
-
-            gl.stencilFunc(gl.LESS, 0, 0xff);
-
-            camera.matrixWorld = this.getPortalViewMatrix(camera, this, this.toPortal);
-
-            renderer.render(this.toScene, camera);
-
-            gl.disable(gl.STENCIL_TEST);
-            renderer.clear(false, false, true);
-
-            //Draw stencil scene
-            camera.matrixWorld = originalCameraMatrixWorld;
-            // clear the depth buffer and draw the fromPortal mesh into it
-            renderer.clear(false, true, false);
-            gl.colorMask(false, false, false, false);
-            gl.depthMask(true);
-            renderer.render(this.stencilScene, camera);
-
-
-        }
-        
-        getPortalViewMatrix(cam: THREE.Camera, src: THREE.Mesh, dst: THREE.Mesh) {
-            var mat = new THREE.Matrix4().getInverse(dst.matrix.clone().makeRotationFromEuler(src.rotation));
-            return mat.multiply(cam.matrixWorld);
-        }
-
-    }
+   
 
     window.onload = () => {
         var webvr = new WebVR();
