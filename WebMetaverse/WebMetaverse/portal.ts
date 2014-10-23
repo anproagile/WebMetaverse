@@ -93,4 +93,24 @@
         return mat.multiply(originalView);
     }
 
+    /**
+    * Raycast from `from` to `direction`
+    * @return an intersection with the portal mesh was made.
+    */
+    checkIntersection(from: THREE.Vector3, direction: THREE.Vector3): boolean{
+
+        var caster = new THREE.Raycaster();
+        caster.set(from, direction);
+
+        var intersect = caster.intersectObject(this);
+
+        for (var i = 0; i < intersect.length; i++) {
+            if (intersect[i].distance < direction.length()) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+
 }

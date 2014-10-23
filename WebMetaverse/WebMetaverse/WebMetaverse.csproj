@@ -24,6 +24,8 @@
   <ItemGroup>
     <TypeScriptCompile Include="app.ts" />
     <TypeScriptCompile Include="pointerlock.ts" />
+    <TypeScriptCompile Include="portal.ts" />
+    <TypeScriptCompile Include="room.ts" />
     <TypeScriptCompile Include="Scripts\typings\threejs\three.d.ts" />
   </ItemGroup>
   <ItemGroup>
