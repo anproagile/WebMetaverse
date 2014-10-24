@@ -9,15 +9,20 @@ class Room{
     portals: Portal[];
     scene: THREE.Scene;
 
-    constructor() { }
+    constructor() {
+        this.scene = new THREE.Scene();
+        this.portals = [];
+
+    }
 
     draw(gl: WebGLRenderingContext, renderer: THREE.WebGLRenderer, camera) {
 
+        renderer.clear(true, true, true);
         for (var i = 0; i < this.portals.length; i++) {
             this.portals[i].draw(gl, renderer, camera);
         }
 
-        renderer.clear(true, true, true);
+        
         gl.colorMask(true, true, true, true);
         gl.depthMask(false);
 
@@ -25,6 +30,13 @@ class Room{
 
     }
 
+    add(object: THREE.Object3D) {
+        this.scene.add(object);
+    }
+
+    addPortal(portal: Portal): number {
+        return this.portals.push(portal);
+    }
 
 
 

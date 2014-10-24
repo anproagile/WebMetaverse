@@ -2,52 +2,29 @@
 
     stencilScene: THREE.Scene;
     toScene: THREE.Scene;
+    toRoom: Room;
+
     toPortal: Portal;
 
 
-    constructor(toScene: THREE.Scene) {
-        //super(new THREE.PlaneGeometry(20, 40), new THREE.MeshBasicMaterial());
-        //super(new THREE.SphereGeometry(40, 10, 10), new THREE.MeshBasicMaterial());
+    constructor(toRoom: Room) {
+        var geom = new THREE.PlaneGeometry(20, 60);
         var mat = new THREE.MeshBasicMaterial();
-        mat.side = THREE.DoubleSide;
-        super(new THREE.SphereGeometry(40, 16, 16), mat);
+        //mat.side = THREE.DoubleSide;
+        super(geom, mat);
+
         this.stencilScene = new THREE.Scene();
 
-        this.toScene = toScene;
-
+        this.toScene = toRoom.scene;
+        this.toRoom = toRoom;
+        this.geometry.computeFaceNormals();
         var p = this.clone();
         p.updateMatrixWorld(true);
         this.stencilScene.add(this);
     }
-    public draw_(gl: WebGLRenderingContext, renderer: THREE.WebGLRenderer, camera: any) {
-
-        var mat = camera.matrixWorld.clone();
-
-        gl.colorMask(false, false, false, false);
-        gl.depthMask(false);
-
-        gl.stencilFunc(gl.NEVER, 0, 0xff);
-        gl.stencilOp(gl.INCR, gl.KEEP, gl.KEEP);
-
-        //Draw stencil pattern
-        gl.clear(gl.STENCIL_BUFFER_BIT);
-
-        renderer.render(this.stencilScene, camera);
-        gl.colorMask(true, true, true, true);
-        gl.depthMask(true);
-        gl.stencilOp(gl.KEEP, gl.KEEP, gl.KEEP);
-
-        // Fill 1 or more
-        gl.stencilFunc(gl.LEQUAL, 1, 0xff);
-
-        renderer.clear(false, true, false);
-
-
-    }
-
 
     public draw(gl: WebGLRenderingContext, renderer: THREE.WebGLRenderer, camera: any) {
-
+        
         var originalCameraMatrixWorld = camera.matrixWorld.clone();
 
         // 1: draw portal mesh into stencil buffer
@@ -69,7 +46,9 @@
 
         gl.stencilFunc(gl.LESS, 0, 0xff);
 
-        camera.matrixWorld = this.getPortalViewMatrix(camera.matrixWorld, this, this.toPortal);
+        //camera.matrixWorld = this.getPortalViewMatrix(camera.matrixWorld);
+        //camera.matrixWorld = this.pView(camera.matrixWorld);
+        camera.matrixWorld = this.portal_view(camera, this, this.toPortal);
 
         renderer.render(this.toScene, camera);
 
@@ -88,19 +67,52 @@
 
     }
 
-    getPortalViewMatrix(originalView: THREE.Matrix4, src: THREE.Mesh, dst: THREE.Mesh) {
-        var mat = new THREE.Matrix4().getInverse(dst.matrix.clone().makeRotationFromEuler(src.rotation));
-        return mat.multiply(originalView);
+    //Based on http://en.wikibooks.org/wiki/OpenGL_Programming/Mini-Portal , see section "Building a new camera", first code.
+    //Commented out Y rotation, as without it is already very wrong.
+    pView(originalView: THREE.Matrix4) {
+        var mv = originalView.multiply(this.matrix);
+        var portalCam = mv
+            //.multiply(new THREE.Matrix4().makeRotationY(Math.PI))
+            .multiply(new THREE.Matrix4().getInverse(this.toPortal.matrix));
+        
+        return portalCam;
+    } 
+
+    //Based on http://en.wikibooks.org/wiki/OpenGL_Programming/Mini-Portal , see section "Building a new camera", first code.
+    //Commented out Y rotation, as without it is already very wrong.
+    portal_view(camera : THREE.Camera, src_portal: THREE.Object3D, dst_portal: THREE.Object3D) {
+        var inverse_view_to_source = new THREE.Matrix4().getInverse(camera.matrixWorld).multiply(src_portal.matrix);
+        var new_mat = dst_portal.matrix.clone().multiply(inverse_view_to_source);
+        var rot = new THREE.Matrix4().makeRotationY(Math.PI);
+        // new_mat.rotateY(3.14);
+        //return new_mat;
+        return rot.multiply(new_mat);
     }
 
+
+    getPortalViewMatrix(originalView: THREE.Matrix4) {
+        // var mat = new THREE.Matrix4().getInverse(dst.matrix.clone().makeRotationFromEuler(src.rotation));
+        //return mat.multiply(originalView);
+
+        //  return dst.matrix.clone().makeRotationFromEuler(src.rotation).multiply(originalView);
+         return this.toPortal.matrix.clone().multiply(originalView);
+        //return originalView.clone().multiply(dst.matrix);
+
+    }
+
+
+
     /**
-    * Raycast from `from` to `direction`
+    * Raycast from `from` to `to`, to check if avatar has to be teleported
     * @return an intersection with the portal mesh was made.
     */
-    checkIntersection(from: THREE.Vector3, direction: THREE.Vector3): boolean{
+    checkIntersection(from: THREE.Vector3, to: THREE.Vector3): boolean{
+
+        var direction = new THREE.Vector3().copy(to).sub(from);
 
         var caster = new THREE.Raycaster();
-        caster.set(from, direction);
+        caster.precision = 0.00001;
+        caster.set( from, direction);
 
         var intersect = caster.intersectObject(this);
 
