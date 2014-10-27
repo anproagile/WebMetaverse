@@ -67,7 +67,7 @@ module WebMetaverse {
             var grid = new THREE.GridHelper(100, 10);
             room.add(grid);
 
-            var g = new THREE.BoxGeometry(100, 20, 10);
+            var g = new THREE.BoxGeometry(60, 20, 10);
             var m = new THREE.MeshNormalMaterial();
             var cube = new THREE.Mesh(g, m);
             cube.position.set(0, 10, -95);
@@ -118,21 +118,23 @@ module WebMetaverse {
 
         createDebugPortals(): void {
 
-            //Create portal to non-current-room.
+            //Create portal to current-room.
             var portalOut = new Portal(this.rooms[1]);
-
             var portalIn = new Portal(this.rooms[0]);
             
-
+            //Make portals be eachother's end
             portalOut.toPortal = portalIn;
             portalIn.toPortal = portalOut;
 
-           // portalIn.rotateY(1);
-            portalOut.position.x = -100;
-            portalIn.position.x = 100;
+            portalIn.rotateY(1.25*Math.PI);
+            portalOut.position.x = -10;
+            portalIn.position.x = 10;
 
             this.rooms[0].addPortal(portalOut);
             this.rooms[1].addPortal(portalIn);
+
+            portalIn.updateStencilSceneMatrix();
+            portalOut.updateStencilSceneMatrix();
 
         }
 

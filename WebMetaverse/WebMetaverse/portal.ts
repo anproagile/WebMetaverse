@@ -46,9 +46,9 @@
 
         gl.stencilFunc(gl.LESS, 0, 0xff);
 
-        //camera.matrixWorld = this.getPortalViewMatrix(camera.matrixWorld);
-        //camera.matrixWorld = this.pView(camera.matrixWorld);
-        camera.matrixWorld = this.portal_view(camera, this, this.toPortal);
+       // camera.matrixWorld = this.getPortalViewMatrix(camera.matrixWorld);
+        //camera.matrixWorld = this.getPortalViewMatrix1(camera.matrixWorld);
+        camera.matrixWorld = this.getPortalViewMatrix2(camera.matrixWorld); 
 
         renderer.render(this.toScene, camera);
 
@@ -67,37 +67,35 @@
 
     }
 
+    //Attempt 1
     //Based on http://en.wikibooks.org/wiki/OpenGL_Programming/Mini-Portal , see section "Building a new camera", first code.
     //Commented out Y rotation, as without it is already very wrong.
-    pView(originalView: THREE.Matrix4) {
-        var mv = originalView.multiply(this.matrix);
-        var portalCam = mv
-            //.multiply(new THREE.Matrix4().makeRotationY(Math.PI))
-            .multiply(new THREE.Matrix4().getInverse(this.toPortal.matrix));
-        
-        return portalCam;
-    } 
-
-    //Based on http://en.wikibooks.org/wiki/OpenGL_Programming/Mini-Portal , see section "Building a new camera", first code.
-    //Commented out Y rotation, as without it is already very wrong.
-    portal_view(camera : THREE.Camera, src_portal: THREE.Object3D, dst_portal: THREE.Object3D) {
-        var inverse_view_to_source = new THREE.Matrix4().getInverse(camera.matrixWorld).multiply(src_portal.matrix);
-        var new_mat = dst_portal.matrix.clone().multiply(inverse_view_to_source);
+    getPortalViewMatrix1(camera : THREE.Camera) {
+        var inverse_view_to_source = new THREE.Matrix4().getInverse(camera.matrixWorld).multiply(this.matrix);
+        var new_mat = this.toPortal.matrix.clone().multiply(inverse_view_to_source);
         var rot = new THREE.Matrix4().makeRotationY(Math.PI);
         // new_mat.rotateY(3.14);
         //return new_mat;
         return rot.multiply(new_mat);
     }
 
+    //Attempt 2
+    //Based on http://en.wikibooks.org/wiki/OpenGL_Programming/Mini-Portal , see section "Building a new camera", first code.
+    //Commented out Y rotation, as without it is already very wrong.
+    getPortalViewMatrix2(originalView: THREE.Matrix4) {
+        var mv = originalView.multiply(this.matrix);
+        var portalCam = mv
+        //.multiply(new THREE.Matrix4().makeRotationY(Math.PI))
+            .multiply(new THREE.Matrix4().getInverse(this.toPortal.matrix));
 
+        return portalCam;
+    } 
+
+    //Wrong, but the most right attempt, syncs up the two different scenes, 
+    //but doesn't take into account goal portal position, rotation
+    //Only works with portals on (0,0,0), unrotated
     getPortalViewMatrix(originalView: THREE.Matrix4) {
-        // var mat = new THREE.Matrix4().getInverse(dst.matrix.clone().makeRotationFromEuler(src.rotation));
-        //return mat.multiply(originalView);
-
-        //  return dst.matrix.clone().makeRotationFromEuler(src.rotation).multiply(originalView);
          return this.toPortal.matrix.clone().multiply(originalView);
-        //return originalView.clone().multiply(dst.matrix);
-
     }
 
 
@@ -124,5 +122,9 @@
         return false;
     }
 
+    updateStencilSceneMatrix() {
+        this.stencilScene.updateMatrix();
+        this.stencilScene.updateMatrixWorld(true);
+    }
 
 }
