@@ -26,7 +26,10 @@
     <TypeScriptCompile Include="pointerlock.ts" />
     <TypeScriptCompile Include="portal.ts" />
     <TypeScriptCompile Include="room.ts" />
+    <TypeScriptCompile Include="Scripts\typings\peerjs\Peer.d.ts" />
     <TypeScriptCompile Include="Scripts\typings\threejs\three.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\webrtc\MediaStream.d.ts" />
+    <TypeScriptCompile Include="Scripts\typings\webrtc\RTCPeerConnection.d.ts" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="web.config" />
