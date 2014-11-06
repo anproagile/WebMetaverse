@@ -1,23 +1,46 @@
 ﻿/// <reference path="Scripts/typings/peerjs/Peer.d.ts"/>
 
+interface WMServer {
+    host: string;
+    port: number;
+    peerjspath: string;
+    apipath: string;
+}
+
+
+
 class NetworkClient {
 
+    server: WMServer;
     connections: NetworkPlayer[];
-    peer: Peer;
+    localPeer: Peer;
+
+    constructor() {
+        this.server = {
+            host: 'localhost',
+            port: 7070,
+            peerjspath: '/peerjs',
+            apipath: '/connectedpeers'
+        }
+    }
+
 
     joinRoom() {
         this.pollConnectedPeers(this.connect);
     }
 
     connect = (peers) => {
+        
 
         var id = this.generateId();
         console.log("Connecting with id " + id + ", available peers: " + peers);
-        this.peer = new Peer(id, { host: 'localhost', port: 7070, path: '/peerjs', debug: 3 });
-        /*
-        peer.on('error', function (err) {
+        this.localPeer = new Peer(id, { host: this.server.host, port: this.server.port, path: this.server.peerjspath, debug: 3 });
+        
+
+        this.localPeer.on('error', function (err) {
             console.log(err);
-        })*/
+        })
+
     }
 
 
@@ -26,7 +49,8 @@ class NetworkClient {
     }
 
     pollConnectedPeers(callback) {
-        this.getJSONP("http://localhost:7070/connectedpeers?callback=?", callback);
+        var url = 'http://' + this.server.host + ':' + this.server.port + this.server.apipath + '?callback=?';
+        this.getJSONP(url, callback);
     }
 
     getJSONP(url, success) {
