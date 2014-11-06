@@ -1,7 +1,6 @@
 ﻿/// <reference path="Scripts/typings/threejs/three.d.ts"/>
 /// <reference path="pointerlock.ts"/>
 /// <reference path="portal.ts"/>
-/// <reference path="Scripts/typings/WebGL.d.ts"/>
 
 
 class Room{

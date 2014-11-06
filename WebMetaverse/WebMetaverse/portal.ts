@@ -46,9 +46,9 @@
 
         gl.stencilFunc(gl.LESS, 0, 0xff);
 
-       // camera.matrixWorld = this.getPortalViewMatrix(camera.matrixWorld);
+        camera.matrixWorld = this.getPortalViewMatrix(camera.matrixWorld);
         //camera.matrixWorld = this.getPortalViewMatrix1(camera.matrixWorld);
-        camera.matrixWorld = this.getPortalViewMatrix2(camera.matrixWorld); 
+        //camera.matrixWorld = this.getPortalViewMatrix2(camera.matrixWorld); 
 
         renderer.render(this.toScene, camera);
 

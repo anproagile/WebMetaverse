@@ -2,7 +2,7 @@
 /// <reference path="pointerlock.ts"/>
 /// <reference path="portal.ts"/>
 /// <reference path="room.ts"/>
-/// <reference path="Scripts/typings/WebGL.d.ts"/>
+/// <reference path="networkclient.ts"/>
 
 var webmetaverse = {};
 
@@ -201,6 +201,8 @@ module WebMetaverse {
     window.onload = () => {
         var webvr = new WebVR();
         webvr.tick();
+        var nc = new NetworkClient();
+        nc.joinRoom();
     };
 }
 
