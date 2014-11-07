@@ -1,3 +1,4 @@
 *.js
+!peer.js
 *.js.map
 packages/

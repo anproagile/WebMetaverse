@@ -1,0 +1,13 @@
+# .travis.yml
+language: node_js
+node_js:
+- '0.10'
+
+script: bash deploy.sh
+
+env:
+  - secure: "ciW7JsqCwFz1+R4zLVGteVaG//Ry2VIWZcmHFA3ZIJXlYuQ/FdXruRgxW9mJwsvzK4MhgHRKNfmZ6IaKyu3pQyJr17eKfP4WM9paN5OJG4gww9XhStigC0ZN/W39H60RxOXzU7XaNSNdcFwe14kSNkMlXMiPgKaitECJL2h1KtM="
+  - GH_REF: github.com/rahazan/webmetaverse.git
+ branches:
+    only:
+	  -master
