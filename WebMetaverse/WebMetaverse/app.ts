@@ -36,10 +36,11 @@ module WM {
             window.addEventListener('resize', () => this.onWindowResize, false);
 
             this.createNetworkClient();
+            this.networkClient.room = this.currentRoom;
 
         }
 
-        createRenderer() {
+        private createRenderer() {
             var renderer = new THREE.WebGLRenderer();
             renderer.setClearColor(0x000000);
             renderer.setSize(window.innerWidth, window.innerHeight);
@@ -49,7 +50,7 @@ module WM {
 
         }
 
-        createControls() {
+        private createControls() {
             this.controls = new THREE.PointerLockControls(this.camera);
             this.cameraObject = this.controls.getObject();
             this.cameraObject.position.z = 30;
@@ -58,18 +59,18 @@ module WM {
             this.currentRoom.add(this.cameraObject);
         }
 
-        createDebugWorld() {
+        private createDebugWorld() {
             this.currentRoom = this.createDebugRoom1();
             this.rooms.push(this.currentRoom);
             this.rooms.push(this.createDebugRoom2());
             this.createDebugPortals();
         }
 
-        createNetworkClient() {
+        private createNetworkClient() {
             this.networkClient = new NetworkClient();
         }
 
-        createDebugRoom1(): Room {
+        private createDebugRoom1(): Room {
             var room = new Room();
             var grid = new THREE.GridHelper(100, 10);
             room.add(grid);
@@ -89,7 +90,7 @@ module WM {
             return room;
         }
 
-        createDebugRoom2(): Room {
+        private createDebugRoom2(): Room {
             var room = new Room();
             var g = new THREE.BoxGeometry(60, 20, 10);
             var m = new THREE.MeshPhongMaterial();
@@ -123,7 +124,7 @@ module WM {
             return room;
         }
 
-        createDebugPortals(): void {
+        private createDebugPortals(): void {
 
             //Create portal to current-room.
             var portalOut = new Portal(this.rooms[1]);
@@ -144,7 +145,7 @@ module WM {
             portalOut.updateStencilSceneMatrix();
 
         }
-
+        
         tick = () => {
             this.camera.updateMatrixWorld(true);
             this.update();
@@ -154,9 +155,15 @@ module WM {
             requestAnimationFrame(this.tick);
         }
 
+        i = 0;
+
         update() {
+            this.i++;
             this.controls.update(Date.now() - this.time);
             this.checkPortalIntersection();
+
+            if (this.i % 3 == 0)
+                this.networkClient.broadCastPosition(this.cameraObject.position);
         }
 
 
@@ -170,13 +177,13 @@ module WM {
             this.currentRoom.scene.remove(this.cameraObject);
             room.add(this.cameraObject);
            
-            this.cameraObject.position.setFromMatrixPosition(position); //(position.getPosition().x);
+            this.cameraObject.position.setFromMatrixPosition(position); 
 
             this.currentRoom = room;
         }
 
         
-        checkPortalIntersection() {
+        private checkPortalIntersection() {
             var currentPos = new THREE.Vector3().setFromMatrixPosition(this.camera.matrixWorld);
 
             if (this.prevPos) {
@@ -208,8 +215,7 @@ module WM {
     window.onload = () => {
         var webvr = new WebMetaverse();
         webvr.tick();
-        webvr.createNetworkClient();
-        
+        webvr.networkClient.joinRoom();
     };
 }
 

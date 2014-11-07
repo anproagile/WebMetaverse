@@ -15,6 +15,7 @@ class NetworkClient {
     server: WMServer;
     connections: NetworkPlayer[];
     localPeer: Peer;
+    room: Room;
 
     constructor() {
         this.server = {
@@ -83,32 +84,36 @@ class NetworkClient {
         this.onConnectionToPeerCreate(connection);
     }
 
-
-
-
     onConnectionToPeerCreate = (connection: PeerJs.DataConnection) => {
         connection.on('open', () => this.onConnectionEstablished(connection));
     }
 
-    onConnectionEstablished = (connection: PeerJs.DataConnection) => {
+    private onConnectionEstablished = (connection: PeerJs.DataConnection) => {
         console.log("Connection established to " + connection.peer);
         connection.on('close', () => this.onConnectionClosed(connection));
+
         var player = new NetworkPlayer(connection);
         this.connections.push(player);
+
+        var mesh = new THREE.Mesh(new THREE.SphereGeometry(16));
+        player.mesh = mesh;
+        this.room.add(mesh);
+
     }
 
-    onConnectionClosed = (connection: PeerJs.DataConnection) => {
+    private onConnectionClosed = (connection: PeerJs.DataConnection) => {
         console.log("Connection closed to " + connection.peer);
         if (this.connections[connection.peer]) {
+            this.room.scene.remove(this.connections[connection.peer].mesh);
             this.connections[connection.peer] = null;
         }
     }
     
-    onConnectedToServer = (id) => {
+    private onConnectedToServer = (id) => {
         console.log("Connected to central server with ID: " + id);
     }
 
-    onDisconnectedFromServer = () => {
+    private onDisconnectedFromServer = () => {
         console.log("Disconnected from central server");
     }
 
@@ -153,7 +158,7 @@ class NetworkPlayer {
 
     onReceive(data: any, fromId: string) {
         if (data.type == 'chat') {
-            console.log('Received message "' + data.msg + '" from ' + fromId);
+            console.log('Received chat "' + data.msg + '" from ' + fromId);
         }
         else if (data.type == 'pos') {
             if (this.mesh) {
@@ -169,5 +174,4 @@ class NetworkPlayer {
     sendPosition(pos : THREE.Vector3) {
         this.connection.send({ type: 'pos', x: pos.x, y: pos.y, z: pos.z });
     }
-
 }
