@@ -17,11 +17,12 @@ class NetworkClient {
 
     constructor() {
         this.server = {
-            host: 'localhost',
-            port: 7070,
+            host: 'webvr.rocks',
+            port: 7170,
             peerjspath: '/peerjs',
             apipath: '/connectedpeers'
         }
+        this.connections = [];
     }
 
 
@@ -35,14 +36,60 @@ class NetworkClient {
         var id = this.generateId();
         console.log("Connecting with id " + id + ", available peers: " + peers);
         this.localPeer = new Peer(id, { host: this.server.host, port: this.server.port, path: this.server.peerjspath, debug: 3 });
-        
 
+        window.onunload = window.onbeforeunload = (e) => {
+            if (!!this.localPeer && !this.localPeer.destroyed) {
+                this.localPeer.destroy();
+            }
+        }
+
+        this.localPeer.on('open', this.onConnectedToServer);
+        this.localPeer.on('connection', (connection) => {
+            console.log("Incoming connection from " + connection.peer);
+            this.onConnectionToPeerCreate(connection);
+        });
         this.localPeer.on('error', function (err) {
             console.log(err);
         })
 
+        this.connectToAllPeers(peers);
+
     }
 
+    connectToAllPeers = (peers) => {
+        
+        for (var i = 0; i < peers.length; i++) {
+            console.log("Establishing connection to peer " + peers[i]);
+            var connection = this.localPeer.connect(peers[i]);
+            this.onConnectionToPeerCreate(connection);
+        }
+    } 
+
+
+    onConnectionToPeerCreate = (connection: PeerJs.DataConnection) => {
+        connection.on('open', () => this.onConnectionEstablished(connection));
+    }
+
+    onConnectionEstablished = (connection: PeerJs.DataConnection) => {
+        connection.on('close', () => this.onConnectionClosed(connection));
+        var player = new NetworkPlayer(connection);
+        this.connections.push(player);
+    }
+
+    onConnectionClosed = (connection: PeerJs.DataConnection) => {
+        console.log("Connection closed to " + connection.peer);
+        if (this.connections[connection.peer]) {
+            this.connections[connection.peer] = null;
+        }
+    }
+    
+    onConnectedToServer = (id) => {
+        console.log("Connected to central server with ID: " + id);
+    }
+
+    onDisconnectedFromServer = () => {
+        console.log("Disconnected from central server");
+    }
 
     generateId (): string {
         return Math.random().toString(36).substring(7);
@@ -75,12 +122,11 @@ class NetworkClient {
 
 
 class NetworkPlayer {
-    peer: Peer;
-    id : string;
+    connection: PeerJs.DataConnection;
 
-    connect() {
-        //this.peer;
-
+    constructor(connection) {
+        this.connection = connection;
     }
+
 
 }
