@@ -37,35 +37,4 @@ class Room{
         return this.portals.push(portal);
     }
 
-
-
-}
-
-class JanusRoomLoader {
-
-    constructor() {
-
-    }
-    
-}
-
-class XMLParser {
-
-    static parseDocument(xmlStr) {
-
-        if (typeof DOMParser != "undefined") {
-                return (new DOMParser()).parseFromString(xmlStr, "text/xml");
-        }
-        else if (typeof ActiveXObject != "undefined" &&
-            new ActiveXObject("Microsoft.XMLDOM")) {
-
-                var xmlDoc = new ActiveXObject("Microsoft.XMLDOM");
-                xmlDoc.async = "false";
-                xmlDoc.loadXML(xmlStr); return xmlDoc;
-
-        }
-        else {
-            throw new Error("No XML parser found");
-        }
-    }
 }
