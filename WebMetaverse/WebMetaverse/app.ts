@@ -5,6 +5,8 @@
 /// <reference path="networkclient.ts"/>
 
 var webmetaverse = {};
+var nc;
+
 
 module WM {
 
@@ -25,6 +27,7 @@ module WM {
 
         constructor() {
             webmetaverse = this;
+            
 
             this.camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.001, 2000);
             this.createRenderer();
@@ -37,7 +40,7 @@ module WM {
 
             this.createNetworkClient();
             this.networkClient.room = this.currentRoom;
-
+            nc = this.networkClient;
         }
 
         private createRenderer() {
@@ -163,7 +166,7 @@ module WM {
             this.checkPortalIntersection();
 
             if (this.i % 1 == 0)
-                this.networkClient.broadCastPosition(this.cameraObject.position);
+                this.networkClient.broadcastPosition(this.cameraObject.position);
         }
 
 
@@ -216,6 +219,7 @@ module WM {
         var webvr = new WebMetaverse();
         webvr.tick();
         webvr.networkClient.joinRoom();
+
     };
 }
 

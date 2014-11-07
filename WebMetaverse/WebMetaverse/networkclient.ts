@@ -32,15 +32,18 @@ class NetworkClient {
         this.pollConnectedPeers(this.connect);
     }
 
-    broadCastMessage(msg: string) {
+    broadcastMessage(msg: string) {
+        console.log('Broadcasting message "' + msg + '"');
         for (var id in this.connections) {
             this.connections[id].sendChatMessage(msg);
         }
     }
 
-    broadCastPosition(pos: THREE.Vector3) {
+    chat = (msg) => { this.broadcastMessage(msg) };
+
+    broadcastPosition(pos: THREE.Vector3) {
+        
         for (var id in this.connections) {
-            console.log(this.connections[id]);
             this.connections[id].sendPosition(pos);
         }
     }

@@ -109,7 +109,7 @@ class PointerLock {
 
                     element.requestFullscreen = element.requestFullscreen || element.mozRequestFullscreen || element.mozRequestFullScreen || element.webkitRequestFullscreen;
 
-                    element.requestFullscreen();
+                   // element.requestFullscreen();
 
                 } else {
 
