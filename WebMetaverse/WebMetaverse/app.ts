@@ -162,7 +162,7 @@ module WM {
             this.controls.update(Date.now() - this.time);
             this.checkPortalIntersection();
 
-            if (this.i % 3 == 0)
+            if (this.i % 1 == 0)
                 this.networkClient.broadCastPosition(this.cameraObject.position);
         }
 
