@@ -1,12 +1,10 @@
-# .travis.yml
 language: node_js
 node_js:
-  - '0.10'
-
+- '0.10'
 before_script:
-  - npm install typescript -g
-
+- npm install typescript -g
 script: bash deploy.sh
-
-branches:
-  -master
+branches: "-master"
+env:
+  global:
+    secure: d22Ovo77Z4aOcM+4m7ToOKCEgxyuG94gbpKSI7ccM1kPFbSEORLN+Xa743qeIFY9xObWRWOBTPJMF3HvElwuShJb9jv10hO3N5tuHZMWE7Qv+rnN5uzPIpSnHey7r4Yl6rPGL83Dc108cU4AJog6X1JW2XO5gayuQIK8vEf49TI=
