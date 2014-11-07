@@ -47,7 +47,7 @@ class PointerLock {
             var element = document.body;
 
             var pointerlockchange = event => {
-
+                console.log("Pointer lock change! " + event);
                 if (document.pointerLockElement === element || document.mozPointerLockElement === element || document.webkitPointerLockElement === element) {
 
                     this.controls.enabled = true;
@@ -71,7 +71,7 @@ class PointerLock {
 		    var pointerlockerror = function (event) {
 
                 this.instructions.style.display = '';
-
+                console.log("Pointer lock error!");
             }
 
 		    // Hook pointer lock state change events
@@ -84,39 +84,9 @@ class PointerLock {
             document.addEventListener('webkitpointerlockerror', pointerlockerror, false);
 
             this.instructions.addEventListener('click', e => {
-
-                this.instructions.style.display = 'none';
-
                 // Ask the browser to lock the pointer
                 element.requestPointerLock = element.requestPointerLock || element.mozRequestPointerLock || element.webkitRequestPointerLock;
-
-                if (/Firefox/i.test(navigator.userAgent)) {
-
-                    var fullscreenchange = function (event) {
-
-                        if (document.fullscreenElement === element || document.mozFullscreenElement === element || document.mozFullScreenElement === element) {
-
-                            document.removeEventListener('fullscreenchange', fullscreenchange);
-                            document.removeEventListener('mozfullscreenchange', fullscreenchange);
-
-                            element.requestPointerLock();
-                        }
-
-                    }
-
-		            document.addEventListener('fullscreenchange', fullscreenchange, false);
-                    document.addEventListener('mozfullscreenchange', fullscreenchange, false);
-
-                    element.requestFullscreen = element.requestFullscreen || element.mozRequestFullscreen || element.mozRequestFullScreen || element.webkitRequestFullscreen;
-
-                   // element.requestFullscreen();
-
-                } else {
-
-                    element.requestPointerLock();
-
-                }
-
+                element.requestPointerLock();
             }, false);
 
         } else {
