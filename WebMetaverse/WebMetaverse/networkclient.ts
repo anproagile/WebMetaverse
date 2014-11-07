@@ -1,4 +1,5 @@
 ﻿/// <reference path="Scripts/typings/peerjs/Peer.d.ts"/>
+/// <reference path="Scripts/typings/threejs/three.d.ts"/>
 
 interface WMServer {
     host: string;
@@ -30,12 +31,25 @@ class NetworkClient {
         this.pollConnectedPeers(this.connect);
     }
 
+    broadCastMessage(msg: string) {
+        for (var i = 0; i < this.connections.length; i++) {
+            this.connections[i].sendChatMessage(msg);
+        }
+    }
+
+    broadCastPosition(pos: THREE.Vector3) {
+        for (var i = 0; i < this.connections.length; i++) {
+            this.connections[i].sendPosition(pos);
+        }
+    }
+
+
     connect = (peers) => {
         
 
         var id = this.generateId();
         console.log("Connecting with id " + id + ", available peers: " + peers);
-        this.localPeer = new Peer(id, { host: this.server.host, port: this.server.port, path: this.server.peerjspath, debug: 3 });
+        this.localPeer = new Peer(id, { host: this.server.host, port: this.server.port, path: this.server.peerjspath});
 
         window.onunload = window.onbeforeunload = (e) => {
             if (!!this.localPeer && !this.localPeer.destroyed) {
@@ -59,11 +73,17 @@ class NetworkClient {
     connectToAllPeers = (peers) => {
         
         for (var i = 0; i < peers.length; i++) {
-            console.log("Establishing connection to peer " + peers[i]);
-            var connection = this.localPeer.connect(peers[i]);
-            this.onConnectionToPeerCreate(connection);
+            this.connectToPeer(peers[i]);
         }
     } 
+
+    connectToPeer(id: string) {
+        console.log("Establishing connection to peer " + id);
+        var connection = this.localPeer.connect(id);
+        this.onConnectionToPeerCreate(connection);
+    }
+
+
 
 
     onConnectionToPeerCreate = (connection: PeerJs.DataConnection) => {
@@ -71,6 +91,7 @@ class NetworkClient {
     }
 
     onConnectionEstablished = (connection: PeerJs.DataConnection) => {
+        console.log("Connection established to " + connection.peer);
         connection.on('close', () => this.onConnectionClosed(connection));
         var player = new NetworkPlayer(connection);
         this.connections.push(player);
@@ -123,10 +144,30 @@ class NetworkClient {
 
 class NetworkPlayer {
     connection: PeerJs.DataConnection;
+    mesh: THREE.Mesh;
 
-    constructor(connection) {
+    constructor(connection: PeerJs.DataConnection) {
         this.connection = connection;
+        connection.on('data', (data) => this.onReceive(data, connection.peer));
     }
 
+    onReceive(data: any, fromId: string) {
+        if (data.type == 'chat') {
+            console.log('Received message "' + data.msg + '" from ' + fromId);
+        }
+        else if (data.type == 'pos') {
+            if (this.mesh) {
+                this.mesh.position.set(data.x, data.y, data.z);
+            }
+        }
+    }
+
+    sendChatMessage(message: string) {
+        this.connection.send({ type: 'chat', msg: message });
+    }
+
+    sendPosition(pos : THREE.Vector3) {
+        this.connection.send({ type: 'pos', x: pos.x, y: pos.y, z: pos.z });
+    }
 
 }

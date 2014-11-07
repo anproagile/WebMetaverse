@@ -6,10 +6,10 @@
 
 var webmetaverse = {};
 
-module WebMetaverse {
+module WM {
 
 
-    class WebVR {
+    class WebMetaverse {
 
         time: number = Date.now();
         renderer: THREE.WebGLRenderer;
@@ -20,8 +20,8 @@ module WebMetaverse {
         originalCameraMatrixWorld: any;
         currentRoom: Room;
         rooms: Room[];
-        
-        
+
+        networkClient: NetworkClient;
 
         constructor() {
             webmetaverse = this;
@@ -34,6 +34,9 @@ module WebMetaverse {
             this.createDebugWorld();
             this.createControls();
             window.addEventListener('resize', () => this.onWindowResize, false);
+
+            this.createNetworkClient();
+
         }
 
         createRenderer() {
@@ -60,6 +63,10 @@ module WebMetaverse {
             this.rooms.push(this.currentRoom);
             this.rooms.push(this.createDebugRoom2());
             this.createDebugPortals();
+        }
+
+        createNetworkClient() {
+            this.networkClient = new NetworkClient();
         }
 
         createDebugRoom1(): Room {
@@ -199,10 +206,10 @@ module WebMetaverse {
 
   
     window.onload = () => {
-        var webvr = new WebVR();
+        var webvr = new WebMetaverse();
         webvr.tick();
-        var nc = new NetworkClient();
-        nc.joinRoom();
+        webvr.createNetworkClient();
+        
     };
 }
 
