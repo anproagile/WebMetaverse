@@ -1,5 +1,6 @@
 WebMetaverse
 ============
+[![Build Status](https://travis-ci.org/Rahazan/WebMetaverse.svg?branch=master)](https://travis-ci.org/Rahazan/WebMetaverse)
 
 WebVR experimenting
 I am trying to break down the walled garden VR. The plan is to create an in-browser browser for virtual reality experiences without the need for plugins.
