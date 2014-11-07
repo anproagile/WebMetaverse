@@ -9,4 +9,4 @@ before_script:
 script: bash deploy.sh
 
 branches:
-    -master
+  -master
