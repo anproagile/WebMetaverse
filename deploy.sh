@@ -4,8 +4,8 @@ mkdir build;
 bash build.sh
 ( cd build
  git init
- git config --global user.name "${GIT_NAME}"
- git config --global user.email "${GIT_EMAIL}"
+ git config --global user.name "WM Bot"
+ git config --global user.email "bot@webmetaverse.com"
 # cp ../CNAME ./CNAME
  cp ../WebMetaverse/WebMetaverse/peer.js ./peer.js
  cp ../WebMetaverse/WebMetaverse/index.html ./index.html
