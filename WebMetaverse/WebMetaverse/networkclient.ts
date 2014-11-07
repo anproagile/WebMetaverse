@@ -93,7 +93,7 @@ class NetworkClient {
         connection.on('close', () => this.onConnectionClosed(connection));
 
         var player = new NetworkPlayer(connection);
-        this.connections.push(player);
+        this.connections[connection.peer] = player;
 
         var mesh = new THREE.Mesh(new THREE.SphereGeometry(16));
         player.mesh = mesh;
