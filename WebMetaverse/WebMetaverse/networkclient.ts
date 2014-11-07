@@ -13,7 +13,7 @@ interface WMServer {
 class NetworkClient {
 
     server: WMServer;
-    connections: NetworkPlayer[];
+    connections: { [id: string]: NetworkPlayer };
     localPeer: Peer;
     room: Room;
 
@@ -24,7 +24,7 @@ class NetworkClient {
             peerjspath: '/peerjs',
             apipath: '/connectedpeers'
         }
-        this.connections = [];
+        this.connections = {};
     }
 
 
@@ -33,14 +33,15 @@ class NetworkClient {
     }
 
     broadCastMessage(msg: string) {
-        for (var i = 0; i < this.connections.length; i++) {
-            this.connections[i].sendChatMessage(msg);
+        for (var id in this.connections) {
+            this.connections[id].sendChatMessage(msg);
         }
     }
 
     broadCastPosition(pos: THREE.Vector3) {
-        for (var i = 0; i < this.connections.length; i++) {
-            this.connections[i].sendPosition(pos);
+        for (var id in this.connections) {
+            console.log(this.connections[id]);
+            this.connections[id].sendPosition(pos);
         }
     }
 
@@ -93,9 +94,10 @@ class NetworkClient {
         connection.on('close', () => this.onConnectionClosed(connection));
 
         var player = new NetworkPlayer(connection);
+        
         this.connections[connection.peer] = player;
 
-        var mesh = new THREE.Mesh(new THREE.SphereGeometry(16));
+        var mesh = new THREE.Mesh(new THREE.SphereGeometry(8, 16, 16));
         player.mesh = mesh;
         this.room.add(mesh);
 
@@ -105,7 +107,7 @@ class NetworkClient {
         console.log("Connection closed to " + connection.peer);
         if (this.connections[connection.peer]) {
             this.room.scene.remove(this.connections[connection.peer].mesh);
-            this.connections[connection.peer] = null;
+            delete this.connections[connection.peer];
         }
     }
     
