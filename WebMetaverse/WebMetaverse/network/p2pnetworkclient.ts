@@ -1,4 +1,7 @@
-﻿module WM.Network {
+﻿/// <reference path="networkclient.ts"/>
+/// <reference path="networkplayer.ts"/>
+/// <reference path="../room.ts"/>
+module WM.Network {
 
     export class P2PNetworkClient {
 

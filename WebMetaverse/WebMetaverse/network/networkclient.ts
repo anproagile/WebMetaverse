@@ -1,6 +1,10 @@
 ﻿/// <reference path="../typings/peerjs/Peer.d.ts"/>
 /// <reference path="../typings/threejs/three.d.ts"/>
+/// <reference path="p2pnetworkclient.ts"/>
+/// <reference path="../room.ts"/>
 module WM.Network {
+
+
     export interface WMServer {
         host: string;
         port: number;
@@ -8,14 +12,12 @@ module WM.Network {
         apipath: string;
     }
 
-
-
     export class NetworkClient {
 
         server: WMServer;
         localPeer: Peer;
         room: Room;
-        p2p: P2PNetworkClient;
+        p2p: WM.Network.P2PNetworkClient;
 
 
         constructor() {

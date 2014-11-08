@@ -1,10 +1,15 @@
 ﻿/// <reference path="typings/threejs/three.d.ts"/>
+/// <reference path="network/networkclient.ts"/>
+/// <reference path="portal.ts"/>
+/// <reference path="room.ts"/>
+/// <reference path="pointerlock.ts"/>
 
 var webmetaverse = {};
 var nc;
 
 
 module WM {
+
     export class WebMetaverse {
 
         time: number = Date.now();
@@ -17,7 +22,7 @@ module WM {
         currentRoom: Room;
         rooms: Room[];
 
-        networkClient: Network.NetworkClient;
+        networkClient: WM.Network.NetworkClient;
 
         constructor() {
             webmetaverse = this;
