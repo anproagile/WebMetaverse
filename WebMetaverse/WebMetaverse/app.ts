@@ -1,17 +1,11 @@
-﻿/// <reference path="Scripts/typings/threejs/three.d.ts"/>
-/// <reference path="pointerlock.ts"/>
-/// <reference path="portal.ts"/>
-/// <reference path="room.ts"/>
-/// <reference path="networkclient.ts"/>
+﻿/// <reference path="typings/threejs/three.d.ts"/>
 
 var webmetaverse = {};
 var nc;
 
 
 module WM {
-
-
-    class WebMetaverse {
+    export class WebMetaverse {
 
         time: number = Date.now();
         renderer: THREE.WebGLRenderer;
@@ -23,7 +17,7 @@ module WM {
         currentRoom: Room;
         rooms: Room[];
 
-        networkClient: NetworkClient;
+        networkClient: Network.NetworkClient;
 
         constructor() {
             webmetaverse = this;
@@ -70,7 +64,7 @@ module WM {
         }
 
         private createNetworkClient() {
-            this.networkClient = new NetworkClient();
+            this.networkClient = new Network.NetworkClient();
         }
 
         private createDebugRoom1(): Room {
