@@ -1,4 +1,7 @@
-﻿module WM.Network {
+﻿/// <reference path="../typings/peerjs/Peer.d.ts"/>
+/// <reference path="../typings/threejs/three.d.ts"/>
+
+module WM.Network {
     export class NetworkPlayer {
         connection: PeerJs.DataConnection;
         reliableConnection: PeerJs.DataConnection;

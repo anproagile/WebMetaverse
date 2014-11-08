@@ -1,4 +1,7 @@
-﻿/// <reference path="networkclient.ts"/>
+﻿/// <reference path="../typings/peerjs/Peer.d.ts"/>
+/// <reference path="../typings/threejs/three.d.ts"/>
+
+/// <reference path="networkclient.ts"/>
 /// <reference path="networkplayer.ts"/>
 /// <reference path="../room.ts"/>
 module WM.Network {

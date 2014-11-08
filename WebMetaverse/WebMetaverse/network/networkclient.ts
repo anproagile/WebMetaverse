@@ -1,5 +1,6 @@
 ﻿/// <reference path="../typings/peerjs/Peer.d.ts"/>
 /// <reference path="../typings/threejs/three.d.ts"/>
+
 /// <reference path="p2pnetworkclient.ts"/>
 /// <reference path="../room.ts"/>
 module WM.Network {
@@ -46,9 +47,6 @@ module WM.Network {
             window.onunload = window.onbeforeunload = (e) => {
                 if (!!this.localPeer && !this.localPeer.destroyed) {
                     this.localPeer.destroy();
-                }
-                if (!!this.p2p.localPeer && !this.p2p.localPeer.destroyed) {
-                    this.p2p.localPeer.destroy();
                 }
             }
 
