@@ -165,7 +165,7 @@ module WM {
             this.checkPortalIntersection();
 
             if (this.i % 1 == 0)
-                this.networkClient.p2p.broadcastPosition(this.cameraObject.position);
+                this.networkClient.p2p.broadcastPosition(this.cameraObject.position, this.cameraObject.rotation.y);
         }
 
 

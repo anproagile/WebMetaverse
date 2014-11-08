@@ -50,10 +50,10 @@ module WM.Network {
 
         chat = (msg) => { this.broadcastMessage(msg) };
 
-        broadcastPosition(pos: THREE.Vector3) {
+        broadcastPosition(pos: THREE.Vector3, yRotation: number) {
 
             for (var id in this.connections) {
-                this.connections[id].sendPosition(pos);
+                this.connections[id].sendPosition(pos, yRotation);
             }
         }
 
@@ -91,7 +91,7 @@ module WM.Network {
                 var player = new NetworkPlayer(connection);
                 this.connections[connection.peer] = player;
 
-                var mesh = new THREE.Mesh(new THREE.SphereGeometry(8, 16, 16));
+                var mesh = new THREE.Mesh(new THREE.BoxGeometry(8, 16, 8));
                 player.mesh = mesh;
                 this.room.add(mesh);
 
@@ -107,8 +107,6 @@ module WM.Network {
 
         private onConnectionClosed = (connection: PeerJs.DataConnection) => {
             console.log((connection.reliable ? "Reliable" : "Unreliable") + " connection closed to " + connection.peer);
-
-
 
             if (this.connections[connection.peer]) {
                 if (connection.reliable) {

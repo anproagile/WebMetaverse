@@ -9,7 +9,7 @@ module WM.Network {
 
         constructor(connection: PeerJs.DataConnection) {
             this.connection = connection;
-            connection.on('data', (data) => this.onReceive(data, connection.peer));
+            connection.on('data', (data) => this.onReceiveReliable(data, connection.peer));
         }
 
         addUnreliableConnection(connection: PeerJs.DataConnection) {
@@ -26,20 +26,22 @@ module WM.Network {
             if (data.type == 'chat') {
                 console.log('Received chat "' + data.msg + '" from ' + fromId);
             }
-            else if (data.type == 'pos') {
+            else if (data.type == 'p') {
                 if (this.mesh) {
                     this.mesh.position.set(data.x, data.y, data.z);
+                    this.mesh.rotation.set(this.mesh.rotation.x, data.ry, this.mesh.rotation.z);
                 }
             }
         }
 
-        onReceive(data: any, fromId: string) {
+        onReceiveReliable(data: any, fromId: string) {
             if (data.type == 'chat') {
                 console.log('Received chat "' + data.msg + '" from ' + fromId);
             }
-            else if (data.type == 'pos') {
+            else if (data.type == 'p') {
                 if (this.mesh) {
                     this.mesh.position.set(data.x, data.y, data.z);
+                    this.mesh.rotation.set(this.mesh.rotation.x, data.ry, this.mesh.rotation.z);
                 }
             }
         }
@@ -52,8 +54,13 @@ module WM.Network {
             this.unreliableConnection.send({ type: 'chat', msg: message });
         }
 
-        sendPosition(pos: THREE.Vector3) {
-            this.connection.send({ type: 'pos', x: pos.x, y: pos.y, z: pos.z });
+        sendPosition(pos: THREE.Vector3, rotationY: number) {
+            if (this.unreliableConnection) {
+                this.unreliableConnection.send({ type: 'p', x: pos.x, y: pos.y, z: pos.z, ry: rotationY });
+            }
+            else { //Fallback to reliable
+                this.connection.send({ type: 'p', x: pos.x, y: pos.y, z: pos.z, ry: rotationY });
+            }
         }
     }
 }
