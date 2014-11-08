@@ -41,7 +41,15 @@ module WM.Network {
             var id = this.generateId();
             console.log("Connecting with id " + id + ", available peers: " + peers);
 
-            this.localPeer = new Peer(id, { host: this.server.host, port: this.server.port, path: this.server.peerjspath });
+            var ice = [
+                { 'url': 'stun4:stun.l.google.com:19302' },
+                { 'url': 'stun:stun.l.google.com:19302' },
+                { 'url': 'stun.stunprotocol.org' },
+                { 'url': 'stunserver.org' }
+            ]
+
+
+            this.localPeer = new Peer(id, { host: this.server.host, port: this.server.port, path: this.server.peerjspath, iceServers: ice/*, debug: 3 */});
 
 
             window.onunload = window.onbeforeunload = (e) => {

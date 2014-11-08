@@ -27,7 +27,7 @@ module WM.Network {
 
         init() {
             this.localPeer.on('connection', (connection) => {
-                console.log("Incoming connection from " + connection.peer);
+                console.log("Incoming " + (connection.reliable?"reliable":"unreliable")+ " connection from " + connection.peer);
                 this.onConnectionToPeerCreate(connection);
             });
         }
@@ -39,6 +39,14 @@ module WM.Network {
                 this.connections[id].sendChatMessage(msg);
             }
         }
+
+        broadcastMessageUnreliably(msg: string) {
+            console.log('Broadcasting message "' + msg + '"');
+            for (var id in this.connections) {
+                this.connections[id].sendChatMessageUnreliable(msg);
+            }
+        }
+
 
         chat = (msg) => { this.broadcastMessage(msg) };
 
@@ -53,39 +61,60 @@ module WM.Network {
         connectToPeers = (peers) => {
 
             for (var i = 0; i < peers.length; i++) {
-                this.connectToPeer(peers[i]);
+                console.log("Connecting reliably");
+                this.connectToPeerReliable(peers[i]);
             }
         }
 
-    connectToPeer(id: string) {
-            console.log("Establishing connection to peer " + id);
-            var connection = this.localPeer.connect(id);
+        connectToPeerReliable(id: string) {
+            console.log("Establishing reliable connection to peer " + id);
+            var connection = this.localPeer.connect(id, { reliable: true,  });
+            this.onConnectionToPeerCreate(connection);
+        }
+        connectToPeerUnreliable(id: string) {
+            console.log("Establishing unreliable connection to peer " + id);
+            var connection = this.localPeer.connect(id, { reliable: false });
             this.onConnectionToPeerCreate(connection);
         }
 
-    private onConnectionToPeerCreate = (connection: PeerJs.DataConnection) => {
+
+        private onConnectionToPeerCreate = (connection: PeerJs.DataConnection) => {
             connection.on('open', () => this.onConnectionEstablished(connection));
         }
 
-    private onConnectionEstablished = (connection: PeerJs.DataConnection) => {
-            console.log("Connection established to " + connection.peer);
+        private onConnectionEstablished = (connection: PeerJs.DataConnection) => {
+            console.log((connection.reliable ? "Reliable" : "Unreliable") + " connection established to " + connection.peer);
             connection.on('close', () => this.onConnectionClosed(connection));
 
-            var player = new NetworkPlayer(connection);
+            if (connection.reliable) {
+                //Create a new networkplayer, give it shape and add it to the shene.
+                var player = new NetworkPlayer(connection);
+                this.connections[connection.peer] = player;
 
-            this.connections[connection.peer] = player;
+                var mesh = new THREE.Mesh(new THREE.SphereGeometry(8, 16, 16));
+                player.mesh = mesh;
+                this.room.add(mesh);
 
-            var mesh = new THREE.Mesh(new THREE.SphereGeometry(8, 16, 16));
-            player.mesh = mesh;
-            this.room.add(mesh);
+                //After reliable connection has been made, create an unreliable one.
+                this.connectToPeerUnreliable(connection.peer);
+            }
+            else {
+                this.connections[connection.peer].addUnreliableConnection(connection);
+            }
+            
 
         }
 
-    private onConnectionClosed = (connection: PeerJs.DataConnection) => {
-            console.log("Connection closed to " + connection.peer);
+        private onConnectionClosed = (connection: PeerJs.DataConnection) => {
+            console.log((connection.reliable ? "Reliable" : "Unreliable") + " connection closed to " + connection.peer);
+
+
+
             if (this.connections[connection.peer]) {
-                this.room.scene.remove(this.connections[connection.peer].mesh);
-                delete this.connections[connection.peer];
+                if (connection.reliable) {
+                    this.room.scene.remove(this.connections[connection.peer].mesh);
+                    delete this.connections[connection.peer];
+                }
             }
         }
 

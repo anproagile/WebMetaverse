@@ -4,12 +4,33 @@
 module WM.Network {
     export class NetworkPlayer {
         connection: PeerJs.DataConnection;
-        reliableConnection: PeerJs.DataConnection;
+        unreliableConnection: PeerJs.DataConnection;
         mesh: THREE.Mesh;
 
         constructor(connection: PeerJs.DataConnection) {
             this.connection = connection;
             connection.on('data', (data) => this.onReceive(data, connection.peer));
+        }
+
+        addUnreliableConnection(connection: PeerJs.DataConnection) {
+            if (connection.reliable) {
+                console.error("You should add the unreliable connection here :c");
+            }
+            this.unreliableConnection = connection;
+            connection.on('data', (data) => this.onReceiveUnreliable(data, connection.peer));
+        }
+
+
+
+        onReceiveUnreliable(data: any, fromId: string) {
+            if (data.type == 'chat') {
+                console.log('Received chat "' + data.msg + '" from ' + fromId);
+            }
+            else if (data.type == 'pos') {
+                if (this.mesh) {
+                    this.mesh.position.set(data.x, data.y, data.z);
+                }
+            }
         }
 
         onReceive(data: any, fromId: string) {
@@ -25,6 +46,10 @@ module WM.Network {
 
         sendChatMessage(message: string) {
             this.connection.send({ type: 'chat', msg: message });
+        }
+
+        sendChatMessageUnreliable(message: string) {
+            this.unreliableConnection.send({ type: 'chat', msg: message });
         }
 
         sendPosition(pos: THREE.Vector3) {
