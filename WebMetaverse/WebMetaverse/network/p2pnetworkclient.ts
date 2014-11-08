@@ -33,14 +33,14 @@ module WM.Network {
         }
 
 
-        broadcastMessage(msg: string) {
+        broadcastChat(msg: string) {
             console.log('Broadcasting message "' + msg + '"');
             for (var id in this.connections) {
                 this.connections[id].sendChatMessage(msg);
             }
         }
 
-        broadcastMessageUnreliably(msg: string) {
+        broadcastChatUnreliable(msg: string) {
             console.log('Broadcasting message "' + msg + '"');
             for (var id in this.connections) {
                 this.connections[id].sendChatMessageUnreliable(msg);
@@ -48,7 +48,7 @@ module WM.Network {
         }
 
 
-        chat = (msg) => { this.broadcastMessage(msg) };
+        chat = (msg) => { this.broadcastChat(msg) };
 
         broadcastPosition(pos: THREE.Vector3, yRotation: number) {
 
@@ -111,6 +111,7 @@ module WM.Network {
             if (this.connections[connection.peer]) {
                 if (connection.reliable) {
                     this.room.scene.remove(this.connections[connection.peer].mesh);
+                    this.connections[connection.peer].destroy();
                     delete this.connections[connection.peer];
                 }
             }

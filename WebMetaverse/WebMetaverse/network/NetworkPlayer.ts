@@ -46,6 +46,15 @@ module WM.Network {
             }
         }
 
+        sendReliable(data: any) {
+            this.connection.send(data);
+        }
+        sendUnreliable(data: any) {
+            this.unreliableConnection.send(data);
+        }
+
+
+
         sendChatMessage(message: string) {
             this.connection.send({ type: 'chat', msg: message });
         }
@@ -62,5 +71,11 @@ module WM.Network {
                 this.connection.send({ type: 'p', x: pos.x, y: pos.y, z: pos.z, ry: rotationY });
             }
         }
+
+        public destroy() {
+            this.connection.close();
+            this.unreliableConnection.close();
+        }
+
     }
 }
