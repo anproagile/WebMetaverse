@@ -2,13 +2,14 @@
 /// <reference path="../typings/threejs/three.d.ts"/>
 
 /// <reference path="networkclient.ts"/>
-/// <reference path="networkplayer.ts"/>
+/// <reference path="networkconnection.ts"/>
 /// <reference path="../room.ts"/>
+/// <reference path="../event/event.ts"/>
 module WM.Network {
 
     export class P2PNetworkClient {
 
-        connections: { [id: string]: NetworkPlayer };
+        connections: { [id: string]: NetworkConnection };
         networkClient: NetworkClient;
 
         get room(): Room {
@@ -18,6 +19,9 @@ module WM.Network {
             return this.networkClient.localPeer;
         }
 
+        public onNewConnection: Events.I1ArgsEvent<NetworkConnection> = new Events.TypedEvent();
+        public onNewUnreliableConnection: Events.I1ArgsEvent<NetworkConnection> = new Events.TypedEvent();
+        public onConnectionClose: Events.I2ArgsEvent<NetworkConnection, boolean> = new Events.TypedEvent();
 
 
         constructor(networkClient: NetworkClient) {
@@ -32,31 +36,17 @@ module WM.Network {
             });
         }
 
-
-        broadcastChat(msg: string) {
-            console.log('Broadcasting message "' + msg + '"');
+        broadcastReliable(data: any) {
             for (var id in this.connections) {
-                this.connections[id].sendChatMessage(msg);
+                this.connections[id].sendReliable(data);
             }
         }
 
-        broadcastChatUnreliable(msg: string) {
-            console.log('Broadcasting message "' + msg + '"');
+        broadcoastUnreliable(data: any) {
             for (var id in this.connections) {
-                this.connections[id].sendChatMessageUnreliable(msg);
+                this.connections[id].sendUnreliable(data);
             }
         }
-
-
-        chat = (msg) => { this.broadcastChat(msg) };
-
-        broadcastPosition(pos: THREE.Vector3, yRotation: number) {
-
-            for (var id in this.connections) {
-                this.connections[id].sendPosition(pos, yRotation);
-            }
-        }
-
 
         connectToPeers = (peers) => {
 
@@ -87,19 +77,18 @@ module WM.Network {
             connection.on('close', () => this.onConnectionClosed(connection));
 
             if (connection.reliable) {
-                //Create a new networkplayer, give it shape and add it to the shene.
-                var player = new NetworkPlayer(connection);
+                //Create a new networkplayer.
+                var player = new NetworkConnection(connection);
                 this.connections[connection.peer] = player;
 
-                var mesh = new THREE.Mesh(new THREE.BoxGeometry(8, 16, 8));
-                player.mesh = mesh;
-                this.room.add(mesh);
+                this.onNewConnection.trigger(player);
 
                 //After reliable connection has been made, create an unreliable one.
                 this.connectToPeerUnreliable(connection.peer);
             }
             else {
                 this.connections[connection.peer].addUnreliableConnection(connection);
+                this.onNewUnreliableConnection.trigger(player);
             }
             
 
@@ -107,13 +96,17 @@ module WM.Network {
 
         private onConnectionClosed = (connection: PeerJs.DataConnection) => {
             console.log((connection.reliable ? "Reliable" : "Unreliable") + " connection closed to " + connection.peer);
+            
 
             if (this.connections[connection.peer]) {
+
+                this.onConnectionClose.trigger(this.connections[connection.peer], connection.reliable);
+
                 if (connection.reliable) {
-                    this.room.scene.remove(this.connections[connection.peer].mesh);
                     this.connections[connection.peer].destroy();
                     delete this.connections[connection.peer];
                 }
+
             }
         }
 

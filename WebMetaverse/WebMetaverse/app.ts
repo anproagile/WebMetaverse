@@ -164,8 +164,8 @@ module WM {
             this.controls.update(Date.now() - this.time);
             this.checkPortalIntersection();
 
-            if (this.i % 1 == 0)
-                this.networkClient.p2p.broadcastPosition(this.cameraObject.position, this.cameraObject.rotation.y);
+           // if (this.i % 1 == 0)
+               // this.networkClient.p2p.broadcastPosition(this.cameraObject.position, this.cameraObject.rotation.y);
         }
 
 
