@@ -6,7 +6,6 @@ module WM.Network {
     export class NetworkConnection {
         connection: PeerJs.DataConnection;
         unreliableConnection: PeerJs.DataConnection;
-        mesh: THREE.Mesh;
 
         public onReceive: Events.I2ArgsEvent<any, boolean> = new Events.TypedEvent();
         public onReceiveReliable: Events.I1ArgsEvent<any> = new Events.TypedEvent();
