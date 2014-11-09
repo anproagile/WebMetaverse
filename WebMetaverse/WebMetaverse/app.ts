@@ -35,7 +35,7 @@ module WM {
             this.rooms = [];
             this.createDebugWorld();
             this.createControls();
-            window.addEventListener('resize', () => this.onWindowResize, false);
+            window.addEventListener('resize', this.onWindowResize);
 
             this.createNetworkClient();
             this.networkClient.room = this.currentRoom;
@@ -214,7 +214,7 @@ module WM {
             this.prevPos = new THREE.Vector3().setFromMatrixPosition(this.camera.matrixWorld);
         }
 
-        onWindowResize() {
+        onWindowResize = (e) => {
             this.camera.aspect = window.innerWidth / window.innerHeight;
             this.camera.updateProjectionMatrix();
             this.renderer.setSize(window.innerWidth, window.innerHeight);
