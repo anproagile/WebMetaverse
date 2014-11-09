@@ -48,7 +48,8 @@ module WM.Network {
         public destroy() {
             this.onDestroy.trigger({});
             this.connection.close();
-            this.unreliableConnection.close();
+            if (this.unreliableConnection)
+                this.unreliableConnection.close();
         }
 
     }

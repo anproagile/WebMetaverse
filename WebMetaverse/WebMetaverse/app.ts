@@ -163,7 +163,7 @@ module WM {
             this.checkPortalIntersection();
 
             this.networkClient.p2p.update();
-            if (this.i % 1 == 0) {
+            if (this.i % 2 == 0) {
                 this.networkClient.p2p.broadcastUnreliable(
                     {
                         t: 'p',

@@ -4,12 +4,16 @@
         mesh: THREE.Mesh;
         buffer: StateBuffer;
 
-        static interpolation: number = 150; //How long in the past other people are shown.
+        static interpolation: number = 200; //How long in the past other people are shown.
+        //Should really, at minimum be position-send-interval + ping to user.
+        //Higher is safer, although people are looking further into the past.
+        //Too high with a buffer that is too small means there may be no packet to that is older than
+        //the time it is trying to predict. Which you really don't want.
 
 
         constructor(mesh: THREE.Mesh) {
             this.mesh = mesh;
-            this.buffer = new StateBuffer(16);
+            this.buffer = new StateBuffer(32);
         }
 
 
@@ -21,14 +25,38 @@
                 return;
             }
 
-            //if (interpTime < newest.time) { //We can probably interpolate!
+            if (interpTime < newest.time) { //We can probably interpolate!
+                //This interpolation should extrapolate backwards, but it doesn't.
+                //I think that for this one second right after we can use a newer position instead of predicting
+                //where the networked mesh WAS (and not where it is going to be like in the else case).
+                var stateAfterIndex = this.buffer.getShortestAfterTimestampIndex(interpTime);
+                var stateBefore = this.buffer.getBeforeIndex(stateAfterIndex);
 
-            //}
-            //else { //extrapolate!
-                 var extrapolationTime = interpTime - newest.time;
-                 this.mesh.position.copy(newest.pos).add( newest.vel.clone().multiplyScalar(extrapolationTime));
-                 this.mesh.rotation.copy(newest.rot);
-            //}
+                var stateAfter = this.buffer.get(stateAfterIndex);
+                if (!stateBefore) {
+                    stateBefore = stateAfter;
+                }
+
+                var timeDiff = stateAfter.time - stateBefore.time;
+                var alpha = 0;
+                if (timeDiff > 0.0005) { // I don't want to divide by zero.
+                    alpha = (interpTime - stateBefore.time) / timeDiff;
+                }
+
+                //console.log("Interpolating between " + stateBefore.time + " | " + stateAfter.time);
+                //console.log("i");
+
+                this.mesh.position.copy (stateBefore.pos.clone().lerp(stateAfter.pos, alpha));
+                this.mesh.updateMatrix();
+            }
+            else { //extrapolate!
+                //console.log("e");
+                var extrapolationTime = interpTime - newest.time;
+                if (extrapolationTime < 420) { //Better not extrapolate too far into the future.
+                    this.mesh.position.copy(newest.pos).add(newest.vel.clone().multiplyScalar(extrapolationTime)); //pos = newestPos + newestVel * timeElapsed
+                    this.mesh.rotation.copy(newest.rot);
+                }
+            }
 
         }
 
@@ -68,7 +96,7 @@
     }
 
     export interface PositionPacket {
-        t: any;
+        t: any; //type of packet, in this case should always be "p"
         ts: number; //timestamp
         x: number;
         y: number;
@@ -84,13 +112,13 @@
         rot: THREE.Euler;
     }
 
-    export class StateBuffer { //Circular buffer
+    export class StateBuffer { //Circular buffer, which happens to be ordered
         buffer: State[];
         pointer: number; //Points to the newest entry
 
-        //         [ 5, 6, 7, 1, 2, 3]
+        //         [ 5, 6, 7, 1, 2, 3] (timestamps)
         //                 |     
-        //               pointer      
+        //               pointer = 2      
 
         constructor(length: number) {
             this.buffer = [];
@@ -124,9 +152,9 @@
 
         /**
         * Returns the state before timestamp, null if not present.
+        * Optional: index parameter, start searching from this index.
         */
-        getBeforeTimestamp(timestamp: number): State {
-            var index = this.pointer;
+        getBeforeTimestamp(timestamp: number, index=this.pointer): State {
 
             do {
                 if (this.buffer[index] && this.buffer[index].time < timestamp) {
@@ -138,6 +166,26 @@
 
             return null;
         }
+
+        /**
+        * Returns the index of state that is shortest after timestamp, latest if not present.
+        * Note that latest may not actually be after given timestamp!
+        * Throws error when called with timestamp greater than latest timestamp in  buffer.
+        */
+        getShortestAfterTimestampIndex(timestamp: number): number {
+            var index = this.pointer;
+
+            do {
+                if (!this.getBeforeIndex(index) || this.getBeforeIndex(index).time < timestamp) {
+                    return index;
+                }
+                index = (this.buffer.length + index - 1) % this.buffer.length;
+            }
+            while (index != this.pointer);
+            throw "This shouldn't have happened!"; 
+            return -1;
+        }
+
 
 
         getBeforeState(state: State): State {

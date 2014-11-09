@@ -114,7 +114,15 @@ module WM.Network {
                 this.connectToPeerUnreliable(connection.peer);
             }
             else {
+                //Hack for dual unreliable connection in Chrome..
+                if (this.connections[connection.peer].unreliableConnection && this.connections[connection.peer].unreliableConnection.open) {
+                    console.warn("Discarding second, faulty unreliable connection");
+                    return;
+                }
+
+
                 this.connections[connection.peer].addUnreliableConnection(connection);
+                
                 this.onNewUnreliableConnection.trigger(this.connections[connection.peer]);
             }
             
