@@ -28,6 +28,15 @@ module WM.Network {
                 this.avatars.push(ava);
                 con.onReceiveUnreliable.add((msg) => ava.receivePosition(msg));
                 this.room.add(ava.mesh);
+
+                con.onDestroy.add((a) => {
+                    var index = this.avatars.indexOf(ava);
+                    if (index > -1) {
+                        this.avatars.splice(index, 1);
+                    }
+                    this.room.scene.remove(ava.mesh);
+                });
+
             });
         }
 
@@ -78,7 +87,7 @@ module WM.Network {
         connectToPeers = (peers) => {
 
             for (var i = 0; i < peers.length; i++) {
-                console.log("Connecting reliably");
+                console.log("Connecting reliably to all peers");
                 this.connectToPeerReliable(peers[i]);
             }
         }
@@ -116,13 +125,11 @@ module WM.Network {
             else {
                 //Hack for dual unreliable connection in Chrome..
                 if (this.connections[connection.peer].unreliableConnection && this.connections[connection.peer].unreliableConnection.open) {
-                    console.warn("Discarding second, faulty unreliable connection");
+                    console.warn("Discarding second, faulty unreliable connection, thank you Obama");
                     return;
                 }
 
-
                 this.connections[connection.peer].addUnreliableConnection(connection);
-                
                 this.onNewUnreliableConnection.trigger(this.connections[connection.peer]);
             }
             

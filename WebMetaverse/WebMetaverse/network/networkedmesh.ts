@@ -46,13 +46,13 @@
                 //console.log("Interpolating between " + stateBefore.time + " | " + stateAfter.time);
                 //console.log("i");
 
-                this.mesh.position.copy (stateBefore.pos.clone().lerp(stateAfter.pos, alpha));
+                this.mesh.position.copy(stateBefore.pos).lerp(stateAfter.pos, alpha);
                 this.mesh.updateMatrix();
             }
             else { //extrapolate!
                 //console.log("e");
                 var extrapolationTime = interpTime - newest.time;
-                if (extrapolationTime < 420) { //Better not extrapolate too far into the future.
+                if (extrapolationTime < 420) { //Better not extrapolate too far into the future, prevents endlessly floating objects.
                     this.mesh.position.copy(newest.pos).add(newest.vel.clone().multiplyScalar(extrapolationTime)); //pos = newestPos + newestVel * timeElapsed
                     this.mesh.rotation.copy(newest.rot);
                 }
@@ -78,13 +78,10 @@
 
             var before = this.buffer.getBeforeState(state);
             if (before) {
-                
                 var timeDifference = state.time - before.time;
                 var positionDifference = new THREE.Vector3().subVectors(state.pos, before.pos);
                 state.vel = positionDifference.divideScalar(timeDifference);
             } 
-            //console.log("determined velocity y" + state.vel.y);
-
 
             this.buffer.push(state);
         }
