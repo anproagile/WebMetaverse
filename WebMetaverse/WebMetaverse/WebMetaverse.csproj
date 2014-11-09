@@ -27,8 +27,9 @@
     <TypeScriptCompile Include="network\networkconnection.ts" />
     <TypeScriptCompile Include="network\p2pnetworkclient.ts" />
     <TypeScriptCompile Include="pointerlock.ts" />
-    <TypeScriptCompile Include="portal.ts" />
-    <TypeScriptCompile Include="room.ts" />
+    <TypeScriptCompile Include="network\networkedmesh.ts" />
+    <TypeScriptCompile Include="verse\portal.ts" />
+    <TypeScriptCompile Include="verse\room.ts" />
     <TypeScriptCompile Include="network\networkclient.ts" />
     <TypeScriptCompile Include="typings\peerjs\Peer.d.ts" />
     <TypeScriptCompile Include="typings\threejs\three.d.ts" />

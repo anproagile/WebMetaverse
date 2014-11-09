@@ -41,7 +41,9 @@ module WM.Network {
             this.connection.send(data);
         }
         sendUnreliable(data: any) {
-            this.unreliableConnection.send(data);
+            if (this.unreliableConnection) {
+                this.unreliableConnection.send(data);
+            }
         }
 
         public destroy() {

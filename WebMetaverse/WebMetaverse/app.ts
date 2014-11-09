@@ -1,7 +1,7 @@
 ﻿/// <reference path="typings/threejs/three.d.ts"/>
 /// <reference path="network/networkclient.ts"/>
-/// <reference path="portal.ts"/>
-/// <reference path="room.ts"/>
+/// <reference path="verse/portal.ts"/>
+/// <reference path="verse/room.ts"/>
 /// <reference path="pointerlock.ts"/>
 
 var webmetaverse = {};
@@ -48,8 +48,6 @@ module WM {
             renderer.setSize(window.innerWidth, window.innerHeight);
             renderer.autoClear = false;
             this.renderer = renderer;
-
-
         }
 
         private createControls() {
@@ -164,9 +162,20 @@ module WM {
             this.controls.update(Date.now() - this.time);
             this.checkPortalIntersection();
 
-           // if (this.i % 1 == 0)
-               // this.networkClient.p2p.broadcastPosition(this.cameraObject.position, this.cameraObject.rotation.y);
+            this.networkClient.p2p.update();
+            if (this.i % 1 == 0) {
+                this.networkClient.p2p.broadcastUnreliable(
+                    {
+                        t: 'p',
+                        ts: Date.now(),
+                        x: this.cameraObject.position.x,
+                        y: this.cameraObject.position.y,
+                        z: this.cameraObject.position.z,
+                        ry: this.cameraObject.rotation.y
+                    });
+            }
         }
+
 
 
         render() {

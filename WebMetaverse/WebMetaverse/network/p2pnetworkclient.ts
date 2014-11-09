@@ -3,7 +3,7 @@
 
 /// <reference path="networkclient.ts"/>
 /// <reference path="networkconnection.ts"/>
-/// <reference path="../room.ts"/>
+/// <reference path="networkedmesh.ts"/>
 /// <reference path="../event/event.ts"/>
 module WM.Network {
 
@@ -11,6 +11,26 @@ module WM.Network {
 
         connections: { [id: string]: NetworkConnection };
         networkClient: NetworkClient;
+
+        avatars: NetworkedMesh[];
+
+
+        update() {
+            for (var i = 0; i < this.avatars.length; i++) {
+                this.avatars[i].update();
+            }
+        }
+
+        temp() {
+            this.avatars = [];
+            this.onNewUnreliableConnection.add((con) => {
+                var ava = new NetworkedMesh(new THREE.Mesh(new THREE.BoxGeometry(8, 16, 8)));
+                this.avatars.push(ava);
+                con.onReceiveUnreliable.add((msg) => ava.receivePosition(msg));
+                this.room.add(ava.mesh);
+            });
+        }
+
 
         get room(): Room {
             return this.networkClient.room;
@@ -24,9 +44,12 @@ module WM.Network {
         public onConnectionClose: Events.I2ArgsEvent<NetworkConnection, boolean> = new Events.TypedEvent();
 
 
+
+
         constructor(networkClient: NetworkClient) {
             this.networkClient = networkClient;
             this.connections = {};
+            this.temp();
         }
 
         init() {
@@ -34,6 +57,10 @@ module WM.Network {
                 console.log("Incoming " + (connection.reliable?"reliable":"unreliable")+ " connection from " + connection.peer);
                 this.onConnectionToPeerCreate(connection);
             });
+
+            
+
+
         }
 
         broadcastReliable(data: any) {
@@ -42,7 +69,7 @@ module WM.Network {
             }
         }
 
-        broadcoastUnreliable(data: any) {
+        broadcastUnreliable(data: any) {
             for (var id in this.connections) {
                 this.connections[id].sendUnreliable(data);
             }
@@ -88,7 +115,7 @@ module WM.Network {
             }
             else {
                 this.connections[connection.peer].addUnreliableConnection(connection);
-                this.onNewUnreliableConnection.trigger(player);
+                this.onNewUnreliableConnection.trigger(this.connections[connection.peer]);
             }
             
 

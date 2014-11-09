@@ -2,7 +2,7 @@
 /// <reference path="../typings/threejs/three.d.ts"/>
 
 /// <reference path="p2pnetworkclient.ts"/>
-/// <reference path="../room.ts"/>
+/// <reference path="../verse/room.ts"/>
 module WM.Network {
 
 

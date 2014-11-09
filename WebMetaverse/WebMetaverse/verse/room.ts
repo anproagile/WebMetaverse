@@ -1,10 +1,11 @@
-﻿/// <reference path="typings/threejs/three.d.ts"/>
+﻿/// <reference path="../typings/threejs/three.d.ts"/>
 /// <reference path="portal.ts"/>
 
 module WM {
     export class Room {
 
         portals: Portal[];
+
         scene: THREE.Scene;
 
         constructor() {

@@ -1,7 +1,7 @@
 ﻿module WM {
 
     export class Portal extends THREE.Mesh {
-
+        
         stencilScene: THREE.Scene;
         toScene: THREE.Scene;
         toRoom: Room;
