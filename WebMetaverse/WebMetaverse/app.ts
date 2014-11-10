@@ -6,7 +6,7 @@
 
 var webmetaverse = {};
 var nc;
-var fakeLag;
+var fakeLag = 0;
 
 
 module WM {
@@ -167,7 +167,7 @@ module WM {
             if (this.i % 5 == 0) {
 
                 var timestamp = Date.now();
-                timestamp = window.fakeLag ? timestamp + window.fakeLag : timestamp;
+                timestamp = fakeLag ? timestamp + fakeLag : timestamp;
 
 
                 this.networkClient.p2p.broadcastUnreliable(

@@ -1,8 +1,4 @@
-﻿/// <reference path="../typings/peerjs/Peer.d.ts"/>
-/// <reference path="../typings/threejs/three.d.ts"/>
-
-/// <reference path="../event/event.ts"/>
-module WM.Network {
+﻿module WM.Network {
 
     export class NetworkConnection {
         connection: PeerJs.DataConnection;

@@ -27,7 +27,6 @@
     <TypeScriptCompile Include="network\networkconnection.ts" />
     <TypeScriptCompile Include="network\p2pnetworkclient.ts" />
     <TypeScriptCompile Include="network\statebuffer.ts" />
-    <TypeScriptCompile Include="util\time.ts" />
     <TypeScriptCompile Include="pointerlock.ts" />
     <TypeScriptCompile Include="network\networkedmesh.ts" />
     <TypeScriptCompile Include="typings\minilog\Minilog.d.ts" />
@@ -63,7 +62,9 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="util\" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">12.0</VisualStudioVersion>
   </PropertyGroup>
