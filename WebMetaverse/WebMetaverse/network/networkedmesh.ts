@@ -25,7 +25,8 @@
             var newest = this.buffer.getNewest();
 
             //If we have received a packet, ever, and this isn't likely package loss causing the big discrepancy
-            if (newest && this.lastPacketReceivedLocalTime > Date.now() - NetworkedMesh.expectedPacketInterval * 3) { 
+            if (newest && Date.now() - this.lastPacketReceivedLocalTime < NetworkedMesh.expectedPacketInterval * 3) { 
+                mlog.warn("Attempting to estimate a good interpolation backtime");
                 this.interpolationBacktime = 2 * NetworkedMesh.expectedPacketInterval + newest.time; //With 0 ms ping, approx 100ms backtime.
                 //With 100 ms ping, 200 ms backtime. Simple! 
             }
