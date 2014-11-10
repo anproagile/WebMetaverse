@@ -48,9 +48,8 @@
 
                 this.mesh.position.copy(stateBefore.pos).lerp(stateAfter.pos, alpha);
 
-                //Voodoo from http://stackoverflow.com/questions/2708476/rotation-interpolation
-                var yRot = (((((stateAfter.ry - stateBefore.ry) % (Math.PI * 2)) + (Math.PI * 3)) % (Math.PI * 2)) - (Math.PI)) * alpha;
-                this.mesh.rotation.set(0, yRot, 0);
+                
+                this.mesh.quaternion.copy(stateBefore.rot).slerp(stateAfter.rot, alpha);
                 this.mesh.updateMatrix();
             }
             else { //extrapolate!
@@ -59,11 +58,11 @@
 
                 if (extrapolationTime < 420) { //Better not extrapolate too far into the future, prevents endlessly floating objects.
                     this.mesh.position.copy(newest.pos).add(newest.vel.clone().multiplyScalar(extrapolationTime)); //pos = newestPos + newestVel * timeElapsed
-                    this.mesh.rotation.set(0, newest.ry, 0);
+                    this.mesh.setRotationFromQuaternion(newest.rot);
                 }
                 else { //Put player at last known position
                     this.mesh.position.set(newest.pos.x, newest.pos.y, newest.pos.z);
-                    this.mesh.rotation.set(0, newest.ry, 0);
+                    this.mesh.setRotationFromQuaternion(newest.rot);
                 }
             }
 
@@ -81,7 +80,7 @@
             var state = {
                 time: data.ts,
                 pos: new THREE.Vector3(data.x, data.y, data.z),
-                ry: data.ry,
+                rot: new THREE.Quaternion().setFromEuler(new THREE.Euler(0, data.ry, 0)),
                 vel: new THREE.Vector3() //To be set if velocity is known
             }
 
@@ -115,7 +114,7 @@
         time: number; //timestamp
         pos: THREE.Vector3;
         vel: THREE.Vector3;
-        ry: number; //y rotation
+        rot: THREE.Quaternion;
     }
 
     export class StateBuffer { //Circular buffer, which happens to be ordered
