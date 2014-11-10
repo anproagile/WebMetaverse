@@ -123,7 +123,7 @@ module WM.Network {
                 this.connectToPeerUnreliable(connection.peer);
             }
             else {
-                //Hack for dual unreliable connection in Chrome..
+                //Hack for dual unreliable connection in Chrome (scratch that, also in FF, PeerJS faulty?)
                 if (this.connections[connection.peer].unreliableConnection && this.connections[connection.peer].unreliableConnection.open) {
                     mlog.warn("Discarding second, faulty unreliable connection, thank you Obama");
                     return;
