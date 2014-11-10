@@ -1,10 +1,14 @@
 ﻿/// <reference path="../typings/peerjs/Peer.d.ts"/>
 /// <reference path="../typings/threejs/three.d.ts"/>
+/// <reference path="../typings/minilog/Minilog.d.ts"/>
 
 /// <reference path="p2pnetworkclient.ts"/>
 /// <reference path="../verse/room.ts"/>
 module WM.Network {
 
+    export var mlog = Minilog('WM.Network');
+    Minilog.suggest.deny(/WM.Network.*/, 'warn');
+    Minilog.enable();
 
     export interface WMServer {
         host: string;
@@ -39,7 +43,7 @@ module WM.Network {
         connect = (peers) => {
 
             var id = this.generateId();
-            console.log("Connecting with id " + id + ", available peers: " + peers);
+            mlog.log("Connecting with id " + id + ", available peers: " + peers);
 
             var ice = [
                 { 'url': 'stun4:stun.l.google.com:19302' },
@@ -69,11 +73,11 @@ module WM.Network {
         }
 
         private onConnectedToServer = (id) => {
-                console.log("Connected to central server with ID: " + id);
+                mlog.log("Connected to central server with ID: " + id);
             }
 
         private onDisconnectedFromServer = () => {
-                console.log("Disconnected from central server");
+                mlog.log("Disconnected from central server");
         }
 
         generateId(): string {
@@ -96,7 +100,6 @@ module WM.Network.Util {
             || document.documentElement;
 
         window[ud] = function (data) {
-            console.log("awroo!");
             head.removeChild(script);
             success && success(data);
         };

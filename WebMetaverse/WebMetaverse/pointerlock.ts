@@ -47,7 +47,6 @@ module WM {
                 var element = document.body;
 
                 var pointerlockchange = event => {
-                    console.log("Pointer lock change! " + event);
                     if (document.pointerLockElement === element || document.mozPointerLockElement === element || document.webkitPointerLockElement === element) {
 
                         this.controls.enabled = true;

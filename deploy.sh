@@ -8,6 +8,7 @@ bash build.sh
  git config --global user.email "bot@webmetaverse.com"
 # cp ../CNAME ./CNAME
  cp ../WebMetaverse/WebMetaverse/peer.js ./peer.js
+ cp ../WebMetaverse/WebMetaverse/minilog.js ./minilog.js
  cp ../WebMetaverse/WebMetaverse/index.html ./index.html
  cp ../WebMetaverse/WebMetaverse/app.css ./app.css
  git add .

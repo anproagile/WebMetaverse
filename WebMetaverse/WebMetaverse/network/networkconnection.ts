@@ -3,6 +3,7 @@
 
 /// <reference path="../event/event.ts"/>
 module WM.Network {
+
     export class NetworkConnection {
         connection: PeerJs.DataConnection;
         unreliableConnection: PeerJs.DataConnection;
@@ -19,7 +20,7 @@ module WM.Network {
 
         addUnreliableConnection(connection: PeerJs.DataConnection) {
             if (connection.reliable) {
-                console.error("You should add the unreliable connection here :c");
+                mlog.error("You should add the unreliable connection here :c");
             }
             this.unreliableConnection = connection;
             connection.on('data', (data) => this._onReceiveUnreliable(data));

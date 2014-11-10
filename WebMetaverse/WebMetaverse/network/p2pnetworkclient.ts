@@ -63,7 +63,7 @@ module WM.Network {
 
         init() {
             this.localPeer.on('connection', (connection) => {
-                console.log("Incoming " + (connection.reliable?"reliable":"unreliable")+ " connection from " + connection.peer);
+                mlog.log("Incoming " + (connection.reliable?"reliable":"unreliable")+ " connection from " + connection.peer);
                 this.onConnectionToPeerCreate(connection);
             });
 
@@ -87,18 +87,18 @@ module WM.Network {
         connectToPeers = (peers) => {
 
             for (var i = 0; i < peers.length; i++) {
-                console.log("Connecting reliably to all peers");
+                mlog.log("Connecting reliably to all peers");
                 this.connectToPeerReliable(peers[i]);
             }
         }
 
         connectToPeerReliable(id: string) {
-            console.log("Establishing reliable connection to peer " + id);
+            mlog.log("Establishing reliable connection to peer " + id);
             var connection = this.localPeer.connect(id, { reliable: true,  });
             this.onConnectionToPeerCreate(connection);
         }
         connectToPeerUnreliable(id: string) {
-            console.log("Establishing unreliable connection to peer " + id);
+            mlog.log("Establishing unreliable connection to peer " + id);
             var connection = this.localPeer.connect(id, { reliable: false });
             this.onConnectionToPeerCreate(connection);
         }
@@ -109,7 +109,7 @@ module WM.Network {
         }
 
         private onConnectionEstablished = (connection: PeerJs.DataConnection) => {
-            console.log((connection.reliable ? "Reliable" : "Unreliable") + " connection established to " + connection.peer);
+            mlog.log((connection.reliable ? "Reliable" : "Unreliable") + " connection established to " + connection.peer);
             connection.on('close', () => this.onConnectionClosed(connection));
 
             if (connection.reliable) {
@@ -125,7 +125,7 @@ module WM.Network {
             else {
                 //Hack for dual unreliable connection in Chrome..
                 if (this.connections[connection.peer].unreliableConnection && this.connections[connection.peer].unreliableConnection.open) {
-                    console.warn("Discarding second, faulty unreliable connection, thank you Obama");
+                    mlog.warn("Discarding second, faulty unreliable connection, thank you Obama");
                     return;
                 }
 
@@ -137,7 +137,7 @@ module WM.Network {
         }
 
         private onConnectionClosed = (connection: PeerJs.DataConnection) => {
-            console.log((connection.reliable ? "Reliable" : "Unreliable") + " connection closed to " + connection.peer);
+            mlog.log((connection.reliable ? "Reliable" : "Unreliable") + " connection closed to " + connection.peer);
             
 
             if (this.connections[connection.peer]) {
