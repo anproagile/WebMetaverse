@@ -4,7 +4,8 @@
         mesh: THREE.Mesh;
         buffer: StateBuffer;
 
-        interpolationBacktime: number = 200; //How long in the past other people are shown.
+        interpolationBacktime: number = -1337; //Some random value, which forces clients to resync even though clocks are very close.
+        //How long in the past other people are shown.
         //Should really, at minimum be position-send-interval + ping to user.
         //Higher is safer, although people are looking further into the past.
         //Too high with a buffer that is too small means there may be no packet to that is older than
@@ -14,7 +15,7 @@
 
         constructor(mesh: THREE.Mesh) {
             this.mesh = mesh;
-            this.buffer = new StateBuffer(16);
+            this.buffer = new StateBuffer(6);
         }
 
         lastPacketReceivedLocalTime: number = 0;
@@ -26,9 +27,14 @@
 
             //If we have received a packet, ever, and this isn't likely package loss causing the big discrepancy
             if (newest && Date.now() - this.lastPacketReceivedLocalTime < NetworkedMesh.expectedPacketInterval * 3) { 
+
+                var oldInterpBacktime = this.interpolationBacktime;
                 mlog.warn("Attempting to estimate a good interpolation backtime");
-                this.interpolationBacktime = 2 * NetworkedMesh.expectedPacketInterval + newest.time; //With 0 ms ping, approx 100ms backtime.
+
+                this.interpolationBacktime = Date.now() - newest.time + 2 * NetworkedMesh.expectedPacketInterval; //With 0 ms ping, approx 100ms backtime.
                 //With 100 ms ping, 200 ms backtime. Simple! 
+
+                mlog.warn("Now set to " + this.interpolationBacktime + " from " + oldInterpBacktime);
             }
         }
 
@@ -75,6 +81,12 @@
                 if (extrapolationTime < 420) { //Better not extrapolate too far into the future, prevents endlessly floating objects.
                     this.mesh.position.copy(newest.pos).add(newest.vel.clone().multiplyScalar(extrapolationTime)); //pos = newestPos + newestVel * timeElapsed
                     this.mesh.setRotationFromQuaternion(newest.rot);
+
+                    //see if we can do better anyhow
+                    if (extrapolationTime > 210) {
+                        this.optimizeInterpolationBacktime();
+                    }
+
                 }
                 else { //Put player at last known position
                     this.mesh.position.set(newest.pos.x, newest.pos.y, newest.pos.z);
