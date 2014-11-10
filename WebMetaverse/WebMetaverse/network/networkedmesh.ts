@@ -62,7 +62,7 @@
                     this.mesh.rotation.set(0, newest.ry, 0);
                 }
                 else { //Put player at last known position
-                    this.mesh.position.copy(newest.pos);
+                    this.mesh.position.set(newest.pos.x, newest.pos.y, newest.pos.z);
                     this.mesh.rotation.set(0, newest.ry, 0);
                 }
             }
