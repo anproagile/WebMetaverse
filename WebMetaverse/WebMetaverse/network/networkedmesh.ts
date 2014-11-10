@@ -49,7 +49,7 @@
                 this.mesh.position.copy(stateBefore.pos).lerp(stateAfter.pos, alpha);
 
                 //Voodoo from http://stackoverflow.com/questions/2708476/rotation-interpolation
-                var yRot = (((((stateAfter.ry - stateBefore.ry) % (Math.PI * 2)) + (Math.PI * 1.5)) % (Math.PI * 2)) - (Math.PI)) * alpha;
+                var yRot = (((((stateAfter.ry - stateBefore.ry) % (Math.PI * 2)) + (Math.PI * 3)) % (Math.PI * 2)) - (Math.PI)) * alpha;
                 this.mesh.rotation.set(0, yRot, 0);
                 this.mesh.updateMatrix();
             }
