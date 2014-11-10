@@ -172,15 +172,22 @@
         getShortestAfterTimestampIndex(timestamp: number): number {
             var index = this.pointer;
 
+            var prev = index;
+
             do {
                 if (!this.getBeforeIndex(index) || this.getBeforeIndex(index).time < timestamp) {
                     return index;
                 }
+                prev = index;
                 index = (this.buffer.length + index - 1) % this.buffer.length;
             }
             while (index != this.pointer);
-            throw "This shouldn't have happened!"; 
-            return -1;
+
+            console.log("Way out of sync");
+            return prev;
+
+           // throw "This shouldn't have happened!"; 
+           // return -1;
         }
 
 
