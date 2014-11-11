@@ -136,9 +136,9 @@ module WM {
             portalOut.toPortal = portalIn;
             portalIn.toPortal = portalOut;
 
-            portalIn.rotateY(1.25*Math.PI);
-            portalOut.position.x = -10;
-            portalIn.position.x = 10;
+            portalIn.rotateY(Math.PI);
+            portalOut.position.x = -20;
+            portalIn.position.x = 20;
 
             this.rooms[0].addPortal(portalOut);
             this.rooms[1].addPortal(portalIn);
@@ -164,6 +164,7 @@ module WM {
 
             var dt: number = performance.now() - this.time; 
             dt = Math.min(50, dt); //Minimum controls update FPS, 20
+            
             this.controls.update(dt);
             
             this.checkPortalIntersection();
@@ -213,7 +214,7 @@ module WM {
 
                     if (this.currentRoom.portals[i].checkIntersection(this.prevPos, currentPos)) {
                         var room = this.currentRoom.portals[i].toRoom;
-                        var where = this.currentRoom.portals[i].getPortalViewMatrix(this.cameraObject.matrixWorld);
+                        var where = this.currentRoom.portals[i].getPortalViewMatrix3(this.cameraObject.matrixWorld);
                         
                         this.moveToRoom(room, where);
                         break;

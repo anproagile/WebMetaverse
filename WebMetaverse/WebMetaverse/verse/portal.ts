@@ -11,6 +11,7 @@
 
         constructor(toRoom: Room) {
             var geom = new THREE.PlaneGeometry(20, 60);
+            //var geom = new THREE.CylinderGeometry(20, 20, 50);
             var mat = new THREE.MeshBasicMaterial();
             //mat.side = THREE.DoubleSide;
             super(geom, mat);
@@ -25,7 +26,7 @@
             this.stencilScene.add(this);
         }
 
-        public draw(gl: WebGLRenderingContext, renderer: THREE.WebGLRenderer, camera: any) {
+        public draw(gl: WebGLRenderingContext, renderer: THREE.WebGLRenderer, camera: THREE.PerspectiveCamera) {
 
             var originalCameraMatrixWorld = camera.matrixWorld.clone();
 
@@ -48,9 +49,7 @@
 
             gl.stencilFunc(gl.LESS, 0, 0xff);
 
-            camera.matrixWorld = this.getPortalViewMatrix(camera.matrixWorld);
-            //camera.matrixWorld = this.getPortalViewMatrix1(camera.matrixWorld);
-            //camera.matrixWorld = this.getPortalViewMatrix2(camera.matrixWorld); 
+            camera.matrixWorld = this.getPortalViewMatrix3(camera.matrixWorld);
 
             renderer.render(this.toScene, camera);
 
@@ -60,6 +59,7 @@
 
             //Draw stencil scene
             camera.matrixWorld = originalCameraMatrixWorld;
+            camera.updateMatrixWorld(true);
             // clear the depth buffer and draw the fromPortal mesh into it
             renderer.clear(false, true, false);
             gl.colorMask(false, false, false, false);
@@ -81,7 +81,7 @@
             return rot.multiply(new_mat);
         }
 
-        //Attempt 2
+        //Attempt 3
         //Based on http://en.wikibooks.org/wiki/OpenGL_Programming/Mini-Portal , see section "Building a new camera", first code.
         //Commented out Y rotation, as without it is already very wrong.
         getPortalViewMatrix2(originalView: THREE.Matrix4) {
@@ -92,6 +92,14 @@
 
             return portalCam;
         }
+
+        getPortalViewMatrix3(originalView: THREE.Matrix4) {
+            var t = new THREE.Matrix4().makeTranslation(this.position.x - this.toPortal.position.x, this.position.y - this.toPortal.position.y, this.position.z - this.toPortal.position.z);
+            t.getInverse(t);
+            return t.multiply(originalView);
+
+        }
+
 
         //Wrong, but the most right attempt, syncs up the two different scenes, 
         //but doesn't take into account goal portal position, rotation
