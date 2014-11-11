@@ -14,33 +14,6 @@ module WM.Network {
 
         avatars: NetworkedMesh[];
 
-
-        update() {
-            for (var i = 0; i < this.avatars.length; i++) {
-                this.avatars[i].update();
-            }
-        }
-
-        temp() {
-            this.avatars = [];
-            this.onNewUnreliableConnection.add((con) => {
-                var ava = new NetworkedMesh(new THREE.Mesh(new THREE.BoxGeometry(8, 16, 8)));
-                this.avatars.push(ava);
-                con.onReceiveUnreliable.add((msg) => ava.receivePosition(msg));
-                this.room.add(ava.mesh);
-
-                con.onDestroy.add((a) => {
-                    var index = this.avatars.indexOf(ava);
-                    if (index > -1) {
-                        this.avatars.splice(index, 1);
-                    }
-                    this.room.scene.remove(ava.mesh);
-                });
-
-            });
-        }
-
-
         get room(): Room {
             return this.networkClient.room;
         }
@@ -50,7 +23,7 @@ module WM.Network {
 
         public onNewConnection: Events.I1ArgsEvent<NetworkConnection> = new Events.TypedEvent();
         public onNewUnreliableConnection: Events.I1ArgsEvent<NetworkConnection> = new Events.TypedEvent();
-        public onConnectionClose: Events.I2ArgsEvent<NetworkConnection, boolean> = new Events.TypedEvent();
+        public onConnectionClose: Events.I1ArgsEvent<NetworkConnection> = new Events.TypedEvent();
 
 
 
@@ -67,10 +40,34 @@ module WM.Network {
                 this.onConnectionToPeerCreate(connection);
             });
 
-            
-
-
         }
+
+        update() {
+            for (var i = 0; i < this.avatars.length; i++) {
+                this.avatars[i].update();
+            }
+        }
+
+        temp() {
+            this.avatars = [];
+            this.onNewUnreliableConnection.add((con) => {
+                var ava = new NetworkedMesh(new THREE.Mesh(new THREE.BoxGeometry(8, 16, 8)));
+                this.avatars.push(ava);
+                con.onReceiveUnreliable.add((msg) => ava.receivePosition(msg));
+                this.room.add(ava.mesh);
+
+                con.onDestroy.add(() => {
+                    var index = this.avatars.indexOf(ava);
+                    if (index > -1) {
+                        this.avatars.splice(index, 1);
+                    }
+                    this.room.scene.remove(ava.mesh);
+                });
+
+            });
+        }
+
+
 
         broadcastReliable(data: any) {
             for (var id in this.connections) {
@@ -142,7 +139,7 @@ module WM.Network {
 
             if (this.connections[connection.peer]) {
 
-                this.onConnectionClose.trigger(this.connections[connection.peer], connection.reliable);
+                this.onConnectionClose.trigger(this.connections[connection.peer]);
 
                 if (connection.reliable) {
                     this.connections[connection.peer].destroy();
@@ -153,4 +150,5 @@ module WM.Network {
         }
 
     }
+
 }

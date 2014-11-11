@@ -24,6 +24,7 @@
   <ItemGroup>
     <TypeScriptCompile Include="app.ts" />
     <TypeScriptCompile Include="event\event.ts" />
+    <TypeScriptCompile Include="network\chatclient.ts" />
     <TypeScriptCompile Include="network\networkconnection.ts" />
     <TypeScriptCompile Include="network\p2pnetworkclient.ts" />
     <TypeScriptCompile Include="network\statebuffer.ts" />

@@ -4,10 +4,10 @@
         connection: PeerJs.DataConnection;
         unreliableConnection: PeerJs.DataConnection;
 
-        public onReceive: Events.I2ArgsEvent<any, boolean> = new Events.TypedEvent();
-        public onReceiveReliable: Events.I1ArgsEvent<any> = new Events.TypedEvent();
-        public onReceiveUnreliable: Events.I1ArgsEvent<any> = new Events.TypedEvent();
-        public onDestroy: Events.I1ArgsEvent<any> = new Events.TypedEvent();
+        public onReceive: PacketReceiveEvent2 = new Events.TypedEvent();
+        public onReceiveReliable: PacketReceiveEvent = new Events.TypedEvent();
+        public onReceiveUnreliable: PacketReceiveEvent = new Events.TypedEvent();
+        public onDestroy: Events.IEvent = new Events.TypedEvent();
 
         constructor(connection: PeerJs.DataConnection) {
             this.connection = connection;
@@ -43,11 +43,27 @@
         }
 
         public destroy() {
-            this.onDestroy.trigger({});
+            this.onDestroy.trigger();
             this.connection.close();
             if (this.unreliableConnection)
                 this.unreliableConnection.close();
         }
 
     }
+
+    export interface PacketReceiveEvent extends Events.IEvent {
+        add(listener: (data: any) => any): void;
+        remove(listener: (data: any) => any): void;
+        trigger(data: any): void;
+    }
+
+    export interface PacketReceiveEvent2 extends Events.IEvent {
+        add(listener: (data: any, reliable: boolean) => any): void;
+        remove(listener: (data: any, reliable: boolean) => any): void;
+        trigger(data: any, reliable: boolean): void;
+    }
+
+
+
+
 }
