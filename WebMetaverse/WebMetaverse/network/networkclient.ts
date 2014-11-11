@@ -51,8 +51,11 @@ module WM.Network {
             var ice = [
                 { 'url': 'stun4:stun.l.google.com:19302' },
                 { 'url': 'stun:stun.l.google.com:19302' },
-                { 'url': 'stun.stunprotocol.org' },
-                { 'url': 'stunserver.org' }
+                { 'url': 'stun.stunprotocol.org:3478' },
+                { 'url': 'stunserver.org' },
+                { 'url': "stun.voipbuster.com"},
+                { 'url': "stun.voipstunt.com" },
+                { 'url': "stun.voxgratia.org" }
             ]
 
 
