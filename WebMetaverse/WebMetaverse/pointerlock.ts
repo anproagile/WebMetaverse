@@ -18,12 +18,6 @@ interface HTMLElement {
     webkitRequestFullscreen: any;
 }
 
-declare module THREE {
-    export class PointerLockControls {
-        constructor(a: any);
-    }
-}
-
 module WM {
     export class PointerLock {
 

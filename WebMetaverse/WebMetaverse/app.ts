@@ -3,6 +3,7 @@
 /// <reference path="verse/portal.ts"/>
 /// <reference path="verse/room.ts"/>
 /// <reference path="pointerlock.ts"/>
+/// <reference path="pointerlockcontrols.ts"/>
 
 var webmetaverse = {};
 var nc;
@@ -18,7 +19,7 @@ module WM {
         camera: THREE.PerspectiveCamera;
         cameraObject: THREE.Object3D;
         prevPos: THREE.Vector3; //Camera position previous frame
-        controls: any;
+        controls: PointerLockControls;
         originalCameraMatrixWorld: any;
         currentRoom: Room;
         rooms: Room[];
@@ -52,7 +53,7 @@ module WM {
         }
 
         private createControls() {
-            this.controls = new THREE.PointerLockControls(this.camera);
+            this.controls = new PointerLockControls(this.camera);
             this.cameraObject = this.controls.getObject();
             this.cameraObject.position.z = 30;
            // this.cameraObject.matrixAutoUpdater = true;
@@ -151,7 +152,7 @@ module WM {
             this.camera.updateMatrixWorld(true);
             this.update();
             this.render();
-            this.time = Date.now();
+            this.time = performance.now();
 
             requestAnimationFrame(this.tick);
         }
@@ -160,7 +161,11 @@ module WM {
 
         update() {
             this.i++;
-            this.controls.update(Date.now() - this.time);
+
+            var dt: number = performance.now() - this.time; 
+            dt = Math.min(50, dt); //Minimum controls update FPS, 20
+            this.controls.update(dt);
+            
             this.checkPortalIntersection();
 
             this.networkClient.p2p.update();

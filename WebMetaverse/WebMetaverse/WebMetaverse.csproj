@@ -29,6 +29,7 @@
     <TypeScriptCompile Include="network\statebuffer.ts" />
     <TypeScriptCompile Include="pointerlock.ts" />
     <TypeScriptCompile Include="network\networkedmesh.ts" />
+    <TypeScriptCompile Include="pointerlockcontrols.ts" />
     <TypeScriptCompile Include="typings\minilog\Minilog.d.ts" />
     <TypeScriptCompile Include="verse\portal.ts" />
     <TypeScriptCompile Include="verse\room.ts" />
