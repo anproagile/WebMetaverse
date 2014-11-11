@@ -7,7 +7,7 @@
 module WM.Network {
 
     export var mlog = Minilog('WM.Network');
-    Minilog.suggest.deny(/WM.Network.*/, 'warn');
+    Minilog.suggest.deny('WM.Network', 'warn');
     Minilog.enable();
 
     export interface WMServer {
@@ -23,6 +23,7 @@ module WM.Network {
         localPeer: Peer;
         room: Room;
         p2p: WM.Network.P2PNetworkClient;
+        chat: WM.Network.ChatClient;
 
 
         constructor() {
@@ -32,7 +33,8 @@ module WM.Network {
                 peerjspath: '/peerjs',
                 apipath: '/connectedpeers'
             }
-        this.p2p = new P2PNetworkClient(this);
+            this.p2p = new P2PNetworkClient(this);
+            this.chat = new ChatClient(this.p2p);
         }
 
 
