@@ -25,7 +25,7 @@ module WM.Network {
         public onNewUnreliableConnection: Events.I1ArgsEvent<NetworkConnection> = new Events.TypedEvent();
         public onConnectionClose: Events.I1ArgsEvent<NetworkConnection> = new Events.TypedEvent();
 
-
+        public onReceive: Events.I2ArgsEvent<any, NetworkConnection> = new Events.TypedEvent();
 
 
         constructor(networkClient: NetworkClient) {
@@ -109,12 +109,14 @@ module WM.Network {
             mlog.log((connection.reliable ? "Reliable" : "Unreliable") + " connection established to " + connection.peer);
             connection.on('close', () => this.onConnectionClosed(connection));
 
-            if (connection.reliable) {
-                //Create a new networkplayer.
-                var player = new NetworkConnection(connection);
-                this.connections[connection.peer] = player;
+            var networkConnection;
 
-                this.onNewConnection.trigger(player);
+            if (connection.reliable) {
+                //Create a new network connection wrapper.
+                networkConnection = new NetworkConnection(connection);
+                this.connections[connection.peer] = networkConnection;
+
+                this.onNewConnection.trigger(networkConnection);
 
                 //After reliable connection has been made, create an unreliable one.
                 this.connectToPeerUnreliable(connection.peer);
@@ -125,13 +127,16 @@ module WM.Network {
                     mlog.warn("Discarding second, faulty unreliable connection, thank you Obama");
                     return;
                 }
-
-                this.connections[connection.peer].addUnreliableConnection(connection);
-                this.onNewUnreliableConnection.trigger(this.connections[connection.peer]);
+                networkConnection = this.connections[connection.peer];
+                networkConnection.addUnreliableConnection(connection);
+                this.onNewUnreliableConnection.trigger(networkConnection);
             }
-            
+
+            connection.on('data', (data) => this.onReceive.trigger(data, networkConnection));
 
         }
+
+
 
         private onConnectionClosed = (connection: PeerJs.DataConnection) => {
             mlog.log((connection.reliable ? "Reliable" : "Unreliable") + " connection closed to " + connection.peer);
