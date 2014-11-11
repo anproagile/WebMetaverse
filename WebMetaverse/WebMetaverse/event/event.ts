@@ -53,4 +53,10 @@
         trigger(message: T, message2: U): void;
     }
 
+    export interface I3ArgsEvent<T, U, V> extends IEvent {
+        add(listener: (message1: T, message2: U, message3: V) => any): void;
+        remove(listener: (message: T, message2: U, message3: V) => any): void;
+        trigger(message: T, message2: U, message3: V): void;
+    }
+
 }

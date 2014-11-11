@@ -25,8 +25,8 @@ module WM.Network {
         public onNewUnreliableConnection: Events.I1ArgsEvent<NetworkConnection> = new Events.TypedEvent();
         public onConnectionClose: Events.I1ArgsEvent<NetworkConnection> = new Events.TypedEvent();
 
-        public onReceive: Events.I2ArgsEvent<any, NetworkConnection> = new Events.TypedEvent();
-
+        public onReceiveReliable: Events.I2ArgsEvent<any, NetworkConnection> = new Events.TypedEvent();
+        public onReceiveUnreliable: Events.I2ArgsEvent<any, NetworkConnection> = new Events.TypedEvent();
 
         constructor(networkClient: NetworkClient) {
             this.networkClient = networkClient;
@@ -117,7 +117,7 @@ module WM.Network {
                 this.connections[connection.peer] = networkConnection;
 
                 this.onNewConnection.trigger(networkConnection);
-
+                connection.on('data', (data) => this.onReceiveReliable.trigger(data, networkConnection));
                 //After reliable connection has been made, create an unreliable one.
                 this.connectToPeerUnreliable(connection.peer);
             }
@@ -130,9 +130,8 @@ module WM.Network {
                 networkConnection = this.connections[connection.peer];
                 networkConnection.addUnreliableConnection(connection);
                 this.onNewUnreliableConnection.trigger(networkConnection);
+                connection.on('data', (data) => this.onReceiveUnreliable.trigger(data, networkConnection));
             }
-
-            connection.on('data', (data) => this.onReceive.trigger(data, networkConnection));
 
         }
 

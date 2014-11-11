@@ -82,9 +82,6 @@
             mlog.info("Way out of sync, probably unsynced clocks, your clock is likely ahead, will attempt fix.");
             fixTimeStepCallback();
             return prev;
-
-            // throw "This shouldn't have happened!"; 
-            // return -1;
         }
 
 
