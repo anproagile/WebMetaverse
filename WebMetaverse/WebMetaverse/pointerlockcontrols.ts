@@ -1,8 +1,8 @@
-﻿/**
-* @author mrdoob / http://mrdoob.com/
-* Altered and translated into ts by Guido
-*/
-module WM {
+﻿module WM {
+    /**
+    * @author mrdoob / http://mrdoob.com/
+    * Altered and translated into ts by Guido
+    */
     export class PointerLockControls {
 
         camera: THREE.Camera;

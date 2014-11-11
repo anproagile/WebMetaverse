@@ -5,7 +5,7 @@ module WM.Network {
         mesh: THREE.Mesh;
         buffer: StateBuffer;
 
-        interpolationBacktime: number = -1337; //Some random value, which forces clients to resync even though clocks are very close.
+        interpolationBacktime: number = -10000; //Some random value, which forces clients to resync even though clocks are very close.
         //How long in the past other people are shown.
         //Should really, at minimum be position-send-interval + ping to user.
         //Higher is safer, although people are looking further into the past.

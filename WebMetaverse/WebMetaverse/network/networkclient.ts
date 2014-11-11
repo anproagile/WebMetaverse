@@ -2,8 +2,9 @@
 /// <reference path="../typings/threejs/three.d.ts"/>
 /// <reference path="../typings/minilog/Minilog.d.ts"/>
 
+/// <reference path="chatclient.ts"/>
 /// <reference path="p2pnetworkclient.ts"/>
-/// <reference path="../verse/room.ts"/>
+/// <reference path="../verse/room.ts"/> //TODO: Remove this dependency! No need to know about room here
 module WM.Network {
 
     export var mlog = Minilog('WM.Network');

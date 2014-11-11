@@ -111,7 +111,8 @@ module WM.Network {
 
             var networkConnection;
 
-            if (connection.reliable) {
+            if (connection.reliable) { //Reliable connection
+
                 //Create a new network connection wrapper.
                 networkConnection = new NetworkConnection(connection);
                 this.connections[connection.peer] = networkConnection;
@@ -121,7 +122,8 @@ module WM.Network {
                 //After reliable connection has been made, create an unreliable one.
                 this.connectToPeerUnreliable(connection.peer);
             }
-            else {
+            else { //Unreliable connection
+
                 //Hack for dual unreliable connection in Chrome (scratch that, also in FF, PeerJS faulty?)
                 if (this.connections[connection.peer].unreliableConnection && this.connections[connection.peer].unreliableConnection.open) {
                     mlog.warn("Discarding second, faulty unreliable connection, thank you Obama");
@@ -130,6 +132,7 @@ module WM.Network {
                 networkConnection = this.connections[connection.peer];
                 networkConnection.addUnreliableConnection(connection);
                 this.onNewUnreliableConnection.trigger(networkConnection);
+
                 connection.on('data', (data) => this.onReceiveUnreliable.trigger(data, networkConnection));
             }
 
