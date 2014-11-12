@@ -23,6 +23,7 @@
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="app.ts" />
+    <TypeScriptCompile Include="ds\circularbuffer.ts" />
     <TypeScriptCompile Include="event\event.ts" />
     <TypeScriptCompile Include="network\chatclient.ts" />
     <TypeScriptCompile Include="network\networkconnection.ts" />

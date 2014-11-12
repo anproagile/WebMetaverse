@@ -48,7 +48,7 @@ module WM.Network {
             }
         }
 
-        temp() {
+        temp() { //Temporary hack!
             this.avatars = [];
             this.onNewUnreliableConnection.add((con) => {
                 var ava = new NetworkedMesh(new THREE.Mesh(new THREE.BoxGeometry(8, 16, 8)));
@@ -68,13 +68,22 @@ module WM.Network {
         }
 
 
-
+        /**
+        * Transmit reliably to all connected peers
+        * @param data to transmit (JSON), must have a field 't' with the type.
+        */
         broadcastReliable(data: any) {
             for (var id in this.connections) {
                 this.connections[id].sendReliable(data);
             }
         }
 
+
+        /**
+        * Transmit unreliably to all connected peers
+        * Do not rely on these packages arriving or being in order!
+        * @param data to transmit (JSON), must have a field 't' with the type.
+        */
         broadcastUnreliable(data: any) {
             for (var id in this.connections) {
                 this.connections[id].sendUnreliable(data);
