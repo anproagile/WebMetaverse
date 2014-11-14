@@ -1,7 +1,10 @@
-﻿module WM.Verse {
+﻿/// <reference path="../room/roomloader.ts" />
+/// <reference path="../room/roomlinker.ts" />
 
-    export import Room = WM.Room.Room;
-    export import RoomLoader = WM.Room.RoomLoader;
+module WM.Verse {
+
+    import Room = WM.Room.Room;
+    import RoomLoader = WM.Room.RoomLoader;
 
     export class RoomCoordinator {
 
