@@ -10,6 +10,7 @@
 
 
         constructor(toRoomId: string) {
+            this.toRoomId = toRoomId;
             var geom = new THREE.PlaneGeometry(20, 60);
             //var geom = new THREE.CylinderGeometry(20, 20, 50);
             var mat = new THREE.MeshBasicMaterial();
@@ -22,6 +23,7 @@
             var p = this.clone();
             p.updateMatrixWorld(true);
             this.stencilScene.add(this);
+            
         }
 
         setToPortal(toPortal: Portal, toRoom: WM.Room.Room) {

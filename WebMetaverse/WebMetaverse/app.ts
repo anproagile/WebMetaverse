@@ -170,6 +170,7 @@ module WM {
         webvr.roomCoordinator.switchToRoomWithId('debug1');
         webvr.tick();
         webvr.networkClient.joinRoom();
+        webvr.roomCoordinator.loadRoom('debug2');
 
     };
 }

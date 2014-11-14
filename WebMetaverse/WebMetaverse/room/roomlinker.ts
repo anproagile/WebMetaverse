@@ -19,7 +19,7 @@
             //Link existing rooms
             rooms.forEach((room) =>
                 room.portals.forEach((portal) => {
-                    if (!portal.isLinked) {
+                    if (portal.toRoomId == newRoom.id && !portal.isLinked()) {
                         this.linkPortalToRoom(portal, roomDictionary[portal.toRoomId]);
                     }
                 })

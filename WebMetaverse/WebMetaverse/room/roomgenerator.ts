@@ -40,6 +40,7 @@
             var portal = new Portal('debug2');
             portal.position.x = -20;
             room.add(portal);
+            room.portals.push(portal);
 
             return room;
         }
@@ -79,6 +80,7 @@
             portal.rotateY(Math.PI);
             portal.position.x = 20;
             room.add(portal);
+            room.portals.push(portal);
 
             return room;
 
