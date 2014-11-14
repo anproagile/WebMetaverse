@@ -1,4 +1,4 @@
-﻿module WM.Verse {
+﻿module wm.verse {
 
     export class Portal extends THREE.Mesh {
         
@@ -26,7 +26,7 @@
             
         }
 
-        setToPortal(toPortal: Portal, toRoom: WM.Room.Room) {
+        setToPortal(toPortal: Portal, toRoom: wm.room.Room) {
             this.toPortal = toPortal;
             this.toScene = toRoom.scene;
             this.toRoomId = toRoom.id;

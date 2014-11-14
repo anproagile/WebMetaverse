@@ -1,5 +1,5 @@
 ﻿/// <reference path="../ds/circularbuffer.ts"/>
-module WM.Network {
+module wm.network {
 
     export interface State {
         time: number; //timestamp

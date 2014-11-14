@@ -11,7 +11,7 @@ var nc;
 var fakeLag = 0;
 
 
-module WM {
+module wm {
 
     export function urlToId(url: string): string {
         return btoa(url);
@@ -21,7 +21,7 @@ module WM {
 
     export class WebMetaverse {
 
-        roomCoordinator: Verse.RoomCoordinator;
+        roomCoordinator: verse.RoomCoordinator;
 
         time: number = Date.now();
         renderer: THREE.WebGLRenderer;
@@ -31,7 +31,7 @@ module WM {
         controls: PointerLockControls;
         originalCameraMatrixWorld: any;
 
-        networkClient: WM.Network.NetworkClient;
+        networkClient: wm.network.NetworkClient;
 
         constructor() {
             webmetaverse = this;
@@ -67,13 +67,13 @@ module WM {
         }
 
         private createRoomHandler() {
-            this.roomCoordinator = new Verse.RoomCoordinator();
+            this.roomCoordinator = new verse.RoomCoordinator();
             this.roomCoordinator.onRoomSwitch.add((from, to, where) => this.moveToRoom(from, to, where));
         }
 
 
         private createNetworkClient() {
-            this.networkClient = new Network.NetworkClient();
+            this.networkClient = new network.NetworkClient();
         }
         
         tick = () => {
@@ -124,7 +124,7 @@ module WM {
 
         }
 
-        moveToRoom(fromRoom: Room.Room, room: Room.Room, position: THREE.Matrix4 = new THREE.Matrix4()) {
+        moveToRoom(fromRoom: room.Room, room: room.Room, position: THREE.Matrix4 = new THREE.Matrix4()) {
             fromRoom.scene.remove(this.cameraObject);
             room.add(this.cameraObject);
             this.cameraObject.position.setFromMatrixPosition(position); 

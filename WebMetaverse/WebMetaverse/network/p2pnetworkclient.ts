@@ -5,7 +5,7 @@
 /// <reference path="networkconnection.ts"/>
 /// <reference path="networkedmesh.ts"/>
 /// <reference path="../event/event.ts"/>
-module WM.Network {
+module wm.network {
 
     export class P2PNetworkClient {
 

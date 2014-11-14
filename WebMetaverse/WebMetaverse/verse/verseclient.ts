@@ -1,7 +1,7 @@
 ﻿/// <reference path="../room/room.ts" />
 /// <reference path="portal.ts" />
 
-module WM.Verse {
+module wm.verse {
     export class VerseClient {
 
 

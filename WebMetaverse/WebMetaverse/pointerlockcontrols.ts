@@ -1,4 +1,4 @@
-﻿module WM {
+﻿module wm {
     /**
     * @author mrdoob / http://mrdoob.com/
     * Altered and translated into ts by Guido

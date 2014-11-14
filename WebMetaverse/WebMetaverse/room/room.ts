@@ -1,9 +1,9 @@
 ﻿/// <reference path="../typings/threejs/three.d.ts"/>
 /// <reference path="../verse/portal.ts"/>
 
-module WM.Room {
+module wm.room {
 
-    import Portal = WM.Verse.Portal;
+    import Portal = wm.verse.Portal;
 
     export class Room {
 

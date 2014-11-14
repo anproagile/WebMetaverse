@@ -1,4 +1,4 @@
-﻿module WM.Network {
+﻿module wm.network {
 
     export class NetworkConnection {
         connection: PeerJs.DataConnection;

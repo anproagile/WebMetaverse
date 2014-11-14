@@ -18,7 +18,7 @@ interface HTMLElement {
     webkitRequestFullscreen: any;
 }
 
-module WM {
+module wm {
     export class PointerLock {
 
         blocker: HTMLElement;

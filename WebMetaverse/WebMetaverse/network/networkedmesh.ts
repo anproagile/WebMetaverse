@@ -1,5 +1,5 @@
 ﻿/// <reference path="statebuffer.ts"/>
-module WM.Network {
+module wm.network {
     export class NetworkedMesh {
 
         mesh: THREE.Mesh;

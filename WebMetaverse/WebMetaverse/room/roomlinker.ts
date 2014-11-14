@@ -1,6 +1,6 @@
-﻿module WM.Room {
+﻿module wm.room {
 
-    import Portal = WM.Verse.Portal;
+    import Portal = wm.verse.Portal;
 
     /**
     * Links the portals in rooms together upon loading a room.
@@ -30,7 +30,7 @@
             if (!room.entrancePortal) {
                 room.addEntrancePortal(); //Lazily add entrance portal
             }
-            console.log("Linking!");
+            
             portal.setToPortal(room.entrancePortal, room);
         }
 

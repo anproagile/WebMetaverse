@@ -1,10 +1,10 @@
 ﻿/// <reference path="../room/roomloader.ts" />
 /// <reference path="../room/roomlinker.ts" />
 
-module WM.Verse {
+module wm.verse {
 
-    import Room = WM.Room.Room;
-    import RoomLoader = WM.Room.RoomLoader;
+    import Room = wm.room.Room;
+    import RoomLoader = wm.room.RoomLoader;
 
     export class RoomCoordinator {
 
@@ -19,7 +19,7 @@ module WM.Verse {
         constructor() {
             this.rooms = [];
             this.roomDictionary = {};
-            this.loader = new WM.Room.RoomLoader();
+            this.loader = new wm.room.RoomLoader();
         }
 
         switchToRoomWithId(id: string) {
@@ -44,7 +44,7 @@ module WM.Verse {
                 var id = room.id;
             }
             else {
-                var id = WM.urlToId(url);
+                var id = wm.urlToId(url);
             }
 
             if (this.roomDictionary[id]) {
@@ -55,7 +55,7 @@ module WM.Verse {
             this.rooms.push(room);
             this.roomDictionary[id] = room;
 
-            WM.Room.RoomLinker.introduceRoom(room, this.rooms, this.roomDictionary);
+            wm.room.RoomLinker.introduceRoom(room, this.rooms, this.roomDictionary);
         }
 
 

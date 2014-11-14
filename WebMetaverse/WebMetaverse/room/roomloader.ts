@@ -1,5 +1,5 @@
 ﻿/// <reference path="roomgenerator.ts"/>
-module WM.Room {
+module wm.room {
     export class RoomLoader {
 
         loadRoom(url: string): Room {

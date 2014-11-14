@@ -1,4 +1,4 @@
-﻿module WM.Network {
+﻿module wm.network {
     export class ChatClient {
 
         private p2p: P2PNetworkClient;

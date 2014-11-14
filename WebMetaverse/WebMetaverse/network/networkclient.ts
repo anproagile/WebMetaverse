@@ -5,7 +5,7 @@
 /// <reference path="chatclient.ts"/>
 /// <reference path="p2pnetworkclient.ts"/>
 
-module WM.Network {
+module wm.network {
 
     export var mlog = Minilog('WM.Network');
     Minilog.suggest.deny('WM.Network', 'warn');
@@ -22,8 +22,8 @@ module WM.Network {
 
         server: WMServer;
         localPeer: Peer;
-        p2p: WM.Network.P2PNetworkClient;
-        chat: WM.Network.ChatClient;
+        p2p: wm.network.P2PNetworkClient;
+        chat: wm.network.ChatClient;
 
 
         constructor() {
@@ -91,12 +91,12 @@ module WM.Network {
 
         pollConnectedPeers(callback) {
             var url = 'http://' + this.server.host + ':' + this.server.port + this.server.apipath + '?callback=?';
-            WM.Network.Util.getJSONP(url, callback);
+            wm.network.util.getJSONP(url, callback);
         }
     }
 }
 
-module WM.Network.Util {
+module wm.network.util {
     export function getJSONP(url, success) {
 
         var ud = '_' + +new Date,
