@@ -143,7 +143,7 @@ module WM {
                     if (currentRoom.portals[i].checkIntersection(this.prevPos, currentPos)) {
                         var roomId = currentRoom.portals[i].toRoomId;
                         var room = this.roomCoordinator.roomDictionary[roomId];
-                        var where = currentRoom.portals[i].getPortalViewMatrix3(this.cameraObject.matrixWorld);
+                        var where = currentRoom.portals[i].getPortalViewMatrix(this.cameraObject.matrixWorld);
 
                         this.roomCoordinator.switchToRoom(room, where);
                         break;
