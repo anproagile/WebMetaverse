@@ -41,9 +41,10 @@ module WM {
             this.createRenderer();
 
             document.body.appendChild(this.renderer.domElement);
+            this.createRoomHandler();
             this.createControls();
             window.addEventListener('resize', this.onWindowResize);
-            this.createRoomHandler();
+            
             this.createNetworkClient();
             nc = this.networkClient;
         }
@@ -62,7 +63,7 @@ module WM {
             this.cameraObject.position.z = 30;
             
             new PointerLock(this.controls);
-            //this.currentRoom.add(this.cameraObject);
+            this.roomCoordinator.currentRoom.add(this.cameraObject);
         }
 
         private createRoomHandler() {
@@ -119,7 +120,7 @@ module WM {
 
         render() {
             var gl: WebGLRenderingContext = this.renderer.context;
-            this.roomCoordinator.currentRoom.draw(gl, this.renderer, this.camera);
+            this.roomCoordinator.currentRoom.render(gl, this.renderer, this.camera);
 
         }
 

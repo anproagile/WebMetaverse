@@ -30,7 +30,7 @@
             if (!room.entrancePortal) {
                 room.addEntrancePortal(); //Lazily add entrance portal
             }
-
+            console.log("Linking!");
             portal.setToPortal(room.entrancePortal, room);
         }
 

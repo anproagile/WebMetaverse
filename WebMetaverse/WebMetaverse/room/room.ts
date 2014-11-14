@@ -21,11 +21,11 @@ module WM.Room {
             this.id = id;
         }
 
-        draw(gl: WebGLRenderingContext, renderer: THREE.WebGLRenderer, camera) {
+        render(gl: WebGLRenderingContext, renderer: THREE.WebGLRenderer, camera) {
 
             renderer.clear(true, true, true);
             for (var i = 0; i < this.portals.length; i++) {
-                this.portals[i].draw(gl, renderer, camera);
+                this.portals[i].render(gl, renderer, camera);
             }
 
 

@@ -39,7 +39,7 @@
 
 
 
-        public draw(gl: WebGLRenderingContext, renderer: THREE.WebGLRenderer, camera: THREE.PerspectiveCamera) {
+        public render(gl: WebGLRenderingContext, renderer: THREE.WebGLRenderer, camera: THREE.PerspectiveCamera) {
 
             if (!this.toScene) { //Can't draw this portal if the room it points to isn't loaded yet
                 return;

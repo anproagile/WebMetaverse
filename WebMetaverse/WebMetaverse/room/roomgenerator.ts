@@ -39,6 +39,8 @@
 
             var portal = new Portal('debug2');
             portal.position.x = -20;
+            portal.position.z = -50;
+            portal.updateMatrix();
             room.add(portal);
             room.portals.push(portal);
 
@@ -81,6 +83,7 @@
             portal.position.x = 20;
             room.add(portal);
             room.portals.push(portal);
+            portal.updateMatrix();
 
             return room;
 
