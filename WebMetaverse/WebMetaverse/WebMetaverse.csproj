@@ -32,10 +32,14 @@
     <TypeScriptCompile Include="pointerlock.ts" />
     <TypeScriptCompile Include="network\networkedmesh.ts" />
     <TypeScriptCompile Include="pointerlockcontrols.ts" />
-    <TypeScriptCompile Include="typings\minilog\minilog-tests.ts" />
+    <TypeScriptCompile Include="room\roomlinker.ts" />
     <TypeScriptCompile Include="typings\minilog\minilog.d.ts" />
+    <TypeScriptCompile Include="verse\roomcoordinator.ts" />
+    <TypeScriptCompile Include="room\roomgenerator.ts" />
+    <TypeScriptCompile Include="room\roomloader.ts" />
+    <TypeScriptCompile Include="verse\verseclient.ts" />
     <TypeScriptCompile Include="verse\portal.ts" />
-    <TypeScriptCompile Include="verse\room.ts" />
+    <TypeScriptCompile Include="room\room.ts" />
     <TypeScriptCompile Include="network\networkclient.ts" />
     <TypeScriptCompile Include="typings\peerjs\Peer.d.ts" />
     <TypeScriptCompile Include="typings\threejs\three.d.ts" />

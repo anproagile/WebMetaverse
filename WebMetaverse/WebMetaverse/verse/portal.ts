@@ -1,15 +1,15 @@
-﻿module WM {
+﻿module WM.Verse {
 
     export class Portal extends THREE.Mesh {
         
         stencilScene: THREE.Scene;
-        toScene: THREE.Scene;
-        toRoom: Room;
+        toRoomId: string;
 
+        toScene: THREE.Scene;
         toPortal: Portal;
 
 
-        constructor(toRoom: Room) {
+        constructor(toRoomId: string) {
             var geom = new THREE.PlaneGeometry(20, 60);
             //var geom = new THREE.CylinderGeometry(20, 20, 50);
             var mat = new THREE.MeshBasicMaterial();
@@ -18,16 +18,30 @@
 
             this.stencilScene = new THREE.Scene();
 
-            this.toScene = toRoom.scene;
-            this.toRoom = toRoom;
             this.geometry.computeFaceNormals();
             var p = this.clone();
             p.updateMatrixWorld(true);
             this.stencilScene.add(this);
         }
 
+        setToPortal(toPortal: Portal, toRoom: WM.Room.Room) {
+            this.toPortal = toPortal;
+            this.toScene = toRoom.scene;
+            this.toRoomId = toRoom.id;
+            this.updateStencilSceneMatrix();
+        }
+
+        isLinked(): boolean {
+            return this.toScene ? true : false;
+        }
+
+
+
         public draw(gl: WebGLRenderingContext, renderer: THREE.WebGLRenderer, camera: THREE.PerspectiveCamera) {
 
+            if (!this.toScene) { //Can't draw this portal if the room it points to isn't loaded yet
+                return;
+            }
             var originalCameraMatrixWorld = camera.matrixWorld.clone();
 
             // 1: draw portal mesh into stencil buffer

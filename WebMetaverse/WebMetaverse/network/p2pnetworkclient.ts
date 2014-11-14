@@ -14,9 +14,6 @@ module WM.Network {
 
         avatars: NetworkedMesh[];
 
-        get room(): Room {
-            return this.networkClient.room;
-        }
         get localPeer(): Peer {
             return this.networkClient.localPeer;
         }
@@ -31,7 +28,7 @@ module WM.Network {
         constructor(networkClient: NetworkClient) {
             this.networkClient = networkClient;
             this.connections = {};
-            this.temp();
+
         }
 
         init() {
@@ -43,11 +40,11 @@ module WM.Network {
         }
 
         update() {
-            for (var i = 0; i < this.avatars.length; i++) {
+          /*  for (var i = 0; i < this.avatars.length; i++) {
                 this.avatars[i].update();
-            }
+            }*/
         }
-
+        /*
         temp() { //Temporary hack!
             this.avatars = [];
             this.onNewUnreliableConnection.add((con) => {
@@ -66,7 +63,7 @@ module WM.Network {
 
             });
         }
-
+        */
 
         /**
         * Transmit reliably to all connected peers

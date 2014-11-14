@@ -4,7 +4,7 @@
 
 /// <reference path="chatclient.ts"/>
 /// <reference path="p2pnetworkclient.ts"/>
-/// <reference path="../verse/room.ts"/> //TODO: Remove this dependency! No need to know about room here
+
 module WM.Network {
 
     export var mlog = Minilog('WM.Network');
@@ -22,7 +22,6 @@ module WM.Network {
 
         server: WMServer;
         localPeer: Peer;
-        room: Room;
         p2p: WM.Network.P2PNetworkClient;
         chat: WM.Network.ChatClient;
 

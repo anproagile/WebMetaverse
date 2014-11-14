@@ -1,9 +1,10 @@
 ﻿/// <reference path="typings/threejs/three.d.ts"/>
 /// <reference path="network/networkclient.ts"/>
 /// <reference path="verse/portal.ts"/>
-/// <reference path="verse/room.ts"/>
 /// <reference path="pointerlock.ts"/>
 /// <reference path="pointerlockcontrols.ts"/>
+/// <reference path="room/room.ts" />
+/// <reference path="verse/roomcoordinator.ts" />
 
 var webmetaverse = {};
 var nc;
@@ -12,7 +13,15 @@ var fakeLag = 0;
 
 module WM {
 
+    export function urlToId(url: string): string {
+        return btoa(url);
+    }
+
+    
+
     export class WebMetaverse {
+
+        roomCoordinator: Verse.RoomCoordinator;
 
         time: number = Date.now();
         renderer: THREE.WebGLRenderer;
@@ -21,8 +30,6 @@ module WM {
         prevPos: THREE.Vector3; //Camera position previous frame
         controls: PointerLockControls;
         originalCameraMatrixWorld: any;
-        currentRoom: Room;
-        rooms: Room[];
 
         networkClient: WM.Network.NetworkClient;
 
@@ -34,13 +41,10 @@ module WM {
             this.createRenderer();
 
             document.body.appendChild(this.renderer.domElement);
-            this.rooms = [];
-            this.createDebugWorld();
             this.createControls();
             window.addEventListener('resize', this.onWindowResize);
-
+            this.createRoomHandler();
             this.createNetworkClient();
-            this.networkClient.room = this.currentRoom;
             nc = this.networkClient;
         }
 
@@ -56,96 +60,19 @@ module WM {
             this.controls = new PointerLockControls(this.camera);
             this.cameraObject = this.controls.getObject();
             this.cameraObject.position.z = 30;
-           // this.cameraObject.matrixAutoUpdater = true;
+            
             new PointerLock(this.controls);
-            this.currentRoom.add(this.cameraObject);
+            //this.currentRoom.add(this.cameraObject);
         }
 
-        private createDebugWorld() {
-            this.currentRoom = this.createDebugRoom1();
-            this.rooms.push(this.currentRoom);
-            this.rooms.push(this.createDebugRoom2());
-            this.createDebugPortals();
+        private createRoomHandler() {
+            this.roomCoordinator = new Verse.RoomCoordinator();
+            this.roomCoordinator.onRoomSwitch.add((from, to, where) => this.moveToRoom(from, to, where));
         }
+
 
         private createNetworkClient() {
             this.networkClient = new Network.NetworkClient();
-        }
-
-        private createDebugRoom1(): Room {
-            var room = new Room();
-            var grid = new THREE.GridHelper(100, 10);
-            room.add(grid);
-
-            var g = new THREE.BoxGeometry(60, 20, 10);
-            var m = new THREE.MeshNormalMaterial();
-            var cube = new THREE.Mesh(g, m);
-            cube.position.set(0, 10, -95);
-            room.add(cube);
-
-            var g2 = new THREE.IcosahedronGeometry(50, 2);
-            var m2 = new THREE.MeshNormalMaterial();
-            var obj2 = new THREE.Mesh(g2, m2);
-            obj2.position.set(0, 10, 95);
-            room.add(obj2);
-
-            return room;
-        }
-
-        private createDebugRoom2(): Room {
-            var room = new Room();
-            var g = new THREE.BoxGeometry(60, 20, 10);
-            var m = new THREE.MeshPhongMaterial();
-            var cube = new THREE.Mesh(g, m);
-            cube.position.set(0, 10, -95);
-            room.add(cube);
-
-            var sphereGeom = new THREE.SphereGeometry(10);
-            var sphereMat = new THREE.MeshBasicMaterial({ color: 0x20F020 });
-            var sphere = new THREE.Mesh(sphereGeom, sphereMat);
-            sphere.position.x = 50;
-            sphere.updateMatrix();
-            sphereMat.side = THREE.BackSide;
-            room.add(sphere);
-
-            var sphereMat2 = new THREE.MeshBasicMaterial({ color: 0xF0F020 });
-            var sphere2 = new THREE.Mesh(sphereGeom, sphereMat2);
-            sphere2.position.x = -50;
-            sphere2.updateMatrix();
-            room.add(sphere2);
-
-            var light = new THREE.DirectionalLight(0xffffff, 2);
-            var light2 = new THREE.AmbientLight(0x303030);
-            light.position.set(1, 1, 1).normalize();
-            room.add(light);
-            room.add(light2);
-            var grid = new THREE.GridHelper(100, 10);
-            grid.setColors(0xff0000, 0x00aacc);
-            room.add(grid);
-
-            return room;
-        }
-
-        private createDebugPortals(): void {
-
-            //Create portal to current-room.
-            var portalOut = new Portal(this.rooms[1]);
-            var portalIn = new Portal(this.rooms[0]);
-            
-            //Make portals be eachother's end
-            portalOut.toPortal = portalIn;
-            portalIn.toPortal = portalOut;
-
-            portalIn.rotateY(Math.PI);
-            portalOut.position.x = -20;
-            portalIn.position.x = 20;
-
-            this.rooms[0].addPortal(portalOut);
-            this.rooms[1].addPortal(portalIn);
-
-            portalIn.updateStencilSceneMatrix();
-            portalOut.updateStencilSceneMatrix();
-
         }
         
         tick = () => {
@@ -192,31 +119,33 @@ module WM {
 
         render() {
             var gl: WebGLRenderingContext = this.renderer.context;
-            this.currentRoom.draw(gl, this.renderer, this.camera);
+            this.roomCoordinator.currentRoom.draw(gl, this.renderer, this.camera);
 
         }
 
-        moveToRoom(room: Room, position: THREE.Matrix4 = new THREE.Matrix4()) {
-            this.currentRoom.scene.remove(this.cameraObject);
+        moveToRoom(fromRoom: Room.Room, room: Room.Room, position: THREE.Matrix4 = new THREE.Matrix4()) {
+            fromRoom.scene.remove(this.cameraObject);
             room.add(this.cameraObject);
-           
             this.cameraObject.position.setFromMatrixPosition(position); 
-
-            this.currentRoom = room;
         }
 
         
         private checkPortalIntersection() {
+
+            var currentRoom = this.roomCoordinator.currentRoom;
+            if (!currentRoom) return;
+
             var currentPos = new THREE.Vector3().setFromMatrixPosition(this.camera.matrixWorld);
 
             if (this.prevPos) {
-                for (var i = 0; i < this.currentRoom.portals.length; i++) {
+                for (var i = 0; i < currentRoom.portals.length; i++) {
 
-                    if (this.currentRoom.portals[i].checkIntersection(this.prevPos, currentPos)) {
-                        var room = this.currentRoom.portals[i].toRoom;
-                        var where = this.currentRoom.portals[i].getPortalViewMatrix3(this.cameraObject.matrixWorld);
-                        
-                        this.moveToRoom(room, where);
+                    if (currentRoom.portals[i].checkIntersection(this.prevPos, currentPos)) {
+                        var roomId = currentRoom.portals[i].toRoomId;
+                        var room = this.roomCoordinator.roomDictionary[roomId];
+                        var where = currentRoom.portals[i].getPortalViewMatrix3(this.cameraObject.matrixWorld);
+
+                        this.roomCoordinator.switchToRoom(room, where);
                         break;
                     }
 
@@ -237,6 +166,8 @@ module WM {
   
     window.onload = () => {
         var webvr = new WebMetaverse();
+        webvr.roomCoordinator.loadRoom('debug1');
+        webvr.roomCoordinator.switchToRoomWithId('debug1');
         webvr.tick();
         webvr.networkClient.joinRoom();
 

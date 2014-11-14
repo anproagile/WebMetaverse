@@ -1,17 +1,24 @@
 ﻿/// <reference path="../typings/threejs/three.d.ts"/>
-/// <reference path="portal.ts"/>
+/// <reference path="../verse/portal.ts"/>
 
-module WM {
+module WM.Room {
+
+    import Portal = WM.Verse.Portal;
+
     export class Room {
 
+        static EmptyRoom: Room = new Room("EMPTYROOM");
+
         portals: Portal[];
+        entrancePortal: Portal;
 
         scene: THREE.Scene;
+        id: string;
 
-        constructor() {
+        constructor(id: string) {
             this.scene = new THREE.Scene();
             this.portals = [];
-
+            this.id = id;
         }
 
         draw(gl: WebGLRenderingContext, renderer: THREE.WebGLRenderer, camera) {
@@ -36,6 +43,20 @@ module WM {
         addPortal(portal: Portal): number {
             return this.portals.push(portal);
         }
+
+        remove(object: THREE.Object3D) {
+            this.scene.remove(object);
+        }
+
+        addEntrancePortal() {
+            if (this.entrancePortal) {
+                throw 'Room already has an entrance portal!';
+            }
+            var portal = new Portal('ENTRANCE');
+            this.add(portal);
+            this.entrancePortal = portal;
+        }
+
 
     }
 }
