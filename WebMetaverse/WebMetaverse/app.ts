@@ -134,7 +134,6 @@ module WM {
         private checkPortalIntersection() {
 
             var currentRoom = this.roomCoordinator.currentRoom;
-            if (!currentRoom) return;
 
             var currentPos = new THREE.Vector3().setFromMatrixPosition(this.camera.matrixWorld);
 
@@ -169,9 +168,11 @@ module WM {
         var webvr = new WebMetaverse();
         webvr.roomCoordinator.loadRoom('debug1');
         webvr.roomCoordinator.switchToRoomWithId('debug1');
+        
         webvr.tick();
         webvr.networkClient.joinRoom();
         webvr.roomCoordinator.loadRoom('debug2');
+        
 
     };
 }

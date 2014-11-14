@@ -41,7 +41,7 @@
             portal.position.x = -20;
             portal.position.z = -50;
             portal.updateMatrix();
-            room.add(portal);
+           // room.add(portal);
             room.portals.push(portal);
 
             return room;
@@ -81,7 +81,7 @@
             var portal = new Portal('debug1');
             portal.rotateY(Math.PI);
             portal.position.x = 20;
-            room.add(portal);
+          //  room.add(portal);
             room.portals.push(portal);
             portal.updateMatrix();
 

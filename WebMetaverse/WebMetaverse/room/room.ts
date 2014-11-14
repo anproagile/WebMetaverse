@@ -53,7 +53,7 @@ module WM.Room {
                 throw 'Room already has an entrance portal!';
             }
             var portal = new Portal('ENTRANCE');
-            this.add(portal);
+            //this.add(portal);
             this.entrancePortal = portal;
         }
 
