@@ -13,6 +13,9 @@ module wm.verse {
 
         networkClient: network.NetworkClient;
         remoteAvatarWatcher: multi.RemoteAvatarWatcher;
+        roomCommunicator: multi.RoomCommunicator;
+        avatarRoomMover: multi.RemoteAvatarRoomMover;
+
         roomCoordinator: RoomCoordinator;
         controls: VerseControls;
 
@@ -28,6 +31,8 @@ module wm.verse {
             this.roomCoordinator = new verse.RoomCoordinator();
 
             this.remoteAvatarWatcher = new multi.RemoteAvatarWatcher(this.networkClient.p2p);
+            this.roomCommunicator = new multi.RoomCommunicator(this.networkClient.p2p, this.roomCoordinator)
+            this.avatarRoomMover = new multi.RemoteAvatarRoomMover(this.roomCommunicator, this.roomCoordinator, this.remoteAvatarWatcher);
 
             this.controls = new VerseControls(this.camera, this.roomCoordinator);
 

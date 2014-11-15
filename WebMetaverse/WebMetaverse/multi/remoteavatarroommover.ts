@@ -3,7 +3,7 @@
     /**
      * Moves avatars between rooms when a roomswitch packet is received.
      */
-    export class AvatarRoomMover {
+    export class RemoteAvatarRoomMover {
 
         roomCoordinator: verse.RoomCoordinator;
         avatarWatcher: RemoteAvatarWatcher;

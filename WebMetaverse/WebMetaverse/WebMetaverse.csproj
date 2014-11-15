@@ -25,7 +25,7 @@
     <TypeScriptCompile Include="app.ts" />
     <TypeScriptCompile Include="ds\circularbuffer.ts" />
     <TypeScriptCompile Include="event\event.ts" />
-    <TypeScriptCompile Include="multi\avatarroommover.ts" />
+    <TypeScriptCompile Include="multi\remoteavatarroommover.ts" />
     <TypeScriptCompile Include="multi\positionbroadcaster.ts" />
     <TypeScriptCompile Include="multi\remoteavatarwatcher.ts" />
     <TypeScriptCompile Include="multi\roomcommunicator.ts" />
