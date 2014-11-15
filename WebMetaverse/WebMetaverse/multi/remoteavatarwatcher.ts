@@ -1,8 +1,8 @@
 ﻿module wm.multi {
     export class RemoteAvatarWatcher {
 
-        p2p: network.P2PNetworkClient;
-        avatars: { [id: string]: network.NetworkedMesh };
+        private p2p: network.P2PNetworkClient;
+        private avatars: { [id: string]: network.NetworkedMesh };
 
         constructor(p2p: network.P2PNetworkClient) {
             this.p2p = p2p;
@@ -11,7 +11,7 @@
             
         }
 
-        init() {
+        private init() {
             this.p2p.onNewUnreliableConnection.add( (con: network.NetworkConnection) => {
                 var id = con.connection.peer;
                 var mesh = this.createAvatarMesh(id);
@@ -31,12 +31,17 @@
 
         }
 
-        createAvatarMesh(id: string): THREE.Mesh {
+        public getAvatarForId(id: string): network.NetworkedMesh {
+            return this.avatars[id];
+        }
+
+
+        private createAvatarMesh(id: string): THREE.Mesh {
             return new THREE.Mesh(new THREE.BoxGeometry(8, 16, 8));
         }
 
 
-        update() {
+        public update() {
             for (var id in this.avatars) {
                 this.avatars[id].update();
             }
