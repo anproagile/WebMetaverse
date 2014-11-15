@@ -5,6 +5,7 @@
 /// <reference path="pointerlockcontrols.ts"/>
 /// <reference path="room/room.ts" />
 /// <reference path="verse/roomcoordinator.ts" />
+/// <reference path="multi/remoteavatarwatcher.ts" />
 
 var webmetaverse = {};
 var nc;
