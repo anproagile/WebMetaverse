@@ -48,6 +48,7 @@ module wm.verse {
 
             var intersectedPortal = this.controls.checkPortalIntersection(this.roomCoordinator.currentRoom);
             if (intersectedPortal) {
+                console.log("Moved through portal!");
                 this.moveThroughPortal(intersectedPortal);
             }
 

@@ -15,7 +15,6 @@
             this.controls = new PointerLockControls(camera);
 
             this.cameraObject = this.controls.getObject();
-            this.cameraObject.position.z = 30;
 
             new PointerLock(this.controls);
             roomCoordinator.onRoomSwitch.add(this.moveToRoom);
@@ -28,7 +27,7 @@
             dt = Math.min(50, dt); //Minimum controls update FPS, 20
 
             this.controls.update(dt);
-            this.prevPos = this.cameraObject.position.clone();
+            //this.prevPos = this.cameraObject.position.clone();
 
             this.time = performance.now();
 
@@ -44,15 +43,17 @@
         }
 
         public checkPortalIntersection(room: room.Room): Portal {
-            var currentPos = this.camera.position;
+            var currentPos = this.cameraObject.position.clone();
 
             if (this.prevPos) {
                 for (var i = 0; i < room.portals.length; i++) {
+                    
                     if (room.portals[i].checkIntersection(this.prevPos, currentPos)) {
                         return room.portals[i];
                     }
                 }
             }
+            this.prevPos = this.cameraObject.position.clone();
             return null;
         }
 

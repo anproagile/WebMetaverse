@@ -1,18 +1,19 @@
 ﻿module wm.multi {
     export class RemoteAvatarWatcher {
 
-        private p2p: network.P2PNetworkClient;
         private avatars: { [id: string]: network.NetworkedMesh };
 
+        public onAvatarDestroy: Events.I1ArgsEvent<string> = new Events.TypedEvent();
+
+
         constructor(p2p: network.P2PNetworkClient) {
-            this.p2p = p2p;
             this.avatars = {};
-            this.init();
+            this.init(p2p);
             
         }
 
-        private init() {
-            this.p2p.onNewUnreliableConnection.add( (con: network.NetworkConnection) => {
+        private init(p2p) {
+            p2p.onNewUnreliableConnection.add( (con: network.NetworkConnection) => {
                 var id = con.connection.peer;
                 var mesh = this.createAvatarMesh(id);
                 var avatar = new network.NetworkedMesh(mesh);
@@ -22,6 +23,8 @@
 
                 con.onDestroy.add(() => {
                     var id = con.connection.peer;
+                    this.onAvatarDestroy.trigger(id);
+
                     con.onReceiveUnreliable.remove(this.avatars[id].receivePosition);
                     delete this.avatars[id];
 

@@ -28,15 +28,14 @@
             if (packet.t != 'roomswitch') return; //Not a roomswitch packet
 
             this.onRemoteUserRoomSwitch.trigger(packet.prevRoom, packet.newRoom, connection.connection.peer);
-
         }
 
         broadcastRoomTransfer = (prevRoom: room.Room, newRoom: room.Room, pos: THREE.Matrix4) => {
             var packet: RoomSwitchPacket =
                 {
                     t: 'roomswitch',
-                    newRoom: prevRoom.id,
-                    prevRoom: newRoom.id
+                    prevRoom: prevRoom.id,
+                    newRoom: newRoom.id
                 };
 
             this.p2p.broadcastReliable(packet);
