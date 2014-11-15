@@ -1,6 +1,7 @@
 ﻿/// <reference path="../room/room.ts" />
 /// <reference path="portal.ts" />
 /// <reference path="versecontrols.ts" />
+/// <reference path="../multi/positionbroadcaster.ts" />
 
 module wm.verse {
     export class VerseClient {
@@ -29,7 +30,9 @@ module wm.verse {
             this.remoteAvatarWatcher = new multi.RemoteAvatarWatcher(this.networkClient.p2p);
 
             this.controls = new VerseControls(this.camera, this.roomCoordinator);
+
             window.addEventListener('resize', this.onWindowResize);
+            multi.PositionBroadcaster.start(this.controls.cameraObject, this.networkClient.p2p);
 
         }
 

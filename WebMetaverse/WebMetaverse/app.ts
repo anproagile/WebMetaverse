@@ -32,6 +32,8 @@ module wm {
             this.client = new verse.VerseClient(renderer);
             nc = this.client.networkClient;
             
+            
+
         }
 
         private createRenderer(): THREE.WebGLRenderer {
