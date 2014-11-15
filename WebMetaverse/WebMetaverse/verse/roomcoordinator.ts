@@ -30,6 +30,10 @@ module wm.verse {
             this.switchToRoom(this.roomDictionary[id]);
         }
 
+        isLoaded(roomId: string) {
+            return this.roomDictionary[roomId] ? true : false;
+        }
+
 
         switchToRoom(room: Room, positionInNewRoom: THREE.Matrix4 = new THREE.Matrix4()): void {
             var previousRoom = this.currentRoom;
@@ -47,7 +51,7 @@ module wm.verse {
                 var id = wm.urlToId(url);
             }
 
-            if (this.roomDictionary[id]) {
+            if (this.isLoaded(id)) {
                 throw 'Room "' + id + '" has already been loaded!';
             }
 
