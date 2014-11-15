@@ -50,6 +50,7 @@
     <TypeScriptCompile Include="typings\threejs\three.d.ts" />
     <TypeScriptCompile Include="typings\webrtc\MediaStream.d.ts" />
     <TypeScriptCompile Include="typings\webrtc\RTCPeerConnection.d.ts" />
+    <TypeScriptCompile Include="verse\versecontrols.ts" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="web.config" />

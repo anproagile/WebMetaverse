@@ -6,6 +6,9 @@ module wm.verse {
     import Room = wm.room.Room;
     import RoomLoader = wm.room.RoomLoader;
 
+    /**
+     * Contains room state and methods for switching to and loading other rooms.
+     */
     export class RoomCoordinator {
 
         loader: RoomLoader;
