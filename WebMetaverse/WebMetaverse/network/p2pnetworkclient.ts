@@ -12,7 +12,6 @@ module wm.network {
         connections: { [id: string]: NetworkConnection };
         networkClient: NetworkClient;
 
-        avatars: NetworkedMesh[];
 
         get localPeer(): Peer {
             return this.networkClient.localPeer;
@@ -38,32 +37,6 @@ module wm.network {
             });
 
         }
-
-        update() {
-          /*  for (var i = 0; i < this.avatars.length; i++) {
-                this.avatars[i].update();
-            }*/
-        }
-        /*
-        temp() { //Temporary hack!
-            this.avatars = [];
-            this.onNewUnreliableConnection.add((con) => {
-                var ava = new NetworkedMesh(new THREE.Mesh(new THREE.BoxGeometry(8, 16, 8)));
-                this.avatars.push(ava);
-                con.onReceiveUnreliable.add((msg) => ava.receivePosition(msg));
-                this.room.add(ava.mesh);
-
-                con.onDestroy.add(() => {
-                    var index = this.avatars.indexOf(ava);
-                    if (index > -1) {
-                        this.avatars.splice(index, 1);
-                    }
-                    this.room.scene.remove(ava.mesh);
-                });
-
-            });
-        }
-        */
 
         /**
         * Transmit reliably to all connected peers
@@ -125,6 +98,7 @@ module wm.network {
 
                 this.onNewConnection.trigger(networkConnection);
                 connection.on('data', (data) => this.onReceiveReliable.trigger(data, networkConnection));
+                
                 //After reliable connection has been made, create an unreliable one.
                 this.connectToPeerUnreliable(connection.peer);
             }

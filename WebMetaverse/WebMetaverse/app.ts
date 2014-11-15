@@ -32,10 +32,10 @@ module wm {
         originalCameraMatrixWorld: any;
 
         networkClient: wm.network.NetworkClient;
+        remoteAvatarWatcher: wm.multi.RemoteAvatarWatcher;
 
         constructor() {
             webmetaverse = this;
-            
 
             this.camera = new THREE.PerspectiveCamera(70, window.innerWidth / window.innerHeight, 0.001, 2000);
             this.createRenderer();
@@ -47,6 +47,9 @@ module wm {
             
             this.createNetworkClient();
             nc = this.networkClient;
+
+            this.remoteAvatarWatcher = new wm.multi.RemoteAvatarWatcher(this.networkClient.p2p);
+
         }
 
         private createRenderer() {
@@ -97,7 +100,7 @@ module wm {
             
             this.checkPortalIntersection();
 
-            this.networkClient.p2p.update();
+            this.remoteAvatarWatcher.update();
             if (this.i % 5 == 0) {
 
                 var timestamp = Date.now();

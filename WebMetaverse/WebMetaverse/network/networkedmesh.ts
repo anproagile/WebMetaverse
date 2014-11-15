@@ -67,7 +67,7 @@ module wm.network {
                 }
 
                 //console.log("Interpolating between " + stateBefore.time + " | " + stateAfter.time);
-                //console.log("i");
+                
 
                 this.mesh.position.copy(stateBefore.pos).lerp(stateAfter.pos, alpha);
 
@@ -76,7 +76,7 @@ module wm.network {
                 this.mesh.updateMatrix();
             }
             else { //extrapolate!
-                //console.log("e");
+                
                 var extrapolationTime = interpTime - newest.time;
 
                 if (extrapolationTime < 420) { //Better not extrapolate too far into the future, prevents endlessly floating objects.
@@ -100,7 +100,8 @@ module wm.network {
 
         }
 
-        receivePosition(data: PositionPacket) {
+        receivePosition = (data: PositionPacket) => {
+            if (data.t != 'p') return; //Not a position packet
 
             if (this.buffer.getNewest() && this.buffer.getNewest().time > data.ts) {
                 mlog.log("Already have a newer state, inserting is not worth the effort, discarding");

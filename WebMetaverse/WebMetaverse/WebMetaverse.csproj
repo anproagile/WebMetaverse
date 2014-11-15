@@ -25,7 +25,9 @@
     <TypeScriptCompile Include="app.ts" />
     <TypeScriptCompile Include="ds\circularbuffer.ts" />
     <TypeScriptCompile Include="event\event.ts" />
-    <TypeScriptCompile Include="multi\avatar.ts" />
+    <TypeScriptCompile Include="multi\positionbroadcaster.ts" />
+    <TypeScriptCompile Include="multi\remotevatarwatcher.ts" />
+    <TypeScriptCompile Include="multi\user.ts" />
     <TypeScriptCompile Include="network\chatclient.ts" />
     <TypeScriptCompile Include="network\networkconnection.ts" />
     <TypeScriptCompile Include="network\p2pnetworkclient.ts" />
