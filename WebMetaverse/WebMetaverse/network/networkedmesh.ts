@@ -127,7 +127,9 @@ module wm.network {
         }
 
 
-
+        clearBuffer() {
+            this.buffer.clear();
+        }
 
 
     }

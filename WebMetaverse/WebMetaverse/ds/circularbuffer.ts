@@ -38,5 +38,9 @@ module DS {
             return this.buffer[this.pointer];
         }
 
+        clear(): void {
+            this.buffer = [];
+        }
+
     }
 }
