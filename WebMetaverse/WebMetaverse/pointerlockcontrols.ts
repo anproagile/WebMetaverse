@@ -5,8 +5,6 @@
     */
     export class PointerLockControls {
 
-        camera: THREE.Camera;
-
         pitchObject: THREE.Object3D;
         yawObject: THREE.Object3D;
 

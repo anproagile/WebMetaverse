@@ -1,5 +1,6 @@
 ﻿/// <reference path="../room/room.ts" />
 /// <reference path="portal.ts" />
+/// <reference path="versecontrols.ts" />
 
 module wm.verse {
     export class VerseClient {
@@ -34,7 +35,6 @@ module wm.verse {
 
         update() {
 
-           
             this.controls.update();
             this.remoteAvatarWatcher.update();
 

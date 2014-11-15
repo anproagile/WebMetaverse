@@ -1,4 +1,5 @@
-﻿/// <reference path="typings/threejs/three.d.ts"/>
+﻿/// <reference path="verse/verseclient.ts" />
+/// <reference path="typings/threejs/three.d.ts"/>
 /// <reference path="network/networkclient.ts"/>
 /// <reference path="verse/portal.ts"/>
 /// <reference path="pointerlock.ts"/>
