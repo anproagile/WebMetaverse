@@ -49,23 +49,16 @@
             }
 
             if (this.roomCoordinator.roomDictionary[from]) {
-                console.log("Removed from " + from);
-                //this.roomCoordinator.roomDictionary[from].remove(avatar.mesh);
+                //console.log("Removed from " + from);
+                this.roomCoordinator.roomDictionary[from].remove(avatar.mesh);
             }
 
             this.userIdRoomDictionary[userId] = to;
             var room = this.roomCoordinator.roomDictionary[to];
             if (room) {
-                console.log("Added to " + to);
 
-                //Crazy workaround.. Instantly adding made avatar not show, despite being in the scene as a child.
-                room.add(avatar.mesh);
-                setTimeout(() => room.add(avatar.mesh), 20);
-                setTimeout(() => room.add(avatar.mesh), 50);
-                setTimeout(() => room.add(avatar.mesh), 100);
-                setTimeout(() => room.add(avatar.mesh), 250);
-                
-                
+                //Crazy workaround.. Instantly adding made avatar not show, despite being present in the new scene!.
+                webmetaverse.doEndOfTick.push(() => { room.add(avatar.mesh) });
             }
             else {
                 console.warn("Avatar moved to not yet loaded room, handling this is to be implemented");

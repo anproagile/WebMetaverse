@@ -8,7 +8,7 @@
 /// <reference path="verse/roomcoordinator.ts" />
 /// <reference path="multi/remoteavatarwatcher.ts" />
 
-var webmetaverse = {};
+var webmetaverse: wm.WebMetaverse = null;
 var nc;
 
 module wm {
@@ -17,9 +17,9 @@ module wm {
         return btoa(url);
     }
 
-    
-
     export class WebMetaverse {
+
+        doEndOfTick: { (): void; }[] = [];
 
         client: verse.VerseClient;
 
@@ -48,6 +48,11 @@ module wm {
         tick = () => {
             this.client.update();
             requestAnimationFrame(this.tick);
+
+            for (var i = 0; i < this.doEndOfTick.length; i++) {
+                this.doEndOfTick[i]();
+            }
+            this.doEndOfTick = [];
         }
 
 
@@ -64,7 +69,7 @@ module wm {
         webvr.client.networkClient.joinRoom();
         webvr.client.roomCoordinator.loadRoom('debug2');
         
-
+        
     };
 }
 

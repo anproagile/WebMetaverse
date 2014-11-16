@@ -37,6 +37,9 @@ module wm.verse {
             this.roomCommunicator = new multi.RoomCommunicator(this.networkClient.p2p, this.roomCoordinator)
             this.avatarRoomMover = new multi.RemoteAvatarRoomMover(this.roomCommunicator, this.roomCoordinator, this.remoteAvatarWatcher);
 
+            this.roomCommunicator.onRemoteUserRoomSwitch.add( (from, to, id) => this.remoteAvatarWatcher.getAvatarForId(id).clearBuffer() );
+
+
             this.controls = new VerseControls(this.camera, this.roomCoordinator);
 
             window.addEventListener('resize', this.onWindowResize);
