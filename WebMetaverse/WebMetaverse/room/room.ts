@@ -24,6 +24,7 @@ module wm.room {
         render(gl: WebGLRenderingContext, renderer: THREE.WebGLRenderer, camera) {
 
             renderer.clear(true, true, true);
+            
             for (var i = 0; i < this.portals.length; i++) {
                 this.portals[i].render(gl, renderer, camera);
             }
@@ -31,8 +32,8 @@ module wm.room {
 
             gl.colorMask(true, true, true, true);
             gl.depthMask(false);
-
             renderer.render(this.scene, camera);
+            
 
         }
 

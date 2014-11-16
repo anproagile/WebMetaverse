@@ -75,7 +75,7 @@
 
             //Draw stencil scene
             camera.matrixWorld = originalCameraMatrixWorld;
-            camera.updateMatrixWorld(true);
+            //camera.updateMatrixWorld(true);
             // clear the depth buffer and draw the fromPortal mesh into it
             renderer.clear(false, true, false);
             gl.colorMask(false, false, false, false);
