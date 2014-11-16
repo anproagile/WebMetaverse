@@ -50,7 +50,7 @@
 
             if (this.roomCoordinator.roomDictionary[from]) {
                 console.log("Removed from " + from);
-                this.roomCoordinator.roomDictionary[from].remove(avatar.mesh);
+                //this.roomCoordinator.roomDictionary[from].remove(avatar.mesh);
             }
 
             this.userIdRoomDictionary[userId] = to;
@@ -60,6 +60,7 @@
 
                 //Crazy workaround.. Instantly adding made avatar not show, despite being in the scene as a child.
                 room.add(avatar.mesh);
+                setTimeout(() => room.add(avatar.mesh), 20);
                 setTimeout(() => room.add(avatar.mesh), 50);
                 setTimeout(() => room.add(avatar.mesh), 100);
                 setTimeout(() => room.add(avatar.mesh), 250);
