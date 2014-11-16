@@ -64,10 +64,11 @@
             renderer.clear(false, true, false);
 
             gl.stencilFunc(gl.LESS, 0, 0xff);
-
+            
             camera.matrixWorld = this.getPortalViewMatrix(camera.matrixWorld);
 
             renderer.render(this.toScene, camera);
+
 
             gl.disable(gl.STENCIL_TEST);
             renderer.clear(false, false, true);
@@ -75,7 +76,7 @@
 
             //Draw stencil scene
             camera.matrixWorld = originalCameraMatrixWorld;
-            //camera.updateMatrixWorld(true);
+            
             // clear the depth buffer and draw the fromPortal mesh into it
             renderer.clear(false, true, false);
             gl.colorMask(false, false, false, false);

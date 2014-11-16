@@ -40,7 +40,9 @@
 
 
         private createAvatarMesh(id: string): THREE.Mesh {
-            return new THREE.Mesh(new THREE.BoxGeometry(8, 16, 8));
+            var mesh = new THREE.Mesh(new THREE.BoxGeometry(8, 16, 8));
+            mesh.name = id + "AVATAR";
+            return mesh;
         }
 
 

@@ -54,10 +54,17 @@
             }
 
             this.userIdRoomDictionary[userId] = to;
-            if (this.roomCoordinator.roomDictionary[to]) {
+            var room = this.roomCoordinator.roomDictionary[to];
+            if (room) {
                 console.log("Added to " + to);
-                this.roomCoordinator.roomDictionary[to].add(avatar.mesh);
 
+                //Crazy workaround.. Instantly adding made avatar not show, despite being in the scene as a child.
+                room.add(avatar.mesh);
+                setTimeout(() => room.add(avatar.mesh), 50);
+                setTimeout(() => room.add(avatar.mesh), 100);
+                setTimeout(() => room.add(avatar.mesh), 250);
+                
+                
             }
             else {
                 console.warn("Avatar moved to not yet loaded room, handling this is to be implemented");
