@@ -2,6 +2,9 @@
 /// <reference path="portal.ts" />
 /// <reference path="versecontrols.ts" />
 /// <reference path="../multi/positionbroadcaster.ts" />
+/// <reference path="../multi/roomcommunicator.ts" />
+/// <reference path="../multi/remoteavatarwatcher.ts" />
+/// <reference path="../multi/remoteavatarroommover.ts" />
 
 module wm.verse {
     export class VerseClient {
