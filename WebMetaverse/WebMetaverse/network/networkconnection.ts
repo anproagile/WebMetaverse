@@ -11,7 +11,7 @@
 
         constructor(connection: PeerJs.DataConnection) {
             this.connection = connection;
-            connection.on('data', (data) => this._onReceiveReliable(data));
+            connection.on('data', this._onReceiveReliable);
         }
 
         addUnreliableConnection(connection: PeerJs.DataConnection) {
@@ -19,16 +19,16 @@
                 mlog.error("You should add the unreliable connection here :c");
             }
             this.unreliableConnection = connection;
-            connection.on('data', (data) => this._onReceiveUnreliable(data));
+            connection.on('data', this._onReceiveUnreliable);
         }
 
 
-        _onReceiveReliable(data: any) {
+        _onReceiveReliable = (data: any) => {
             this.onReceiveReliable.trigger(data);
             this.onReceive.trigger(data, false);
         }
 
-        _onReceiveUnreliable(data: any) {
+        _onReceiveUnreliable = (data: any) => {
             this.onReceiveUnreliable.trigger(data);
             this.onReceive.trigger(data, false);
         }
