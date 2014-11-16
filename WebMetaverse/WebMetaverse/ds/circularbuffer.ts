@@ -39,7 +39,9 @@ module DS {
         }
 
         clear(): void {
+            var length = this.buffer.length;
             this.buffer = [];
+            this.buffer.length = length;
         }
 
     }
