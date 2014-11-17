@@ -10,7 +10,7 @@
         cameraObject: THREE.Object3D;
         prevPos: THREE.Vector3; //Camera position previous frame
 
-        constructor(camera: THREE.Camera, roomCoordinator: RoomCoordinator) {
+        constructor(camera: THREE.Camera, roomCoordinator: RoomState) {
             this.camera = camera;
             this.controls = new PointerLockControls(camera);
 

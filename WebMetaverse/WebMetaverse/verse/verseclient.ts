@@ -5,6 +5,7 @@
 /// <reference path="../multi/roomcommunicator.ts" />
 /// <reference path="../multi/remoteavatarwatcher.ts" />
 /// <reference path="../multi/remoteavatarroommover.ts" />
+/// <reference path="roomstate.ts" />
 
 module wm.verse {
     export class VerseClient {
@@ -19,7 +20,7 @@ module wm.verse {
         roomCommunicator: multi.RoomCommunicator;
         avatarRoomMover: multi.RemoteAvatarRoomMover;
 
-        roomCoordinator: RoomCoordinator;
+        roomCoordinator: RoomState;
         controls: VerseControls;
 
 
@@ -31,7 +32,7 @@ module wm.verse {
             this.camera = new THREE.PerspectiveCamera(70, aspect, 0.001, 2000);
 
             this.networkClient = new network.NetworkClient();
-            this.roomCoordinator = new verse.RoomCoordinator();
+            this.roomCoordinator = new verse.RoomState();
 
             this.remoteAvatarWatcher = new multi.RemoteAvatarWatcher(this.networkClient.p2p);
             this.roomCommunicator = new multi.RoomCommunicator(this.networkClient.p2p, this.roomCoordinator)

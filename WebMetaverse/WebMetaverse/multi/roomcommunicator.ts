@@ -10,9 +10,9 @@
 
 
         p2p: network.P2PNetworkClient;
-        coordinator: verse.RoomCoordinator;
+        coordinator: verse.RoomState;
 
-        constructor(p2p: network.P2PNetworkClient, roomCoordinator: verse.RoomCoordinator) {
+        constructor(p2p: network.P2PNetworkClient, roomCoordinator: verse.RoomState) {
             this.p2p = p2p;
             this.coordinator = roomCoordinator;
             this.init();

@@ -9,7 +9,7 @@ module wm.verse {
     /**
      * Contains room state and methods for switching to and loading other rooms.
      */
-    export class RoomCoordinator {
+    export class RoomState {
 
         loader: RoomLoader;
         currentRoom: Room = Room.EmptyRoom;

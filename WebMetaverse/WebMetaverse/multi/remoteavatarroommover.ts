@@ -5,7 +5,7 @@
      */
     export class RemoteAvatarRoomMover {
 
-        roomCoordinator: verse.RoomCoordinator;
+        roomCoordinator: verse.RoomState;
         avatarWatcher: RemoteAvatarWatcher;
 
         /**
@@ -14,7 +14,7 @@
         private userIdRoomDictionary: { [userId: string]: string };
 
 
-        constructor(communicator: RoomCommunicator, coordinator: verse.RoomCoordinator, avatarWatcher: RemoteAvatarWatcher) {
+        constructor(communicator: RoomCommunicator, coordinator: verse.RoomState, avatarWatcher: RemoteAvatarWatcher) {
             this.roomCoordinator = coordinator;
             this.avatarWatcher = avatarWatcher;
             this.userIdRoomDictionary = {};
