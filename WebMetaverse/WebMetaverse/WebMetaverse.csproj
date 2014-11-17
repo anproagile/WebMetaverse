@@ -29,7 +29,6 @@
     <TypeScriptCompile Include="multi\positionbroadcaster.ts" />
     <TypeScriptCompile Include="multi\remoteavatarwatcher.ts" />
     <TypeScriptCompile Include="multi\roomcommunicator.ts" />
-    <TypeScriptCompile Include="multi\user.ts" />
     <TypeScriptCompile Include="network\chatclient.ts" />
     <TypeScriptCompile Include="network\networkconnection.ts" />
     <TypeScriptCompile Include="network\p2pnetworkclient.ts" />
@@ -39,7 +38,7 @@
     <TypeScriptCompile Include="pointerlockcontrols.ts" />
     <TypeScriptCompile Include="room\roomlinker.ts" />
     <TypeScriptCompile Include="typings\minilog\minilog.d.ts" />
-    <TypeScriptCompile Include="verse\roomcoordinator.ts" />
+    <TypeScriptCompile Include="verse\roomstate.ts" />
     <TypeScriptCompile Include="room\roomgenerator.ts" />
     <TypeScriptCompile Include="room\roomloader.ts" />
     <TypeScriptCompile Include="verse\verseclient.ts" />

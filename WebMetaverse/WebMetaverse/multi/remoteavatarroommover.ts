@@ -14,8 +14,8 @@
         private userIdRoomDictionary: { [userId: string]: string };
 
 
-        constructor(communicator: RoomCommunicator, coordinator: verse.RoomState, avatarWatcher: RemoteAvatarWatcher) {
-            this.roomCoordinator = coordinator;
+        constructor(communicator: RoomCommunicator, roomState: verse.RoomState, avatarWatcher: RemoteAvatarWatcher) {
+            this.roomCoordinator = roomState;
             this.avatarWatcher = avatarWatcher;
             this.userIdRoomDictionary = {};
 

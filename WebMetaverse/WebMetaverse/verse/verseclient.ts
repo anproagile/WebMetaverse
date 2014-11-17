@@ -20,7 +20,7 @@ module wm.verse {
         roomCommunicator: multi.RoomCommunicator;
         avatarRoomMover: multi.RemoteAvatarRoomMover;
 
-        roomCoordinator: RoomState;
+        roomState: RoomState;
         controls: VerseControls;
 
 
@@ -32,16 +32,16 @@ module wm.verse {
             this.camera = new THREE.PerspectiveCamera(70, aspect, 0.001, 2000);
 
             this.networkClient = new network.NetworkClient();
-            this.roomCoordinator = new verse.RoomState();
+            this.roomState = new verse.RoomState();
 
             this.remoteAvatarWatcher = new multi.RemoteAvatarWatcher(this.networkClient.p2p);
-            this.roomCommunicator = new multi.RoomCommunicator(this.networkClient.p2p, this.roomCoordinator)
-            this.avatarRoomMover = new multi.RemoteAvatarRoomMover(this.roomCommunicator, this.roomCoordinator, this.remoteAvatarWatcher);
+            this.roomCommunicator = new multi.RoomCommunicator(this.networkClient.p2p, this.roomState)
+            this.avatarRoomMover = new multi.RemoteAvatarRoomMover(this.roomCommunicator, this.roomState, this.remoteAvatarWatcher);
 
             this.roomCommunicator.onRemoteUserRoomSwitch.add( (from, to, id) => this.remoteAvatarWatcher.getAvatarForId(id).clearBuffer() );
 
 
-            this.controls = new VerseControls(this.camera, this.roomCoordinator);
+            this.controls = new VerseControls(this.camera, this.roomState);
 
             window.addEventListener('resize', this.onWindowResize);
             multi.PositionBroadcaster.start(this.controls.cameraObject, this.networkClient.p2p);
@@ -53,7 +53,7 @@ module wm.verse {
             this.controls.update();
             this.remoteAvatarWatcher.update();
 
-            var intersectedPortal = this.controls.checkPortalIntersection(this.roomCoordinator.currentRoom);
+            var intersectedPortal = this.controls.checkPortalIntersection(this.roomState.currentRoom);
             if (intersectedPortal) {
                 console.log("Moved through portal!");
                 this.moveThroughPortal(intersectedPortal);
@@ -64,16 +64,16 @@ module wm.verse {
         }
 
         render() {
-            this.roomCoordinator.currentRoom.render(this.gl, this.renderer, this.camera);
+            this.roomState.currentRoom.render(this.gl, this.renderer, this.camera);
         }
 
 
 
         moveThroughPortal(portal: Portal) {
             var roomId = portal.toRoomId;
-            var room = this.roomCoordinator.roomDictionary[roomId];
+            var room = this.roomState.roomDictionary[roomId];
             var where = portal.getPortalViewMatrix(this.controls.camera.matrixWorld);
-            this.roomCoordinator.switchToRoom(room, where);
+            this.roomState.switchToRoom(room, where);
         }
 
         onWindowResize = (event) => {

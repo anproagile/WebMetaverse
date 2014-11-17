@@ -10,16 +10,16 @@
 
 
         p2p: network.P2PNetworkClient;
-        coordinator: verse.RoomState;
+        roomState: verse.RoomState;
 
-        constructor(p2p: network.P2PNetworkClient, roomCoordinator: verse.RoomState) {
+        constructor(p2p: network.P2PNetworkClient, roomState: verse.RoomState) {
             this.p2p = p2p;
-            this.coordinator = roomCoordinator;
+            this.roomState = roomState;
             this.init();
         }
 
         init() {
-            this.coordinator.onRoomSwitch.add(this.broadcastRoomTransfer);
+            this.roomState.onRoomSwitch.add(this.broadcastRoomTransfer);
             this.p2p.onReceiveReliable.add(this.handleRoomTransferPacket);
         }
 

@@ -60,12 +60,12 @@ module wm {
   
     window.onload = () => {
         var webvr = new WebMetaverse();
-        webvr.client.roomCoordinator.loadRoom('debug1');
-        webvr.client.roomCoordinator.switchToRoomWithId('debug1');
+        webvr.client.roomState.loadRoom('debug1');
+        webvr.client.roomState.switchToRoomWithId('debug1');
         
         webvr.tick();
         webvr.client.networkClient.joinRoom();
-        webvr.client.roomCoordinator.loadRoom('debug2');
+        webvr.client.roomState.loadRoom('debug2');
         
         
     };
