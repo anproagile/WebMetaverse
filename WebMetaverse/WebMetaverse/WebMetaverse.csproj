@@ -37,6 +37,7 @@
     <TypeScriptCompile Include="network\networkedmesh.ts" />
     <TypeScriptCompile Include="pointerlockcontrols.ts" />
     <TypeScriptCompile Include="room\roomlinker.ts" />
+    <TypeScriptCompile Include="Scripts\tsUnit\tsUnit.ts" />
     <TypeScriptCompile Include="typings\minilog\minilog.d.ts" />
     <TypeScriptCompile Include="verse\roomstate.ts" />
     <TypeScriptCompile Include="room\roomgenerator.ts" />
@@ -76,6 +77,7 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Scripts\typings\logg\" />
     <Folder Include="util\" />
   </ItemGroup>
   <PropertyGroup>
