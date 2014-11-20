@@ -1,10 +1,7 @@
 ﻿/// <reference path="../room/room.ts" />
 /// <reference path="portal.ts" />
 /// <reference path="versecontrols.ts" />
-/// <reference path="../multi/positionbroadcaster.ts" />
-/// <reference path="../multi/roomcommunicator.ts" />
-/// <reference path="../multi/remoteavatarwatcher.ts" />
-/// <reference path="../multi/remoteavatarroommover.ts" />
+/// <reference path="../multi/multiuserclient.ts" />
 /// <reference path="roomstate.ts" />
 
 module wm.verse {
@@ -15,13 +12,9 @@ module wm.verse {
 
         camera: THREE.PerspectiveCamera;
 
-        networkClient: network.NetworkClient;
-        remoteAvatarWatcher: multi.RemoteAvatarWatcher;
-        roomCommunicator: multi.RoomCommunicator;
-        avatarRoomMover: multi.RemoteAvatarRoomMover;
-
         roomState: RoomState;
         controls: VerseControls;
+        multiUserClient: multi.MultiUserClient
 
 
         constructor(renderer: THREE.WebGLRenderer) {
@@ -31,27 +24,19 @@ module wm.verse {
             var aspect = window.innerWidth / window.innerHeight;
             this.camera = new THREE.PerspectiveCamera(70, aspect, 0.001, 2000);
 
-            this.networkClient = new network.NetworkClient();
             this.roomState = new verse.RoomState();
-
-            this.remoteAvatarWatcher = new multi.RemoteAvatarWatcher(this.networkClient.p2p);
-            this.roomCommunicator = new multi.RoomCommunicator(this.networkClient.p2p, this.roomState)
-            this.avatarRoomMover = new multi.RemoteAvatarRoomMover(this.roomCommunicator, this.roomState, this.remoteAvatarWatcher);
-
-            this.roomCommunicator.onRemoteUserRoomSwitch.add( (from, to, id) => this.remoteAvatarWatcher.getAvatarForId(id).clearBuffer() );
-
 
             this.controls = new VerseControls(this.camera, this.roomState);
 
             window.addEventListener('resize', this.onWindowResize);
-            multi.PositionBroadcaster.start(this.controls.cameraObject, this.networkClient.p2p);
+            this.multiUserClient = new multi.MultiUserClient(this.roomState, this.controls);
 
         }
 
         update() {
 
             this.controls.update();
-            this.remoteAvatarWatcher.update();
+            this.multiUserClient.update();
 
             var intersectedPortal = this.controls.checkPortalIntersection(this.roomState.currentRoom);
             if (intersectedPortal) {

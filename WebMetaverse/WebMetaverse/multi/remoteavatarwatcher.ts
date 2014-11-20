@@ -3,6 +3,7 @@
 
         private avatars: { [id: string]: network.NetworkedMesh };
 
+
         public onAvatarDestroy: Events.I1ArgsEvent<string> = new Events.TypedEvent();
 
 
