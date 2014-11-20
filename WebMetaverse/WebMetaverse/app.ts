@@ -7,7 +7,6 @@
 /// <reference path="room/room.ts" />
 
 var webmetaverse: wm.WebMetaverse = null;
-var nc;
 
 module wm {
 
@@ -28,9 +27,6 @@ module wm {
             document.body.appendChild(renderer.domElement);
 
             this.client = new verse.VerseClient(renderer);
-            nc = this.client.networkClient;
-            
-            
 
         }
 
@@ -64,7 +60,7 @@ module wm {
         webvr.client.roomState.switchToRoomWithId('debug1');
         
         webvr.tick();
-        webvr.client.networkClient.joinRoom();
+        webvr.client.multiUserClient.networkClient.joinRoom();
         webvr.client.roomState.loadRoom('debug2');
         
         

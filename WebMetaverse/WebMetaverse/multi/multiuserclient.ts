@@ -1,4 +1,9 @@
-﻿module wm.multi {
+﻿/// <reference path="positionbroadcaster.ts" />
+/// <reference path="remoteavatarroommover.ts" />
+/// <reference path="remoteavatarwatcher.ts" />
+/// <reference path="remoteuserstate.ts" />
+/// <reference path="roomcommunicator.ts" />
+module wm.multi {
 
     export class MultiUserClient {
 

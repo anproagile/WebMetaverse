@@ -5,6 +5,9 @@
 /// <reference path="networkconnection.ts"/>
 /// <reference path="networkedmesh.ts"/>
 /// <reference path="../event/event.ts"/>
+
+var nc;
+
 module wm.network {
 
     export class P2PNetworkClient {
@@ -35,7 +38,7 @@ module wm.network {
                 mlog.log("Incoming " + (connection.reliable?"reliable":"unreliable")+ " connection from " + connection.peer);
                 this.onConnectionToPeerCreate(connection);
             });
-
+            nc = this;
         }
 
         /**
