@@ -3,6 +3,7 @@
     export class Portal extends THREE.Mesh {
         
         stencilScene: THREE.Scene;
+
         toRoomId: string;
 
         toScene: THREE.Scene;
@@ -11,6 +12,7 @@
 
         constructor(toRoomId: string) {
             this.toRoomId = toRoomId;
+
             var geom = new THREE.PlaneGeometry(20, 60);
             //var geom = new THREE.CylinderGeometry(20, 20, 50);
             var mat = new THREE.MeshBasicMaterial();
@@ -98,6 +100,9 @@
         * @return an intersection with the portal mesh was made.
         */
         checkIntersection(from: THREE.Vector3, to: THREE.Vector3): boolean {
+
+            //Portal doesn't have a target
+            if (!this.toPortal) return false;
 
             var direction = new THREE.Vector3().copy(to).sub(from);
 

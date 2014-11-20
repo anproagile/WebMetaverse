@@ -54,8 +54,12 @@ module wm.room {
                 throw 'Room already has an entrance portal!';
             }
             var portal = new Portal('ENTRANCE');
+
+            
+
             //this.add(portal);
             this.entrancePortal = portal;
+            this.portals.push(portal);
         }
 
 

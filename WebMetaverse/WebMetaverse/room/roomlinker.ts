@@ -12,7 +12,7 @@
             //Link new room's portals
             newRoom.portals.forEach( (portal) => {
                 if (roomDictionary[portal.toRoomId]) {
-                    this.linkPortalToRoom(portal, roomDictionary[portal.toRoomId]);
+                    this.linkPortalToRoom(newRoom, portal, roomDictionary[portal.toRoomId]);
                 }
             });
 
@@ -20,18 +20,19 @@
             rooms.forEach((room) =>
                 room.portals.forEach((portal) => {
                     if (portal.toRoomId == newRoom.id && !portal.isLinked()) {
-                        this.linkPortalToRoom(portal, roomDictionary[portal.toRoomId]);
+                        this.linkPortalToRoom(room, portal, roomDictionary[portal.toRoomId]);
                     }
                 })
             );
         }
 
-        static linkPortalToRoom(portal: Portal, room: Room) {
+        static linkPortalToRoom(fromRoom: Room, portal: Portal, room: Room) {
             if (!room.entrancePortal) {
                 room.addEntrancePortal(); //Lazily add entrance portal
             }
             
             portal.setToPortal(room.entrancePortal, room);
+            //room.entrancePortal.setToPortal(portal, fromRoom);
         }
 
 

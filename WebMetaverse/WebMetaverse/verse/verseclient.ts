@@ -52,9 +52,20 @@ module wm.verse {
             this.roomState.currentRoom.render(this.gl, this.renderer, this.camera);
         }
 
-
-
         moveThroughPortal(portal: Portal) {
+
+            var otherEndPortal = portal.toPortal;
+
+            //Ensure that the portal that was just moved through points to the portal we entered
+            // (So we could turn around and go back)
+            otherEndPortal.setToPortal(portal, this.roomState.currentRoom);
+            otherEndPortal.toPortal
+
+            //TODO remove the necessity of moving portals around to match rotation.
+            //Requires fix of rendering
+            otherEndPortal.rotation.setFromQuaternion(portal.quaternion);
+            otherEndPortal.rotateY(Math.PI);
+
             var roomId = portal.toRoomId;
             var room = this.roomState.roomDictionary[roomId];
             var where = portal.getPortalViewMatrix(this.controls.camera.matrixWorld);
