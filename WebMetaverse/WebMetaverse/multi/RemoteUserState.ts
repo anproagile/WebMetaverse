@@ -1,5 +1,5 @@
 ﻿module wm.multi {
-    class RemoteUserState {
+    export class RemoteUserState {
 
         /**
          * Maps of (remote) user ID to room ID
