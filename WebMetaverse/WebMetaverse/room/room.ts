@@ -22,19 +22,36 @@ module wm.room {
         }
 
         render(gl: WebGLRenderingContext, renderer: THREE.WebGLRenderer, camera) {
-
+            //0 Clear the previous frame
             renderer.clear(true, true, true);
             
+
             for (var i = 0; i < this.portals.length; i++) {
                 this.portals[i].render(gl, renderer, camera);
             }
+            //9 Disable the stencil test, disable drawing to the color buffer, 
+            // and enable drawing to the depth buffer.
+            gl.disable(gl.STENCIL_TEST);
+            gl.colorMask(false, false, false, false);
+            gl.depthMask(true);
 
+            // 10 Clear the depth buffer.
+            renderer.clear(false, true, false);
 
+            // 11 Draw the portal frame once again, 
+            // this time to the depth buffer which was just cleared.
+            for (var i = 0; i < this.portals.length; i++) {
+                renderer.render(this.portals[i].stencilScene, camera);
+            }
+
+            // 12 Enable the color buffer again.
             gl.colorMask(true, true, true, true);
-            gl.depthMask(false);
+            // 13 Draw the whole scene with the regular camera.
             renderer.render(this.scene, camera);
             
+            // 14 ???
 
+            // 15 profit
         }
 
         add(object: THREE.Object3D) {

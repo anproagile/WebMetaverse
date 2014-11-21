@@ -40,7 +40,6 @@
         }
 
 
-
         public render(gl: WebGLRenderingContext, renderer: THREE.WebGLRenderer, camera: THREE.PerspectiveCamera) {
 
             if (!this.toScene) { //Can't draw this portal if the room it points to isn't loaded yet
@@ -48,45 +47,49 @@
             }
             var originalCameraMatrixWorld = camera.matrixWorld.clone();
 
-            // 1: draw portal mesh into stencil buffer
+            // 1 Disable drawing to the color buffer and the depth buffer, 
+            // but enable writing to the stencil buffer.
             gl.colorMask(false, false, false, false);
-            gl.depthMask(true);
+            gl.depthMask(false);
             gl.enable(gl.STENCIL_TEST);
             gl.stencilMask(0xFF);
-            gl.stencilFunc(gl.NEVER, 0, 0xFF);
+            
+
+            // 2 Set the stencil operation to GL_INCR on sfail,
+            // meaning that the stencil value will be incremented when the stencil test fails.
             gl.stencilOp(gl.INCR, gl.KEEP, gl.KEEP);
 
+            // 3 Set the stencil function to GL_NEVER, 
+            // which makes sure that the stencil test always fails on every pixel drawn.
+            gl.stencilFunc(gl.NEVER, 0, 0xFF);
+
+            // 4 Draw the portal’s frame. At this point the stencil buffer is filled with zero’s
+            // on the outside of the portal’s frame and one’s on the inside.
             renderer.render(this.stencilScene, camera);
 
-            gl.colorMask(true, true, true, true);
-            gl.depthMask(true);
-            gl.stencilOp(gl.KEEP, gl.KEEP, gl.KEEP);
-
-            // 2: draw toScene on stencil
-            renderer.clear(false, true, false);
-
-            gl.stencilFunc(gl.LESS, 0, 0xff);
-            
+            // 5 Generate the virtual camera’s view matrix using the view frustum clipping method.
             camera.matrixWorld = this.getPortalViewMatrix(camera.matrixWorld);
 
+            // 6 Disable writing to the stencil buffer, 
+            // but enable drawing to the color buffer and the depth buffer.
+            gl.stencilMask(0x00);
+            gl.colorMask(true, true, true, true);
+            gl.depthMask(true);
+
+            // 7 Set the stencil function to GL_LEQUAL with reference value 1. 
+            // This will only draw where the stencil value is greater than or equal to 1, 
+            // which is inside the portal frame.
+            gl.stencilFunc(gl.LEQUAL, 1, 0xff);
+
+            // 8 Draw the scene using the virtual camera from step 5. 
+            // This will only draw inside of the portal’s frame because of the stencil test.
             renderer.render(this.toScene, camera);
 
-
-            gl.disable(gl.STENCIL_TEST);
-            renderer.clear(false, false, true);
-
-
-            //Draw stencil scene
-            camera.matrixWorld = originalCameraMatrixWorld;
             
-            // clear the depth buffer and draw the fromPortal mesh into it
-            renderer.clear(false, true, false);
-            gl.colorMask(false, false, false, false);
-            gl.depthMask(true);
-            renderer.render(this.stencilScene, camera);
-
+            camera.matrixWorld = originalCameraMatrixWorld;
 
         }
+
 
         getPortalViewMatrix(originalView: THREE.Matrix4) {
             var t = new THREE.Matrix4().makeTranslation(this.position.x - this.toPortal.position.x, this.position.y - this.toPortal.position.y, this.position.z - this.toPortal.position.z);
