@@ -57,13 +57,14 @@ module wm {
     window.onload = () => {
         var webvr = new WebMetaverse();
         webvr.client.roomState.loadRoom('debug1');
-        webvr.client.roomState.switchToRoomWithId('debug1');
-        
+        webvr.client.roomState.loadRoom('debug2');
+
+
         webvr.tick();
         webvr.client.multiUserClient.networkClient.joinRoom();
-        webvr.client.roomState.loadRoom('debug2');
         
         
+        webvr.client.roomState.switchToRoomWithId('debug1');
     };
 }
 

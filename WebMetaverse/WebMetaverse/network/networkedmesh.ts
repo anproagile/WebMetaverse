@@ -77,7 +77,7 @@ module wm.network {
             }
             else { //extrapolate!
                 
-                var extrapolationTime = interpTime - newest.time;
+                var extrapolationTime: number = interpTime - newest.time;
 
                 if (extrapolationTime < 420) { //Better not extrapolate too far into the future, prevents endlessly floating objects.
                     this.mesh.position.copy(newest.pos).add(newest.vel.clone().multiplyScalar(extrapolationTime)); //pos = newestPos + newestVel * timeElapsed

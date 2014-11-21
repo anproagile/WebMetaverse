@@ -38,7 +38,20 @@
     <TypeScriptCompile Include="network\networkedmesh.ts" />
     <TypeScriptCompile Include="pointerlockcontrols.ts" />
     <TypeScriptCompile Include="room\roomlinker.ts" />
-    <TypeScriptCompile Include="Scripts\tsUnit\tsUnit.ts" />
+    <TypeScriptCompile Include="typings\threejs\detector.d.ts" />
+    <TypeScriptCompile Include="typings\threejs\three-canvasrenderer.d.ts" />
+    <TypeScriptCompile Include="typings\threejs\three-copyshader.d.ts" />
+    <TypeScriptCompile Include="typings\threejs\three-css3drenderer.d.ts" />
+    <TypeScriptCompile Include="typings\threejs\three-effectcomposer.d.ts" />
+    <TypeScriptCompile Include="typings\threejs\three-maskpass.d.ts" />
+    <TypeScriptCompile Include="typings\threejs\three-orbitcontrols.d.ts" />
+    <TypeScriptCompile Include="typings\threejs\three-projector.d.ts" />
+    <TypeScriptCompile Include="typings\threejs\three-renderpass.d.ts" />
+    <TypeScriptCompile Include="typings\threejs\three-shaderpass.d.ts" />
+    <TypeScriptCompile Include="typings\threejs\three-trackballcontrols.d.ts" />
+    <TypeScriptCompile Include="typings\threejs\three.d.ts" />
+    <TypeScriptCompile Include="typings\tsUnit\tsUnit.ts" />
+    <TypeScriptCompile Include="typings\webaudioapi\waa.d.ts" />
     <TypeScriptCompile Include="typings\minilog\minilog.d.ts" />
     <TypeScriptCompile Include="multi\multiuserclient.ts" />
     <TypeScriptCompile Include="verse\roomstate.ts" />
@@ -49,7 +62,6 @@
     <TypeScriptCompile Include="room\room.ts" />
     <TypeScriptCompile Include="network\networkclient.ts" />
     <TypeScriptCompile Include="typings\peerjs\Peer.d.ts" />
-    <TypeScriptCompile Include="typings\threejs\three.d.ts" />
     <TypeScriptCompile Include="typings\webrtc\MediaStream.d.ts" />
     <TypeScriptCompile Include="typings\webrtc\RTCPeerConnection.d.ts" />
     <TypeScriptCompile Include="verse\versecontrols.ts" />
@@ -79,7 +91,6 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Scripts\typings\logg\" />
     <Folder Include="util\" />
   </ItemGroup>
   <PropertyGroup>

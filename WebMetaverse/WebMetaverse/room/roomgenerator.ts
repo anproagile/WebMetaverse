@@ -38,8 +38,8 @@
             room.add(obj2);
 
             var portal = new Portal('debug2');
-            portal.position.x = -20;
-            portal.position.z = -50;
+            portal.position.x = -40;
+            portal.position.z = -80;
             portal.updateMatrix();
             
             room.portals.push(portal);
@@ -80,7 +80,7 @@
 
             var portal = new Portal('debug1');
             portal.rotateY(Math.PI);
-            portal.position.x = 20;
+            portal.position.x = 80;
             
             room.portals.push(portal);
             portal.updateMatrix();

@@ -32,7 +32,7 @@
             }
             
             portal.setToPortal(room.entrancePortal, room);
-            //room.entrancePortal.setToPortal(portal, fromRoom);
+            room.entrancePortal.setToPortal(portal, fromRoom);
         }
 
 

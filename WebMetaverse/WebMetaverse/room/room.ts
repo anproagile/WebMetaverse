@@ -24,16 +24,25 @@ module wm.room {
         render(gl: WebGLRenderingContext, renderer: THREE.WebGLRenderer, camera) {
             //0 Clear the previous frame
             renderer.clear(true, true, true);
-            
+
+
+            gl.enable(gl.STENCIL_TEST);
+            // 2 Set the stencil operation to GL_REPLACE on sfail,
+            // meaning that the stencil value will be set when the stencil test fails.
+            gl.stencilOp(gl.REPLACE, gl.KEEP, gl.KEEP);
+
 
             for (var i = 0; i < this.portals.length; i++) {
-                this.portals[i].render(gl, renderer, camera);
+                this.portals[i].render(gl, renderer, camera, i);
             }
+
             //9 Disable the stencil test, disable drawing to the color buffer, 
             // and enable drawing to the depth buffer.
             gl.disable(gl.STENCIL_TEST);
+            
             gl.colorMask(false, false, false, false);
             gl.depthMask(true);
+            
 
             // 10 Clear the depth buffer.
             renderer.clear(false, true, false);
