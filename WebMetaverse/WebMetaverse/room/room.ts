@@ -33,6 +33,7 @@ module wm.room {
 
 
             for (var i = 0; i < this.portals.length; i++) {
+            //for (var i = this.portals.length-1; i >= 0; i--) {
                 this.portals[i].render(gl, renderer, camera, i);
             }
 

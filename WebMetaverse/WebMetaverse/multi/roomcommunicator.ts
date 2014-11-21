@@ -6,14 +6,13 @@
      */
     export class RoomCommunicator {
 
-        public onRemoteUserRoomSwitch: RoomSwitchEvent = new Events.TypedEvent();
-
-
         p2p: network.P2PNetworkClient;
+        remoteUserState: multi.RemoteUserState;
         roomState: verse.RoomState;
 
-        constructor(p2p: network.P2PNetworkClient, roomState: verse.RoomState) {
+        constructor(remoteUserState: multi.RemoteUserState, p2p: network.P2PNetworkClient, roomState: verse.RoomState) {
             this.p2p = p2p;
+            this.remoteUserState = remoteUserState;
             this.roomState = roomState;
             this.init();
         }
@@ -27,7 +26,7 @@
         handleRoomTransferPacket = (packet: any, connection: network.NetworkConnection) => {
             if (packet.t != 'roomswitch') return; //Not a roomswitch packet
 
-            this.onRemoteUserRoomSwitch.trigger(packet.prevRoom, packet.newRoom, connection.connection.peer);
+            this.remoteUserState.onRemoteUserRoomSwitch.trigger(packet.prevRoom, packet.newRoom, connection.connection.peer);
         }
 
         broadcastRoomTransfer = (prevRoom: room.Room, newRoom: room.Room, pos: THREE.Matrix4) => {

@@ -1,42 +1,41 @@
 ﻿module wm.multi {
+    /**
+     * Creates new avatars, calls interpolation/extrapolation of these meshes on update.
+    **/
     export class RemoteAvatarWatcher {
 
-        private avatars: { [id: string]: network.NetworkedMesh };
+        remoteUserState: RemoteUserState;
 
 
-        public onAvatarDestroy: Events.I1ArgsEvent<string> = new Events.TypedEvent();
 
-
-        constructor(p2p: network.P2PNetworkClient) {
-            this.avatars = {};
+        constructor(remoteUserState: RemoteUserState, p2p: network.P2PNetworkClient) {
+            this.remoteUserState = remoteUserState;
             this.init(p2p);
-            
         }
 
-        private init(p2p) {
+        private init(p2p): void {
+
+
             p2p.onNewUnreliableConnection.add( (con: network.NetworkConnection) => {
                 var id = con.connection.peer;
                 var mesh = this.createAvatarMesh(id);
                 var avatar = new network.NetworkedMesh(mesh);
-                this.avatars[id] = avatar;
 
+                //Add new avatar to model
+                this.remoteUserState.setAvatarForId(id, avatar);
+
+                //Listen for packets (position packets)
                 con.onReceiveUnreliable.add(avatar.receivePosition);
 
                 con.onDestroy.add(() => {
                     var id = con.connection.peer;
-                    this.onAvatarDestroy.trigger(id);
 
-                    con.onReceiveUnreliable.remove(this.avatars[id].receivePosition);
-                    delete this.avatars[id];
-
+                    con.onReceiveUnreliable.remove(this.remoteUserState.getAvatarForId(id).receivePosition);
+                    this.remoteUserState.removeAvatarForId(id);
                 });
 
             });
 
-        }
-
-        public getAvatarForId(id: string): network.NetworkedMesh {
-            return this.avatars[id];
         }
 
 
@@ -48,8 +47,8 @@
 
 
         public update() {
-            for (var id in this.avatars) {
-                this.avatars[id].update();
+            for (var id in this.remoteUserState.avatars) {
+                this.remoteUserState.avatars[id].update();
             }
 
         }

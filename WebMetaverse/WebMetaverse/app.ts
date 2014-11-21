@@ -32,7 +32,7 @@ module wm {
 
         private createRenderer(): THREE.WebGLRenderer {
             var renderer = new THREE.WebGLRenderer();
-            renderer.setClearColor(0x000000);
+            //renderer.setClearColor(0xf0ff00, 1000);
             renderer.setSize(window.innerWidth, window.innerHeight);
             renderer.autoClear = false;
 

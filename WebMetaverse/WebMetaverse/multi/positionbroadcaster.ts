@@ -11,7 +11,7 @@
 
 
         static broadcastPosition(object: THREE.Object3D, p2p: network.P2PNetworkClient) {
-
+            
             var pos: network.PositionPacket =  {
                 t: 'p',
                 ts: Date.now(),

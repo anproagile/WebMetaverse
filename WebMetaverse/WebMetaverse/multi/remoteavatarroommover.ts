@@ -6,35 +6,32 @@
     export class RemoteAvatarRoomMover {
 
         roomCoordinator: verse.RoomState;
-        avatarWatcher: RemoteAvatarWatcher;
-
-        /**
-         * Keeps track of which room a user is in. Maps user ID to room ID
-         */
-        private userIdRoomDictionary: { [userId: string]: string };
+        remoteUserState: RemoteUserState;
 
 
-        constructor(communicator: RoomCommunicator, roomState: verse.RoomState, avatarWatcher: RemoteAvatarWatcher) {
+        constructor(remoteUserState: RemoteUserState, roomState: verse.RoomState) {
             this.roomCoordinator = roomState;
-            this.avatarWatcher = avatarWatcher;
-            this.userIdRoomDictionary = {};
+            this.remoteUserState = remoteUserState;
 
-            communicator.onRemoteUserRoomSwitch.add(this.moveAvatar);
-            avatarWatcher.onAvatarDestroy.add(this.removeAvatar);
+            remoteUserState.onRemoteUserRoomSwitch.add(this.moveAvatar);
+            remoteUserState.onAvatarDestroy.add(this.removeAvatar);
         }
 
 
         removeAvatar = (userId: string) => {
-            var avatar = this.avatarWatcher.getAvatarForId(userId);
+            var avatar = this.remoteUserState.getAvatarForId(userId);
             if (!avatar) return;
 
-            var roomId = this.userIdRoomDictionary[userId];
+
+            var roomId = this.remoteUserState.userIdRoomMap[userId];
+
+            //User is in a room
             if (roomId) {
                 var room = this.roomCoordinator.roomDictionary[roomId];
-                if (room) {
+                if (room) { //This room has been loaded (and thus the avatar is in there).
                     room.remove(avatar.mesh);
                 }
-                delete this.userIdRoomDictionary[userId];
+                delete this.remoteUserState.userIdRoomMap[userId];
             }
 
         }
@@ -43,7 +40,7 @@
 
             console.log("Moving user " + userId + " from " + from + " to " + to);
 
-            var avatar = this.avatarWatcher.getAvatarForId(userId);
+            var avatar = this.remoteUserState.getAvatarForId(userId);
             if (!avatar) {
                 throw "Trying to move non-existant avatar to some other room";
             }
@@ -53,7 +50,7 @@
                 this.roomCoordinator.roomDictionary[from].remove(avatar.mesh);
             }
 
-            this.userIdRoomDictionary[userId] = to;
+            this.remoteUserState.userIdRoomMap[userId] = to;
             var room = this.roomCoordinator.roomDictionary[to];
             if (room) {
 

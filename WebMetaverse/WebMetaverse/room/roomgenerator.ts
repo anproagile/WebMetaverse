@@ -28,7 +28,7 @@
             var g = new THREE.BoxGeometry(60, 20, 10);
             var m = new THREE.MeshNormalMaterial();
             var cube = new THREE.Mesh(g, m);
-            cube.position.set(0, 10, -95);
+            cube.position.set(0, 10, -65);
             room.add(cube);
 
             var g2 = new THREE.IcosahedronGeometry(50, 2);

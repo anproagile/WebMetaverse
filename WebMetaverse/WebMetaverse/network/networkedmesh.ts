@@ -103,6 +103,8 @@ module wm.network {
         receivePosition = (data: PositionPacket) => {
             if (data.t != 'p') return; //Not a position packet
 
+            //console.log("Received position packet ", data);
+
             if (this.buffer.getNewest() && this.buffer.getNewest().time > data.ts) {
                 mlog.log("Already have a newer state, inserting is not worth the effort, discarding");
                 //It does however still hold value, as it allows for more precise interpolation.
