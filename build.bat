@@ -1,2 +1,2 @@
-tsc --target ES5 --out build/webmetaverse.js WebMetaverse/app.ts
+tsc --target ES5 --out build/webmetaverse.js WebMetaverse/webmetaverse.ts
 pause
