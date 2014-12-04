@@ -1,5 +1,0 @@
-*.js
-!peer.js
-!minilog.js
-*.js.map
-packages/

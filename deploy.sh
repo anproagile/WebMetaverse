@@ -7,10 +7,10 @@ bash build.sh
  git config --global user.name "WM Bot"
  git config --global user.email "bot@webmetaverse.com"
 # cp ../CNAME ./CNAME
- cp ../WebMetaverse/WebMetaverse/peer.js ./peer.js
- cp ../WebMetaverse/WebMetaverse/minilog.js ./minilog.js
- cp ../WebMetaverse/WebMetaverse/index.html ./index.html
- cp ../WebMetaverse/WebMetaverse/app.css ./app.css
+ cp ../lib/peer.js ./peer.js
+ cp ../lib/minilog.js ./minilog.js
+ cp ../static/index.html ./index.html
+ cp ../static/app.css ./app.css
  git add .
  git commit -m "Deploy to Github Pages"
  git push --force --quiet "https://${GH_TOKEN}@${GH_REF}" master:gh-pages > /dev/null 2>&1
