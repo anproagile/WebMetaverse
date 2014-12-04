@@ -32,28 +32,11 @@
     <Content Include="src\network\networkclient.js" />
     <Content Include="src\network\NetworkPlayer.js" />
     <Content Include="src\network\p2pnetworkclient.js" />
-    <Content Include="src\webmetaverse.js" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="src\bin\WebMetaverse.dll.config" />
-    <Content Include="src\packages.config" />
-    <Content Include="src\web.config" />
-    <None Include="src\web.Debug.config">
-      <DependentUpon>web.config</DependentUpon>
-    </None>
-    <None Include="src\web.Release.config">
-      <DependentUpon>web.config</DependentUpon>
-    </None>
-    <Content Include="src\webmetaverse.js.map" />
     <Content Include="static\app.css" />
     <Content Include="static\index.html" />
-    <Content Include="vsconfig\web.config" />
-    <None Include="vsconfig\web.Debug.config">
-      <DependentUpon>web.config</DependentUpon>
-    </None>
-    <None Include="vsconfig\web.Release.config">
-      <DependentUpon>web.config</DependentUpon>
-    </None>
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="src\ds\circularbuffer.ts" />
