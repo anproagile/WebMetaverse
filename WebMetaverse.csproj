@@ -26,6 +26,7 @@
     <Folder Include="src\util\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Gruntfile.js" />
     <Content Include="src\.gitignore" />
     <Content Include="src\bin\WebMetaverse.dll" />
     <Content Include="src\bin\WebMetaverse.pdb" />
@@ -82,6 +83,9 @@
     <TypeScriptCompile Include="src\verse\verseclient.ts" />
     <TypeScriptCompile Include="src\verse\versecontrols.ts" />
     <TypeScriptCompile Include="src\webmetaverse.ts" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="package.json" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">12.0</VisualStudioVersion>
