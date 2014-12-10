@@ -21,7 +21,6 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Properties\" />
     <Folder Include="src\typings\util\" />
     <Folder Include="src\util\" />
   </ItemGroup>
@@ -30,9 +29,6 @@
     <Content Include="src\.gitignore" />
     <Content Include="src\bin\WebMetaverse.dll" />
     <Content Include="src\bin\WebMetaverse.pdb" />
-    <Content Include="src\network\networkclient.js" />
-    <Content Include="src\network\NetworkPlayer.js" />
-    <Content Include="src\network\p2pnetworkclient.js" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="src\bin\WebMetaverse.dll.config" />

@@ -1,3 +1,4 @@
+/// <vs BeforeBuild='copy' />
 module.exports = function(grunt) {
 
   grunt.initConfig({
