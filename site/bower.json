@@ -1,22 +1,12 @@
 {
-  "name": "WebMetaverse",
+  "name": "webmetaverse",
   "version": "0.0.0",
-  "homepage": "https://github.com/Rahazan/WebMetaverse",
-  "authors": [
-    "Guido Zuidhof <me@guido.io>"
-  ],
-  "license": "None",
-  "private": true,
-  "ignore": [
-    "**/.*",
-    "node_modules",
-    "bower_components",
-    "test",
-    "tests"
-  ],
   "dependencies": {
-    "polymer": "Polymer/polymer#~0.5.1",
-    "paper-elements": "Polymer/paper-elements#~0.5.1",
-    "core-elements": "Polymer/core-elements#~0.5.1"
+    "core-elements": "Polymer/core-elements#^0.5.1",
+    "paper-elements": "Polymer/paper-elements#^0.5.1",
+    "polymer": "Polymer/polymer#^0.5.1"
+  },
+  "devDependencies": {
+    "web-component-tester": "Polymer/web-component-tester#^2.0.0"
   }
 }
