@@ -1,0 +1,29 @@
+:host {
+  display: block;
+  width: 700px;
+
+}
+
+#chatlog {
+  min-height: 180px;
+  height: 180px;
+  background: #eee;
+  padding: 6px;
+}
+
+
+paper-input {
+  margin:-4px 6px;
+  width: 634px;
+}
+
+paper-icon-button {
+  color: #555;
+}
+
+td:first-child  {
+  color: #777;
+  width: 50px;
+  text-align: right;
+  padding: 0 6px;
+}

@@ -1,0 +1,43 @@
+<link rel="import" href="../../bower_components/polymer/polymer.html">
+<link rel="import" href="../../bower_components/paper-input/paper-input.html">
+<link rel="import" href="../../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../../bower_components/paper-shadow/paper-shadow.html">
+<link rel="import" href="../../bower_components/core-icon/core-icon.html">
+
+<polymer-element name="wm-chat" attributes="">
+  <template>
+    <paper-shadow z="2">
+      <link rel="stylesheet" href="wm-chat.css">
+
+        <paper-shadow id="chatlog">
+          <table class="log">
+            <template repeat="{{ message in messages }}">
+              <tr>
+                <td>{{ message.user }}</td>
+                <td>{{message.msg}}</td>
+              </tr>
+            </template>
+          </table>
+        </paper-shadow>
+
+        <paper-input label="Say hello!"></paper-input>
+
+        <paper-icon-button icon="send"></paper-icon-button>
+    </paper-shadow>
+  </template>
+  <script>
+    (function () {
+
+      Polymer({
+        // define element prototype here
+        ready: function() {
+          this.messages = [
+            {user: 'G', msg: 'Hello!'},
+            {user: 'Harry', msg: 'lorem ipsum'}
+          ];
+        }
+      });
+
+    })();
+  </script>
+</polymer-element>
