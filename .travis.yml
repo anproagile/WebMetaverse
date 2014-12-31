@@ -16,6 +16,9 @@ script:
 - cd ..
 - bash deploy.sh
 - ls
+- cd site
+- cd dist
+- ls
 branches: "-master"
 env:
   global:
