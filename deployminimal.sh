@@ -1,8 +1,8 @@
 #!/bin/bash
 rm -rf build|| exit 0;
-cd site
-grunt
-( cd dist
+mkdir build; 
+grunt full
+( cd build
  git init
  git config --global user.name "WM Bot"
  git config --global user.email "bot@webmetaverse.com"

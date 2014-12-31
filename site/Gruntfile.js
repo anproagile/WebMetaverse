@@ -21,7 +21,8 @@ module.exports = function (grunt) {
   // configurable paths
   var yeomanConfig = {
     app: 'app',
-    dist: 'dist'
+    dist: 'dist',
+	root: '../'
   };
 
   grunt.initConfig({
@@ -40,13 +41,9 @@ module.exports = function (grunt) {
           '<%= yeoman.app %>/elements/{,*/}*.html',
           '{.tmp,<%= yeoman.app %>}/elements/{,*/}*.css',
           '{.tmp,<%= yeoman.app %>}/styles/{,*/}*.css',
-          '{.tmp,<%= yeoman.app %>}/scripts/{,*/}*.js',
-          '<%= yeoman.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}'
+          '<%= yeoman.app %>/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
+		  '<%= yeoman.root %>/build/{,*/}*.js'
         ]
-      },
-      js: {
-        files: ['<%= yeoman.app %>/scripts/{,*/}*.js'],
-        tasks: ['jshint']
       },
       styles: {
         files: [
@@ -81,7 +78,7 @@ module.exports = function (grunt) {
           ext: '.css'
         }]
       },
-      server: {
+     server: {
         files: [{
           expand: true,
           cwd: '<%= yeoman.app %>',
@@ -91,6 +88,7 @@ module.exports = function (grunt) {
         }]
       }
     },
+	
     autoprefixer: {
       options: {
         browsers: ['last 2 versions']
@@ -112,6 +110,7 @@ module.exports = function (grunt) {
         }]
       }
     },
+	
     connect: {
       options: {
         port: 9000,
@@ -168,8 +167,6 @@ module.exports = function (grunt) {
         reporter: require('jshint-stylish')
       },
       all: [
-        '<%= yeoman.app %>/scripts/{,*/}*.js',
-        '!<%= yeoman.app %>/scripts/vendor/*',
         'test/spec/{,*/}*.js'
       ]
     },
@@ -229,21 +226,32 @@ module.exports = function (grunt) {
     },
     copy: {
       dist: {
-        files: [{
-          expand: true,
-          dot: true,
-          cwd: '<%= yeoman.app %>',
-          dest: '<%= yeoman.dist %>',
-          src: [
-            '*.{ico,txt}',
-            '.htaccess',
-            '*.html',
-            'elements/**',
-            '!elements/**/*.scss',
-            'images/{,*/}*.{webp,gif}',
-            'bower_components/**'
-          ]
-        }]
+        files: [
+		  {
+			  expand: true,
+			  dot: true,
+			  cwd: '<%= yeoman.app %>',
+			  dest: '<%= yeoman.dist %>',
+			  src: [
+				'*.{ico,txt}',
+				'.htaccess',
+				'*.html',
+				'elements/**',
+				'!elements/**/*.scss',
+				'images/{,*/}*.{webp,gif}',
+				'bower_components/**',
+			  ]
+		  },
+		  
+		  {
+			  expand: true,
+			  cwd: '<%= yeoman.root %>',
+			  dest: '<%= yeoman.dist %>',
+			  src: [
+				'lib/**'
+			  ]
+		  }
+		]
       },
       styles: {
         files: [{
@@ -252,7 +260,24 @@ module.exports = function (grunt) {
           dest: '.tmp',
           src: ['{styles,elements}/{,*/}*.css']
         }]
+      },
+	  server: {
+        files: [{
+          expand: true,
+          cwd: '<%= yeoman.root %>',
+          dest: '.tmp',
+          src: ['lib/**']
+        },
+		{
+          expand: false,
+          dest: '.tmp/webmetaverse.js',
+          src: ['../build/webmetaverse.js']
+        }
+		]
       }
+	  
+	  
+	  
     },
     'wct-test': {
       options: {
@@ -265,26 +290,6 @@ module.exports = function (grunt) {
         options: {remote: true}
       }
     },
-    // See this tutorial if you'd like to run PageSpeed
-    // against localhost: http://www.jamescryer.com/2014/06/12/grunt-pagespeed-and-ngrok-locally-testing/
-    pagespeed: {
-      options: {
-        // By default, we use the PageSpeed Insights
-        // free (no API key) tier. You can use a Google
-        // Developer API key if you have one. See
-        // http://goo.gl/RkN0vE for info
-        nokey: true
-      },
-      // Update `url` below to the public URL for your site
-      mobile: {
-        options: {
-          url: "https://developers.google.com/web/fundamentals/",
-          locale: "en_GB",
-          strategy: "mobile",
-          threshold: 80
-        }
-      }
-    }
   });
 
   grunt.registerTask('server', function (target) {
@@ -301,6 +306,7 @@ module.exports = function (grunt) {
       'clean:server',
       'sass:server',
       'copy:styles',
+	  'copy:server',
       'autoprefixer:server',
       'connect:livereload',
       'open',

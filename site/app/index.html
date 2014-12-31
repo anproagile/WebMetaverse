@@ -4,10 +4,9 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <title>WebMetaverse</title>
+  <title>Web Metaverse</title>
   <meta name="description" content="">
-  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=yes">
-  <!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+  <meta name="viewport" content="width=device-width, minimum-scale=1.0, initial-scale=1.0, user-scalable=no">
 
   <!-- build:css styles/main.css -->
   <link rel="stylesheet" href="styles/main.css">
@@ -17,18 +16,25 @@
   <script src="bower_components/webcomponentsjs/webcomponents.js"></script>
   <!-- endbuild -->
 
+  <script src="lib/three.js"></script>
+  <script src="lib/peer.js"></script>
+  <script src="lib/minilog.js"></script>
+  <script src="webmetaverse.js"></script>
+
   <!-- build:vulcanized elements/elements.vulcanized.html -->
   <link rel="import" href="elements/elements.html">
   <!-- endbuild-->
 </head>
 
 <body unresolved>
+    <div id="blocker">
+        <div id="instructions">
+            <span style="font-size:40px">Click to play</span>
+            <br />(W, A, S, D = Move, SPACE = Jump, MOUSE = Look around)
+        </div>
+    </div>
 
-    <wm-chat></wm-chat>
-
-  <!-- build:js scripts/app.js -->
-  <script src="scripts/app.js"></script>
-  <!-- endbuild-->
+    <wm-chat id="wmchat"></wm-chat>
 </body>
 
 </html>

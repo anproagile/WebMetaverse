@@ -1,24 +1,27 @@
 :host {
   display: block;
   width: 700px;
-
+  background: #e3e3e3;
+  color: #000;
 }
 
 #chatlog {
   min-height: 180px;
-  height: 180px;
+  max-height: 180px;
   background: #eee;
   padding: 6px;
 }
 
 
 paper-input {
-  margin:-4px 6px;
+  margin:-8px 6px;
   width: 634px;
 }
 
 paper-icon-button {
+  position: absolute;
   color: #555;
+  margin: 2px 8px;
 }
 
 td:first-child  {

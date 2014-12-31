@@ -11,18 +11,21 @@
 
         <paper-shadow id="chatlog">
           <table class="log">
-            <template repeat="{{ message in messages }}">
+
+            <template repeat="{{ chatmessage in messages }}">
               <tr>
-                <td>{{ message.user }}</td>
-                <td>{{message.msg}}</td>
+                <td>{{ chatmessage.user }}</td>
+                <td>{{ chatmessage.message }}</td>
               </tr>
             </template>
+
           </table>
         </paper-shadow>
 
-        <paper-input label="Say hello!"></paper-input>
-
-        <paper-icon-button icon="send"></paper-icon-button>
+        <span flex></span>
+        <paper-input id="chatInput" on-keydown="{{onKeyDown}}" label="Say something!"></paper-input>
+        <paper-icon-button on-click="{{onButton}}" icon="send"></paper-icon-button>
+        <span flex></span>
     </paper-shadow>
   </template>
   <script>
@@ -32,10 +35,24 @@
         // define element prototype here
         ready: function() {
           this.messages = [
-            {user: 'G', msg: 'Hello!'},
-            {user: 'Harry', msg: 'lorem ipsum'}
+            {user: 'G', message: 'Hello!'},
+            {user: 'Harry', message: 'lorem ipsum'}
           ];
-        }
+
+          this.submit = function(chatInput) {
+            if (chatInput.value && chatInput.value != '') {
+              this.fire('chat', {msg: chatInput.value});
+            }
+          }
+        },
+        onKeyDown: function(event, detail, sender) {
+          if (event.keyCode == 13 && !event.shiftKey) {
+            this.submit(sender);
+          }
+        },
+        onButton: function(event, detail, sender) {
+          this.submit(this.$.chatInput);
+        },
       });
 
     })();
