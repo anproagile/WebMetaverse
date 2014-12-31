@@ -45,7 +45,19 @@
             }
           }
 
+          this.appendMessage = function(username, msg) {
+            this.messages.push({user: username, message: msg});
+          }
+
+
         },
+        messagesChanged: function(){
+          that = this;
+          //Hack, scroll height isn't updated instantly after adding message
+          //So it would scroll to the previous last message without this timeout
+          setTimeout(function() {that.$.chatloginner.scrollTop = that.$.chatloginner.scrollHeight}, 1);
+        },
+
         onKeyDown: function(event, detail, sender) {
           if (event.keyCode == 13 && !event.shiftKey) {
             this.submit(sender);

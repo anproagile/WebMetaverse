@@ -28,8 +28,7 @@ module wm.ui {
                 chat.sendChat(message);
 
                 //Show my own chat message
-                el.messages.push({ user: username, message: message });
-
+                el.appendMessage(username, message);
             });
 
         }
@@ -40,6 +39,7 @@ module wm.ui {
 
     interface WMChatElement extends HTMLElement{
         messages: ChatUIMessage[];
+        appendMessage: (user, msg) => void;
     }
 
     ///Data structure used in the wm-chat element

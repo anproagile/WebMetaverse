@@ -12,6 +12,7 @@ $chatheight: 162px;
   max-height: $chatheight;
   background: #eee;
   padding: 6px;
+  overflow: hidden;
 
 }
 
@@ -20,6 +21,11 @@ $chatheight: 162px;
   max-height: $chatheight;
   overflow-y: scroll;
   max-height: 140px;
+}
+
+td {
+  max-width: 590px;
+  word-wrap: break-word;
 }
 
 
@@ -34,6 +40,7 @@ paper-icon-button {
   color: #555;
   margin: 2px 8px;
 }
+
 
 td:first-child  {
   color: #777;
