@@ -36,10 +36,7 @@
       Polymer({
         // define element prototype here
         ready: function() {
-          this.messages = [
-            {user: 'G', message: 'Hello!'},
-            {user: 'Harry', message: 'lorem ipsum'}
-          ];
+          this.messages = [];
 
           this.submit = function(chatInput) {
             if (chatInput.value && chatInput.value != '') {
