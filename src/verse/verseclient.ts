@@ -3,6 +3,7 @@
 /// <reference path="versecontrols.ts" />
 /// <reference path="../multi/multiuserclient.ts" />
 /// <reference path="roomstate.ts" />
+/// <reference path="../ui/userinterface.ts" />
 
 module wm.verse {
     export class VerseClient {
@@ -15,6 +16,8 @@ module wm.verse {
         roomState: RoomState;
         controls: VerseControls;
         multiUserClient: multi.MultiUserClient
+
+        userInterface: ui.UserInterface;
 
 
         constructor(renderer: THREE.WebGLRenderer) {
@@ -30,6 +33,8 @@ module wm.verse {
 
             window.addEventListener('resize', this.onWindowResize);
             this.multiUserClient = new multi.MultiUserClient(this.roomState, this.controls);
+
+            this.userInterface = new ui.UserInterface(this);
 
         }
 

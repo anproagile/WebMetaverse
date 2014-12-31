@@ -25,6 +25,7 @@ module wm.network {
         p2p: wm.network.P2PNetworkClient;
         chat: wm.network.ChatClient;
 
+        localId: string;
 
         constructor() {
             this.server = {
@@ -35,6 +36,8 @@ module wm.network {
             }
             this.p2p = new P2PNetworkClient(this);
             this.chat = new ChatClient(this.p2p);
+
+            this.localId = this.generateId();
         }
 
 
@@ -44,7 +47,8 @@ module wm.network {
 
         connect = (peers) => {
 
-            var id = this.generateId();
+            var id = this.localId;
+
             mlog.log("Connecting with id " + id + ", available peers: " + peers);
 
             var ice = [

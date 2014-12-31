@@ -29,6 +29,9 @@
                 this.onReceiveChat.trigger(data, sender);
             }
         }
+
+        
+
     }
 
     export interface ChatPacket {

@@ -74,6 +74,7 @@
     <TypeScriptCompile Include="src\typings\webaudioapi\waa.d.ts" />
     <TypeScriptCompile Include="src\typings\webrtc\MediaStream.d.ts" />
     <TypeScriptCompile Include="src\typings\webrtc\RTCPeerConnection.d.ts" />
+    <TypeScriptCompile Include="src\ui\userinterface.ts" />
     <TypeScriptCompile Include="src\verse\portal.ts" />
     <TypeScriptCompile Include="src\verse\roomstate.ts" />
     <TypeScriptCompile Include="src\verse\verseclient.ts" />
