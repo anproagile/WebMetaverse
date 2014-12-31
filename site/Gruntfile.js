@@ -253,7 +253,7 @@ module.exports = function (grunt) {
 		  },
       {
         expand: false,
-        dest: '<%= yeoman.dist %>/webmetaverse.js',
+        dest: 'dist/webmetaverse.js',
         src: [
         '../build/webmetaverse.js'
         ]
