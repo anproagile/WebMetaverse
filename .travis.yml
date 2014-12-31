@@ -9,7 +9,9 @@ before_script:
 - npm install
 - bower install
 - cd ..
-script: bash deploy.sh
+script: 
+- grunt typescript
+- bash deploy.sh
 branches: "-master"
 env:
   global:

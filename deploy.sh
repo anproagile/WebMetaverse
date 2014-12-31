@@ -1,5 +1,6 @@
 #!/bin/bash
 rm -rf build|| exit 0;
+mkdir build
 cd site
 grunt
 ( cd dist
