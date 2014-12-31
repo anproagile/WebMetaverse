@@ -5,12 +5,23 @@
   color: #000;
 }
 
+$chatheight: 162px;
+
 #chatlog {
-  min-height: 180px;
-  max-height: 180px;
+  min-height: $chatheight;
+  max-height: $chatheight;
   background: #eee;
   padding: 6px;
+
 }
+
+#chatloginner {
+  min-height: $chatheight;
+  max-height: $chatheight;
+  overflow-y: scroll;
+  max-height: 140px;
+}
+
 
 
 paper-input {

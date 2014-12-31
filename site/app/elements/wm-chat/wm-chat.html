@@ -10,16 +10,18 @@
       <link rel="stylesheet" href="wm-chat.css">
 
         <paper-shadow id="chatlog">
-          <table class="log">
+          <div id="chatloginner">
+            <table class="log">
 
-            <template repeat="{{ chatmessage in messages }}">
-              <tr>
-                <td>{{ chatmessage.user }}</td>
-                <td>{{ chatmessage.message }}</td>
-              </tr>
-            </template>
+              <template repeat="{{ chatmessage in messages }}">
+                <tr>
+                  <td>{{ chatmessage.user }}</td>
+                  <td>{{ chatmessage.message }}</td>
+                </tr>
+              </template>
 
-          </table>
+            </table>
+          </div>
         </paper-shadow>
 
         <span flex></span>
@@ -42,9 +44,10 @@
           this.submit = function(chatInput) {
             if (chatInput.value && chatInput.value != '') {
               this.fire('chat', {msg: chatInput.value});
+              chatInput.value = '';
             }
           }
-		  
+
         },
         onKeyDown: function(event, detail, sender) {
           if (event.keyCode == 13 && !event.shiftKey) {
