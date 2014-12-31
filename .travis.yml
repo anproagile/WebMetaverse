@@ -4,6 +4,10 @@ node_js:
 before_script:
 - npm install -g grunt-cli
 - npm install
+- cd site
+- npm install
+- bower install
+- cd ..
 script: bash deploy.sh
 branches: "-master"
 env:
