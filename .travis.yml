@@ -11,7 +11,11 @@ before_script:
 - cd ..
 script: 
 - grunt typescript
+- cd build
+- ls
+- cd ..
 - bash deploy.sh
+- ls
 branches: "-master"
 env:
   global:
