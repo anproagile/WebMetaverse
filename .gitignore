@@ -184,3 +184,8 @@ UpgradeLog*.htm
 
 # Microsoft Fakes
 FakesAssemblies/
+
+#Visual studio junk
+web.config
+web.Release.config
+web.SingleFile.config
