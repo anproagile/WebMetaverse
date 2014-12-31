@@ -22,7 +22,7 @@ module.exports = function (grunt) {
   var yeomanConfig = {
     app: 'app',
     dist: 'dist',
-	root: '../'
+	  root: '../'
   };
 
   grunt.initConfig({
@@ -88,7 +88,7 @@ module.exports = function (grunt) {
         }]
       }
     },
-	
+
     autoprefixer: {
       options: {
         browsers: ['last 2 versions']
@@ -110,7 +110,7 @@ module.exports = function (grunt) {
         }]
       }
     },
-	
+
     connect: {
       options: {
         port: 9000,
@@ -242,7 +242,7 @@ module.exports = function (grunt) {
 				'bower_components/**',
 			  ]
 		  },
-		  
+
 		  {
 			  expand: true,
 			  cwd: '<%= yeoman.root %>',
@@ -250,7 +250,14 @@ module.exports = function (grunt) {
 			  src: [
 				'lib/**'
 			  ]
-		  }
+		  },
+      {
+        expand: false,
+        dest: '<%= yeoman.dist %>/webmetaverse.js',
+        src: [
+        '../build/webmetaverse.js'
+        ]
+      }
 		]
       },
       styles: {
@@ -275,9 +282,9 @@ module.exports = function (grunt) {
         }
 		]
       }
-	  
-	  
-	  
+
+
+
     },
     'wct-test': {
       options: {
