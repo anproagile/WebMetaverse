@@ -1,7 +1,7 @@
 language: node_js
 node_js:
 - '0.10'
-before_script:
+install:
 - npm install -g grunt-cli
 - npm install -g bower
 - npm install
@@ -11,14 +11,11 @@ before_script:
 - cd ..
 script: 
 - grunt typescript
-- cd build
-- ls
-- cd ..
-- bash deploy.sh
-- ls
 - cd site
-- cd dist
-- ls
+- grunt
+- cd ..
+after_success:
+- bash deploy.sh
 branches: "-master"
 env:
   global:
