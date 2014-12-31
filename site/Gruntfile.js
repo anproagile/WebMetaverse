@@ -243,6 +243,13 @@ module.exports = function (grunt) {
 			  ]
 		  },
 
+      {
+        expand: false,
+        dest: 'dist/webmetaverse.js',
+        src: [
+        '../build/webmetaverse.js'
+        ]
+      },
 		  {
 			  expand: true,
 			  cwd: '<%= yeoman.root %>',
@@ -250,14 +257,8 @@ module.exports = function (grunt) {
 			  src: [
 				'lib/**'
 			  ]
-		  },
-      {
-        expand: false,
-        dest: 'dist/webmetaverse.js',
-        src: [
-        '../build/webmetaverse.js'
-        ]
-      }
+		  }
+
 		]
       },
       styles: {
