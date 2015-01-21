@@ -1,4 +1,4 @@
-﻿module Events {
+﻿module events {
 
     export interface IEvent {
         add(listener: () => void): void;

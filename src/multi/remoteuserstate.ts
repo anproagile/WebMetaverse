@@ -1,8 +1,8 @@
 ﻿module wm.multi {
     export class RemoteUserState {
 
-        public onAvatarDestroy: Events.I1ArgsEvent<string> = new Events.TypedEvent();
-        public onRemoteUserRoomSwitch: RoomSwitchEvent = new Events.TypedEvent();
+        public onAvatarDestroy: events.I1ArgsEvent<string> = new events.TypedEvent();
+        public onRemoteUserRoomSwitch: RoomSwitchEvent = new events.TypedEvent();
 
         /**
          * Map of (remote) user ID to avatar

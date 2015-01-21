@@ -49,7 +49,7 @@
         prevRoom: string;
     }
 
-    export interface RoomSwitchEvent extends Events.IEvent {
+    export interface RoomSwitchEvent extends events.IEvent {
         add(listener: (prevRoom: string, newRoom: string, userId: string) => any): void;
         remove(listener: (prevRoom: string, newRoom: string, userId: string) => any): void;
         trigger(prevRoom: string, newRoom: string, userId: string): void;

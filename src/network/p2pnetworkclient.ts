@@ -20,12 +20,12 @@ module wm.network {
             return this.networkClient.localPeer;
         }
 
-        public onNewConnection: Events.I1ArgsEvent<NetworkConnection> = new Events.TypedEvent();
-        public onNewUnreliableConnection: Events.I1ArgsEvent<NetworkConnection> = new Events.TypedEvent();
-        public onConnectionClose: Events.I1ArgsEvent<NetworkConnection> = new Events.TypedEvent();
+        public onNewConnection: events.I1ArgsEvent<NetworkConnection> = new events.TypedEvent();
+        public onNewUnreliableConnection: events.I1ArgsEvent<NetworkConnection> = new events.TypedEvent();
+        public onConnectionClose: events.I1ArgsEvent<NetworkConnection> = new events.TypedEvent();
 
-        public onReceiveReliable: Events.I2ArgsEvent<any, NetworkConnection> = new Events.TypedEvent();
-        public onReceiveUnreliable: Events.I2ArgsEvent<any, NetworkConnection> = new Events.TypedEvent();
+        public onReceiveReliable: events.I2ArgsEvent<any, NetworkConnection> = new events.TypedEvent();
+        public onReceiveUnreliable: events.I2ArgsEvent<any, NetworkConnection> = new events.TypedEvent();
 
         constructor(networkClient: NetworkClient) {
             this.networkClient = networkClient;

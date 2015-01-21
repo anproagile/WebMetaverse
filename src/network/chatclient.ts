@@ -2,7 +2,7 @@
     export class ChatClient {
 
         private p2p: P2PNetworkClient;
-        public onReceiveChat: ChatReceiveEvent = new Events.TypedEvent();
+        public onReceiveChat: ChatReceiveEvent = new events.TypedEvent();
         chatlog = Minilog('WM.Chat');
 
         constructor(p2p: P2PNetworkClient) {
@@ -39,7 +39,7 @@
         msg: string;
     }
 
-    export interface ChatReceiveEvent extends Events.IEvent {
+    export interface ChatReceiveEvent extends events.IEvent {
         add(listener: (data: ChatPacket, sender: string) => any): void;
         remove(listener: (data: ChatPacket, sender: string) => any): void;
         trigger(data: ChatPacket, sender: string): void;

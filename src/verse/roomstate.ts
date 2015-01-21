@@ -16,7 +16,7 @@ module wm.verse {
         rooms: Room[]; //Rooms in memory
         roomDictionary: { [id: string]: Room }; //mapping of room id to room
 
-        public onRoomSwitch: Events.I3ArgsEvent<Room, Room, THREE.Matrix4> = new Events.TypedEvent();
+        public onRoomSwitch: events.I3ArgsEvent<Room, Room, THREE.Matrix4> = new events.TypedEvent();
 
 
         constructor() {
