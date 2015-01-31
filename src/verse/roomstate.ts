@@ -22,6 +22,7 @@ module wm.verse {
         constructor() {
             this.rooms = [];
             this.roomDictionary = {};
+
             this.loader = new wm.room.RoomLoader();
         }
 

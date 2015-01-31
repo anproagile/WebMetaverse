@@ -1,5 +1,6 @@
-/// <reference path="phoenix.d.ts" />
-/// <reference path="typings/webrtc/rtcpeerconnection.d.ts" />
+
+/// <reference path="../webrtc/rtcpeerconnection.d.ts" />
+
 declare module events {
     interface IEvent {
         add(listener: () => void): void;
@@ -89,7 +90,8 @@ declare module excess {
 }
 declare module excess {
     class Signaller {
-        socket: Phoenix.Socket;
+        //socket: Phoenix.Socket;
+        socket: any;
         private signalChannel;
         currentRoom: string;
         onSignal: SignalEvent;

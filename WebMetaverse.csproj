@@ -21,6 +21,7 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="src\typings\phoenix\" />
     <Folder Include="src\typings\util\" />
     <Folder Include="src\util\" />
   </ItemGroup>
@@ -56,6 +57,7 @@
     <TypeScriptCompile Include="src\room\roomgenerator.ts" />
     <TypeScriptCompile Include="src\room\roomlinker.ts" />
     <TypeScriptCompile Include="src\room\roomloader.ts" />
+    <TypeScriptCompile Include="src\typings\excess\excess.d.ts" />
     <TypeScriptCompile Include="src\typings\minilog\Minilog.d.ts" />
     <TypeScriptCompile Include="src\typings\peerjs\Peer.d.ts" />
     <TypeScriptCompile Include="src\typings\threejs\detector.d.ts" />
