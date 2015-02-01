@@ -43,7 +43,7 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-copy');
 
-  grunt.registerTask('watch', ['watch']);
+  grunt.registerTask('server', ['watch']);
   grunt.registerTask('full', ['copy', 'typescript']);
   grunt.registerTask('default', ['typescript']);
 

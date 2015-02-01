@@ -189,3 +189,4 @@ FakesAssemblies/
 web.config
 web.Release.config
 web.SingleFile.config
+web.Debug.config

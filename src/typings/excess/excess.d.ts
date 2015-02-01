@@ -1,19 +1,6 @@
 
 /// <reference path="../webrtc/rtcpeerconnection.d.ts" />
 
-declare module events {
-    interface IEvent {
-        add(listener: () => void): void;
-        remove(listener: () => void): void;
-        trigger(...a: any[]): void;
-    }
-    class TypedEvent implements IEvent {
-        private _listeners;
-        add(listener: () => void): void;
-        remove(listener?: () => void): void;
-        trigger(...a: any[]): void;
-    }
-}
 declare module excess {
     var log: (message?: any, ...optionalParams: any[]) => void;
     var debug: (message?: string, ...optionalParams: any[]) => void;
