@@ -1,6 +1,4 @@
-
-/// <reference path="../webrtc/rtcpeerconnection.d.ts" />
-
+/// <reference path="../webrtc/RTCPeerConnection.d.ts" />
 declare module excess {
     var log: (message?: any, ...optionalParams: any[]) => void;
     var debug: (message?: string, ...optionalParams: any[]) => void;
