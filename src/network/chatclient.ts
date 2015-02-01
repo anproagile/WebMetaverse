@@ -22,7 +22,7 @@
 
         private onReceiveReliable = (data, nConnection: NetworkConnection) => {
             if (data.t == 'chat') {
-                var sender = nConnection.connection.peer;
+                var sender = nConnection.id;
                 mlog.log("Received chat message: " + data.msg + " from " + sender);
                 this.chatlog.log(sender + ": " + data.msg);
                 

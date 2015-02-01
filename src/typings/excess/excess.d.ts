@@ -28,6 +28,7 @@ declare module excess {
         connections: {
             [x: string]: ExcessPeer;
         };
+        onConnection: events.IEvent;
         id: string;
         currentRoom: string;
         signaller: Signaller;

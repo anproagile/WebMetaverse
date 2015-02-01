@@ -17,7 +17,7 @@
 
 
             p2p.onNewUnreliableConnection.add( (con: network.NetworkConnection) => {
-                var id = con.connection.peer;
+                var id = con.id;
                 var mesh = this.createAvatarMesh(id);
                 var avatar = new network.NetworkedMesh(mesh);
 
@@ -28,7 +28,7 @@
                 con.onReceiveUnreliable.add(avatar.receivePosition);
 
                 con.onDestroy.add(() => {
-                    var id = con.connection.peer;
+                    var id = con.id;
 
                     con.onReceiveUnreliable.remove(this.remoteUserState.getAvatarForId(id).receivePosition);
                     this.remoteUserState.removeAvatarForId(id);

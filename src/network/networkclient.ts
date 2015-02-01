@@ -1,9 +1,9 @@
-﻿/// <reference path="../typings/peerjs/Peer.d.ts"/>
-/// <reference path="../typings/threejs/three.d.ts"/>
+﻿/// <reference path="../typings/threejs/three.d.ts"/>
 /// <reference path="../typings/minilog/Minilog.d.ts"/>
 
 /// <reference path="chatclient.ts"/>
 /// <reference path="p2pnetworkclient.ts"/>
+/// <reference path="../typings/excess/excess.d.ts" />
 
 module wm.network {
 
@@ -11,17 +11,17 @@ module wm.network {
     Minilog.suggest.deny('WM.Network', 'warn');
     Minilog.enable();
 
-    export interface WMServer {
+    export interface Server {
         host: string;
         port: number;
-        peerjspath: string;
         apipath: string;
     }
 
     export class NetworkClient {
 
-        server: WMServer;
-        localPeer: Peer;
+        server: Server;
+
+        excess: excess.ExcessClient;
         p2p: wm.network.P2PNetworkClient;
         chat: wm.network.ChatClient;
 
@@ -29,10 +29,9 @@ module wm.network {
 
         constructor() {
             this.server = {
-                host: 'webvr.rocks',
-                port: 7170,
-                peerjspath: '/peerjs',
-                apipath: '/connectedpeers'
+                host: 'localhost',
+                port: 4000,
+                apipath: '/excess',
             }
             this.p2p = new P2PNetworkClient(this);
             this.chat = new ChatClient(this.p2p);
@@ -42,7 +41,7 @@ module wm.network {
 
 
         joinRoom() {
-            this.pollConnectedPeers(this.connect);
+            
         }
 
         connect = (peers) => {
@@ -61,20 +60,17 @@ module wm.network {
                 { 'url': "stun.voxgratia.org" }
             ]
 
+            var endPoint: string = '//' + this.server.host + ':' + this.server.port + this.server.apipath;
 
-            this.localPeer = new Peer(id, { host: this.server.host, port: this.server.port, path: this.server.peerjspath, iceServers: ice/*, debug: 3 */});
+            this.excess = new excess.ExcessClient(endPoint, id, ice);
 
 
             window.onunload = window.onbeforeunload = (e) => {
-                if (!!this.localPeer && !this.localPeer.destroyed) {
-                    this.localPeer.destroy();
+                if (!!this.excess/* && !this.excess.destroyed*/) {
+                    //TODO attempt to destroy excess gracefully
                 }
             }
 
-        this.localPeer.on('open', this.onConnectedToServer);
-            this.localPeer.on('error', function (err) {
-                console.log(err);
-            });
 
             this.p2p.init();
             this.p2p.connectToPeers(peers);
@@ -93,28 +89,5 @@ module wm.network {
                 return Math.random().toString(36).substring(7);
             }
 
-        pollConnectedPeers(callback) {
-            var url = 'http://' + this.server.host + ':' + this.server.port + this.server.apipath + '?callback=?';
-            wm.network.util.getJSONP(url, callback);
-        }
     }
-}
-
-module wm.network.util {
-    export function getJSONP(url, success) {
-
-        var ud = '_' + +new Date,
-            script = document.createElement('script'),
-            head = document.getElementsByTagName('head')[0]
-            || document.documentElement;
-
-        window[ud] = function (data) {
-            head.removeChild(script);
-            success && success(data);
-        };
-
-        script.src = url.replace('callback=?', 'callback=' + ud);
-        head.appendChild(script);
-    }
-
 }

@@ -1,25 +1,23 @@
 ﻿module wm.network {
 
-    export class NetworkConnection {
-        connection: PeerJs.DataConnection;
-        unreliableConnection: PeerJs.DataConnection;
+    export class NetworkConnection{
 
         public onReceive: PacketReceiveEvent2 = new events.TypedEvent();
         public onReceiveReliable: PacketReceiveEvent = new events.TypedEvent();
         public onReceiveUnreliable: PacketReceiveEvent = new events.TypedEvent();
         public onDestroy: events.IEvent = new events.TypedEvent();
 
-        constructor(connection: PeerJs.DataConnection) {
-            this.connection = connection;
-            connection.on('data', this._onReceiveReliable);
+        peer: excess.ExcessPeer;
+        reliable: excess.Channel;
+        unreliable: excess.Channel;
+
+        get id() {
+            return this.peer.id;
         }
 
-        addUnreliableConnection(connection: PeerJs.DataConnection) {
-            if (connection.reliable) {
-                mlog.error("You should add the unreliable connection here :c");
-            }
-            this.unreliableConnection = connection;
-            connection.on('data', this._onReceiveUnreliable);
+        constructor(peer: excess.ExcessPeer) {
+            this.peer = peer;
+            //connection.on('data', this._onReceiveReliable);
         }
 
 
@@ -34,19 +32,19 @@
         }
 
         sendReliable(data: any) {
-            this.connection.send(data);
+            this.reliable.send(data);
         }
         sendUnreliable(data: any) {
-            if (this.unreliableConnection) {
-                this.unreliableConnection.send(data);
+            if (this.unreliable) {
+                this.unreliable.send(data);
             }
         }
 
         public destroy() {
             this.onDestroy.trigger();
-            this.connection.close();
-            if (this.unreliableConnection)
-                this.unreliableConnection.close();
+            //this.reliable.close();
+            //if (this.unreliableConnection)
+            //    this.unreliableConnection.close();
         }
 
     }
