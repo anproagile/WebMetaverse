@@ -4,6 +4,7 @@ declare module excess {
     var debug: (message?: string, ...optionalParams: any[]) => void;
     var err: (message?: any, ...optionalParams: any[]) => void;
 }
+declare var c: excess.ExcessClient;
 declare module excess {
     /**
     * Wraps a WebRTC DataChannel
@@ -25,40 +26,50 @@ declare module excess {
 }
 declare module excess {
     class ExcessClient {
-        connections: {
-            [x: string]: ExcessPeer;
-        };
+        /**
+        * Triggered when a new connection is made, requested by a peer.
+        */
         onConnection: events.IEvent;
+        connections: {
+            [id: string]: ExcessPeer;
+        };
         id: string;
         currentRoom: string;
-        signaller: Signaller;
-        rtcConfig: RTCConfiguration;
+        private signaller;
+        private rtcConfig;
         constructor(signalEndpoint: string, id: string, iceServers?: any[]);
+        connectToServer(): Thenable<{}>;
+        /**
+        * Connect to peer by ID
+        */
         connect(id: string): ExcessPeer;
-        createPeer(id: string): ExcessPeer;
-        receiveSignalMessage: (from: string, data: any) => void;
+        private createPeer(id);
+        private receiveSignalMessage;
+        /**
+        * Join or switch to given room
+        */
         joinRoom(room: string): void;
     }
 }
 declare module excess {
     class ExcessPeer {
+        onClose: events.IEvent;
+        onDataChannelReceive: ChannelReceiveEvent;
         signaller: Signaller;
         id: string;
         connection: RTCPeerConnection;
         caller: boolean;
         channels: {
-            [x: string]: Channel;
+            [id: string]: Channel;
         };
         remoteDescriptionSet: boolean;
         iceBuffer: RTCIceCandidate[];
-        onClose: events.IEvent;
-        onDataChannelReceive: ChannelReceiveEvent;
         constructor(id: string, signaller: Signaller, rtcConfig: RTCConfiguration);
         call(): void;
         answer(offerSDP: RTCSessionDescriptionInit): void;
-        onSDPCreate: (sdp: RTCSessionDescription) => void;
-        onSDPError: (event: any) => void;
-        createDataChannel(label: string, opts?: RTCDataChannelInit): Channel;
+        private onSDPCreate;
+        private onSDPError;
+        createDataChannel(label: string, opts?: RTCDataChannelInit): excess.Channel;
         private addDataChannel(dc);
         addIceCandidate(candidate: RTCIceCandidate): void;
         setRemoteDescription(sdpi: RTCSessionDescriptionInit, callback?: () => void): void;
@@ -80,11 +91,13 @@ declare module excess {
         socket: any;
         private signalChannel;
         currentRoom: string;
+        private endPoint;
         onSignal: SignalEvent;
         private discoveryChannel;
         private discoveryCallbacks;
         id: string;
         constructor(endPoint: string, id: string);
+        connect(): Promise<{}>;
         join(room: string): void;
         private addChannel;
         private addDiscoveryChannel(channel);
