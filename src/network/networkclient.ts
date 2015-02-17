@@ -37,6 +37,34 @@ module wm.network {
             this.chat = new ChatClient(this.p2p);
 
             this.localId = this.generateId();
+
+
+            this.init();
+        }
+
+
+        init() {
+
+            var ice = [
+                { 'url': 'stun4:stun.l.google.com:19302' },
+                { 'url': 'stun:stun.l.google.com:19302' },
+                { 'url': 'stun.stunprotocol.org:3478' },
+                { 'url': 'stunserver.org' },
+                { 'url': "stun.voipbuster.com" },
+                { 'url': "stun.voipstunt.com" },
+                { 'url': "stun.voxgratia.org" }
+            ]
+
+            var endPoint: string = '//' + this.server.host + ':' + this.server.port + this.server.apipath;
+            this.excess = new excess.ExcessClient(endPoint, this.localId, ice);
+            this.excess.connectToServer().then(
+                () => {
+                    console.log("Connected to signalling server!");
+                },
+                () => {
+                    console.log("Failed to connect to signalling server!");
+                }
+                );
         }
 
 
@@ -50,21 +78,6 @@ module wm.network {
 
             mlog.log("Connecting with id " + id + ", available peers: " + peers);
 
-            var ice = [
-                { 'url': 'stun4:stun.l.google.com:19302' },
-                { 'url': 'stun:stun.l.google.com:19302' },
-                { 'url': 'stun.stunprotocol.org:3478' },
-                { 'url': 'stunserver.org' },
-                { 'url': "stun.voipbuster.com"},
-                { 'url': "stun.voipstunt.com" },
-                { 'url': "stun.voxgratia.org" }
-            ]
-
-            var endPoint: string = '//' + this.server.host + ':' + this.server.port + this.server.apipath;
-
-            this.excess = new excess.ExcessClient(endPoint, id, ice);
-
-
             window.onunload = window.onbeforeunload = (e) => {
                 if (!!this.excess/* && !this.excess.destroyed*/) {
                     //TODO attempt to destroy excess gracefully
@@ -73,16 +86,6 @@ module wm.network {
 
             this.p2p.init();
             this.p2p.connectToPeers(peers);
-
-            this.excess.connectToServer().then(
-                () => {
-                    console.log("Connected to signalling server!");
-                },
-                () => {
-                    console.log("Failed to connect to signalling server!");
-                }
-                );
-
 
         }
 

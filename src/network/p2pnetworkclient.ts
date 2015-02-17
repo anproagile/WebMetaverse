@@ -34,6 +34,10 @@ module wm.network {
 
         init() {
 
+            this.excess.onConnection.add((peer) => {
+
+            });
+
             //this.excess.on('connection', (connection) => {
             //    mlog.log("Incoming " + (connection.reliable?"reliable":"unreliable")+ " connection from " + connection.peer);
             //    this.onConnectionToPeerCreate(connection);
