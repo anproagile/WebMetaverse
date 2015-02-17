@@ -97,7 +97,6 @@ module wm.network {
 
             mlog.log("Connecting with id " + id + ", available peers: " + peers);
 
-            this.p2p.init();
             this.p2p.connectToPeers(peers);
 
         }
