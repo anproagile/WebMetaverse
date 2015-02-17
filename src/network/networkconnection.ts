@@ -42,9 +42,8 @@
 
         public destroy() {
             this.onDestroy.trigger();
-            //this.reliable.close();
-            //if (this.unreliableConnection)
-            //    this.unreliableConnection.close();
+
+            //TODO Close connection gracefully
         }
 
     }

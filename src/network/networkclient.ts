@@ -40,35 +40,54 @@ module wm.network {
 
 
             this.init();
+            this.p2p.init();
         }
 
 
         init() {
 
             var ice = [
-                { 'url': 'stun4:stun.l.google.com:19302' },
+                { 'url': 'stun:stun4.l.google.com:19302' },
                 { 'url': 'stun:stun.l.google.com:19302' },
                 { 'url': 'stun.stunprotocol.org:3478' },
-                { 'url': 'stunserver.org' },
+                { 'url': 'stun.stunserver.org' },
                 { 'url': "stun.voipbuster.com" },
                 { 'url': "stun.voipstunt.com" },
                 { 'url': "stun.voxgratia.org" }
             ]
 
             var endPoint: string = '//' + this.server.host + ':' + this.server.port + this.server.apipath;
-            this.excess = new excess.ExcessClient(endPoint, this.localId, ice);
+            this.excess = new excess.ExcessClient(endPoint, this.localId/*, ice*/);
+
             this.excess.connectToServer().then(
-                () => {
-                    console.log("Connected to signalling server!");
+                () => { //Success
+                    console.log("Connected to signalling server with ID", this.localId);
+
+                    //Temporary testing line
+                    this.joinRoom('debug1');
+
                 },
-                () => {
+                () => { //Fail
                     console.log("Failed to connect to signalling server!");
                 }
-                );
+             );
+
+            window.onunload = window.onbeforeunload = (e) => {
+                if (!!this.excess/* && !this.excess.destroyed*/) {
+                    //TODO attempt to destroy excess gracefully
+                }
+            }
         }
 
 
-        joinRoom() {
+        joinRoom(roomId: string) {
+            console.log("Joining room", roomId);
+            this.excess.joinRoom(roomId);
+
+            this.excess.requestRoom(roomId,(peers) => {
+                console.log("Received peers!", peers);
+                this.connect(peers);
+            });
             
         }
 
@@ -77,12 +96,6 @@ module wm.network {
             var id = this.localId;
 
             mlog.log("Connecting with id " + id + ", available peers: " + peers);
-
-            window.onunload = window.onbeforeunload = (e) => {
-                if (!!this.excess/* && !this.excess.destroyed*/) {
-                    //TODO attempt to destroy excess gracefully
-                }
-            }
 
             this.p2p.init();
             this.p2p.connectToPeers(peers);

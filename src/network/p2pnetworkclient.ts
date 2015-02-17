@@ -35,6 +35,9 @@ module wm.network {
         init() {
 
             this.excess.onConnection.add((peer) => {
+                
+
+
 
             });
 
@@ -71,7 +74,12 @@ module wm.network {
 
             for (var i = 0; i < peers.length; i++) {
                 mlog.log("Connecting to peers");
-                this.connectToPeer(peers[i]);
+
+                if (peers[i] != this.networkClient.localId) {
+                    this.connectToPeer(peers[i]);
+                }
+
+
             }
         }
 

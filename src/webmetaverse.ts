@@ -61,7 +61,6 @@ module wm {
 
 
         webvr.tick();
-        webvr.client.multiUserClient.networkClient.joinRoom();
         
         
         webvr.client.roomState.switchToRoomWithId('debug1');
