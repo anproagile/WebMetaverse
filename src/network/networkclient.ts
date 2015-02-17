@@ -71,11 +71,21 @@ module wm.network {
                 }
             }
 
-
             this.p2p.init();
             this.p2p.connectToPeers(peers);
 
+            this.excess.connectToServer().then(
+                () => {
+                    console.log("Connected to signalling server!");
+                },
+                () => {
+                    console.log("Failed to connect to signalling server!");
+                }
+                );
+
+
         }
+
 
         private onConnectedToServer = (id) => {
                 mlog.log("Connected to central server with ID: " + id);
