@@ -1,4 +1,3 @@
-/// <reference path="../webrtc/RTCPeerConnection.d.ts" />
 declare module excess {
     var log: (message?: any, ...optionalParams: any[]) => void;
     var debug: (message?: string, ...optionalParams: any[]) => void;
@@ -11,10 +10,10 @@ declare module excess {
     */
     class Channel {
         private dataChannel;
-        onMessage: events.IEvent;
-        onClose: events.IEvent;
-        onError: events.IEvent;
-        onOpen: events.IEvent;
+        onMessage: events.I1ArgsEvent<any>;
+        onClose: events.I1ArgsEvent<any>;
+        onError: events.I1ArgsEvent<any>;
+        onOpen: events.I1ArgsEvent<any>;
         constructor(rtcDataChannel: RTCDataChannel);
         attachCallbacks(): void;
         send(message: any): void;
@@ -29,7 +28,7 @@ declare module excess {
         /**
         * Triggered when a new connection is made, requested by a peer.
         */
-        onConnection: events.IEvent;
+        onConnection: events.I1ArgsEvent<ExcessPeer>;
         connections: {
             [id: string]: ExcessPeer;
         };
@@ -88,7 +87,7 @@ declare module excess {
 declare module excess {
     class Signaller {
         //socket: Phoenix.Socket;
-        socket: any;
+		socket: any;
         private signalChannel;
         currentRoom: string;
         private endPoint;
