@@ -34,17 +34,10 @@ module wm.network {
 
         init() {
 
-            this.excess.onConnection.add((peer) => {
-                
-
-
-
+            this.excess.onConnection.add( (peer: excess.ExcessPeer) => {
+                console.log("New connection added " + peer.id);
+                this.wrapConnection(peer);
             });
-
-            //this.excess.on('connection', (connection) => {
-            //    mlog.log("Incoming " + (connection.reliable?"reliable":"unreliable")+ " connection from " + connection.peer);
-            //    this.onConnectionToPeerCreate(connection);
-            //});
             nc = this;
         }
 
@@ -86,16 +79,19 @@ module wm.network {
         connectToPeer(id: string) {
             mlog.log("Establishing reliable connection to peer " + id);
             var peer = this.excess.connect(id);
+
+            this.wrapConnection(peer);
+        }
+
+        wrapConnection(peer: excess.ExcessPeer) {
             var connection = new NetworkConnection(peer);
-
-
             mlog.log("Connecting to " + connection.id);
             connection.peer.onClose.add(() => this.onConnectionClosed(connection));
 
             this.connections[connection.id] = connection;
-            
-
         }
+
+
 
         private onConnectionClosed = (connection: NetworkConnection) => {
             mlog.log("Connection closed to " + connection.id);
