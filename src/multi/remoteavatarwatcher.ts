@@ -16,7 +16,7 @@
         private init(p2p): void {
 
 
-            p2p.onNewUnreliableConnection.add( (con: network.NetworkConnection) => {
+            p2p.onNewConnection.add( (con: network.NetworkConnection) => {
                 var id = con.id;
                 var mesh = this.createAvatarMesh(id);
                 var avatar = new network.NetworkedMesh(mesh);

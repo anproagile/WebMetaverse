@@ -20,7 +20,6 @@ module wm.network {
         }
 
         public onNewConnection: events.I1ArgsEvent<NetworkConnection> = new events.TypedEvent();
-        public onNewUnreliableConnection: events.I1ArgsEvent<NetworkConnection> = new events.TypedEvent();
         public onConnectionClose: events.I1ArgsEvent<NetworkConnection> = new events.TypedEvent();
 
         public onReceiveReliable: events.I2ArgsEvent<any, NetworkConnection> = new events.TypedEvent();
@@ -36,7 +35,8 @@ module wm.network {
 
             this.excess.onConnection.add( (peer: excess.ExcessPeer) => {
                 console.log("New connection added " + peer.id);
-                this.wrapConnection(peer);
+                var connection = this.wrapConnection(peer);
+                this.onNewConnection.trigger(connection)
             });
             nc = this;
         }
@@ -80,7 +80,8 @@ module wm.network {
             mlog.log("Establishing reliable connection to peer " + id);
             var peer = this.excess.connect(id);
 
-            this.wrapConnection(peer);
+            var connection = this.wrapConnection(peer);
+            connection.createDefaultChannels();
         }
 
         wrapConnection(peer: excess.ExcessPeer) {
@@ -89,6 +90,11 @@ module wm.network {
             connection.peer.onClose.add(() => this.onConnectionClosed(connection));
 
             this.connections[connection.id] = connection;
+
+            connection.onReceiveReliable.add((data) => { this.onReceiveReliable.trigger(data, connection) })
+            connection.onReceiveUnreliable.add((data) => { this.onReceiveUnreliable.trigger(data, connection) })
+
+            return connection
         }
 
 
@@ -99,11 +105,10 @@ module wm.network {
             if (this.connections[connection.id]) {
 
                 this.onConnectionClose.trigger(this.connections[connection.id]);
+                
+                this.connections[connection.id].destroy();
+                delete this.connections[connection.id];
 
-                if (connection.reliable) {
-                    this.connections[connection.id].destroy();
-                    delete this.connections[connection.id];
-                }
 
             }
         }

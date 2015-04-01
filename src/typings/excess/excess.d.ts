@@ -1,7 +1,7 @@
 declare module excess {
-    var log: (message?: any, ...optionalParams: any[]) => void;
-    var debug: (message?: string, ...optionalParams: any[]) => void;
-    var err: (message?: any, ...optionalParams: any[]) => void;
+    var log: (...msg: any[]) => any;
+    var debug: (...msg: any[]) => any;
+    var err: (...msg: any[]) => any;
 }
 declare var c: excess.ExcessClient;
 declare module excess {
@@ -14,6 +14,7 @@ declare module excess {
         onClose: events.I1ArgsEvent<any>;
         onError: events.I1ArgsEvent<any>;
         onOpen: events.I1ArgsEvent<any>;
+        label: string;
         constructor(rtcDataChannel: RTCDataChannel);
         attachCallbacks(): void;
         send(message: any): void;
@@ -105,7 +106,7 @@ declare module excess {
         * Receive answer from server (about who is in some room).
         */
         private receiveDiscovery;
-        public discover(room, callback);
+        discover(room: string, callback: (peers: string[]) => void): void;
         /**
         * Send message to peer, via signalling server
         */

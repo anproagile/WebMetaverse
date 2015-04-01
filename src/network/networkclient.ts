@@ -29,7 +29,7 @@ module wm.network {
 
         constructor() {
             this.server = {
-                host: 'localhost',
+                host: 'webvr.rocks',
                 port: 4000,
                 apipath: '/excess',
             }

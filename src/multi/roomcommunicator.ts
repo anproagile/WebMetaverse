@@ -24,8 +24,9 @@
 
 
         handleRoomTransferPacket = (packet: any, connection: network.NetworkConnection) => {
-            if (packet.t != 'roomswitch') return; //Not a roomswitch packet
 
+            if (packet.t != 'roomswitch') return; //Not a roomswitch packet
+            
             this.remoteUserState.onRemoteUserRoomSwitch.trigger(packet.prevRoom, packet.newRoom, connection.id);
         }
 
