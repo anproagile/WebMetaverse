@@ -30,6 +30,8 @@
                 }
 
             });
+
+            this.peer.onClose.add(() => this.destroy);
         }
 
 
@@ -82,6 +84,7 @@
         }
 
         public destroy() {
+            console.log("Destroying connection " + this.id);
             this.onDestroy.trigger();
             this.reliableOpen = false;
             this.unreliableOpen = false;
