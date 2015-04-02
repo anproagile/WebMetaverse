@@ -82,6 +82,7 @@ module wm.network {
 
             var connection = this.wrapConnection(peer);
             connection.createDefaultChannels();
+            this.onNewConnection.trigger(connection)
         }
 
         wrapConnection(peer: excess.ExcessPeer) {
