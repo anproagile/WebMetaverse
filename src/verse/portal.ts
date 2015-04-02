@@ -13,7 +13,7 @@
         constructor(toRoomId: string) {
             this.toRoomId = toRoomId;
 
-            var geom = new THREE.PlaneGeometry(20, 60);
+            var geom = new THREE.PlaneBufferGeometry(20, 60);
             //var geom = new THREE.CylinderGeometry(20, 20, 50);
             var mat = new THREE.MeshBasicMaterial();
             //mat.side = THREE.DoubleSide;
