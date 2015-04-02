@@ -54,8 +54,7 @@
             var room = this.roomCoordinator.roomDictionary[to];
             if (room) {
 
-                //Crazy workaround.. Instantly adding made avatar not show, despite being present in the new scene!.
-                webmetaverse.doEndOfTick.push(() => { room.add(avatar.mesh) });
+                room.add(avatar.mesh)
             }
             else {
                 console.warn("Avatar moved to not yet loaded room, handling this is to be implemented");

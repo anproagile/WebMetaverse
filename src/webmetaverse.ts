@@ -16,8 +16,6 @@ module wm {
 
     export class WebMetaverse {
 
-        doEndOfTick: { (): void; }[] = [];
-
         client: verse.VerseClient;
 
         constructor() {
@@ -42,11 +40,6 @@ module wm {
         tick = () => {
             this.client.update();
             requestAnimationFrame(this.tick);
-
-            for (var i = 0; i < this.doEndOfTick.length; i++) {
-                this.doEndOfTick[i]();
-            }
-            this.doEndOfTick = [];
         }
 
 
