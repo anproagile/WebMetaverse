@@ -14,6 +14,8 @@
         unreliableOpen = false;
         reliableOpen = false;
 
+        preOpenMessageBuffer = []
+
         get id() {
             return this.peer.id;
         }
@@ -45,11 +47,13 @@
 
 
         addChannel = (channel: excess.Channel, reliable) => {
+
             channel.onOpen.add(() => {
                 if (reliable) {
                     this.reliable = channel;
                     this.reliableOpen = true;
                     this.reliable.onMessage.add(this._onReceiveReliable);
+                    this.sendBufferedMessages();
                 }
                 else {
                     this.unreliable = channel;
@@ -75,12 +79,22 @@
             if (this.reliableOpen) {
                 this.reliable.send(data);
             }
+            else { // Buffer the message to send later when connection opens
+                this.preOpenMessageBuffer.push(data);
+            }
         }
         sendUnreliable(data: any) {
             
             if (this.unreliableOpen) {
                 this.unreliable.send(data);
             }
+        }
+
+        private sendBufferedMessages() {
+            for (var i = 0; i < this.preOpenMessageBuffer.length; i++) {
+                this.sendReliable(this.preOpenMessageBuffer[i]);
+            }
+            this.preOpenMessageBuffer = []
         }
 
         public destroy() {
