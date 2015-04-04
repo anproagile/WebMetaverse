@@ -56,7 +56,7 @@ module wm {
         webvr.tick();
         
         
-        webvr.client.roomState.switchToRoomWithId('debug2');
+        webvr.client.roomState.switchToRoomWithId('debug1');
     };
 }
 
