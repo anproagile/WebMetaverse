@@ -19,7 +19,6 @@
             /// <summary>Unregisters a listener from the event.</summary>
             /// <param name="listener">The callback function that was registered. If missing then all listeners will be removed.</param>
             if (typeof listener === 'function') {
-                for (var i = 0, l = this._listeners.length; i < l; l++) {
                     if (this._listeners[i] === listener) {
                         this._listeners.splice(i, 1);
                         break;
