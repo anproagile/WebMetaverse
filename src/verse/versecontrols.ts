@@ -27,7 +27,6 @@
             dt = Math.min(50, dt); //Minimum controls update FPS, 20
 
             this.controls.update(dt);
-            //this.prevPos = this.cameraObject.position.clone();
 
             this.time = performance.now();
 
@@ -49,6 +48,7 @@
                 for (var i = 0; i < room.portals.length; i++) {
                     
                     if (room.portals[i].checkIntersection(this.prevPos, currentPos)) {
+                        this.prevPos = this.cameraObject.position.clone();
                         return room.portals[i];
                     }
                 }
