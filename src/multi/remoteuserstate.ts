@@ -14,8 +14,6 @@
          */
         public userIdRoomMap: { [userId: string]: string };
 
-        
-
         constructor() {
             this.avatars = {};
             this.userIdRoomMap = {};

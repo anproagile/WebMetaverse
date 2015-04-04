@@ -20,6 +20,8 @@
         init() {
             this.roomState.onRoomSwitch.add(this.broadcastRoomTransfer);
             this.p2p.onReceiveReliable.add(this.handleRoomTransferPacket);
+
+            this.p2p.onNewConnection.add( this.sendCurrentRoom);
         }
 
 
@@ -39,6 +41,20 @@
                 };
 
             this.p2p.broadcastReliable(packet);
+        }
+
+        sendCurrentRoom = (connection: network.NetworkConnection) => {
+
+            var currentRoom = this.roomState.currentRoom;
+
+            var packet: RoomSwitchPacket =
+                {
+                    t: 'roomswitch',
+                    prevRoom: 'None',
+                    newRoom: currentRoom.id
+                };
+
+            connection.sendReliable(packet);
         }
 
     }

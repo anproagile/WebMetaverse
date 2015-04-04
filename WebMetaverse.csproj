@@ -41,7 +41,6 @@
     <TypeScriptCompile Include="src\event\event.ts" />
     <TypeScriptCompile Include="src\multi\multiuserclient.ts" />
     <TypeScriptCompile Include="src\multi\positionbroadcaster.ts" />
-    <TypeScriptCompile Include="src\multi\remoteavatarroommover.ts" />
     <TypeScriptCompile Include="src\multi\remoteavatarwatcher.ts" />
     <TypeScriptCompile Include="src\multi\remoteuserstate.ts" />
     <TypeScriptCompile Include="src\multi\roomcommunicator.ts" />

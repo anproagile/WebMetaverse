@@ -71,7 +71,6 @@
 
         _onReceiveUnreliable = (data: any) => {
             this.onReceiveUnreliable.trigger(data);
-            //console.log("received data: ", data);
             this.onReceive.trigger(data, false);
         }
 
