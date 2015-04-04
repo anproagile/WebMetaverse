@@ -1,5 +1,4 @@
 ﻿/// <reference path="positionbroadcaster.ts" />
-/// <reference path="remoteavatarroommover.ts" />
 /// <reference path="remoteavatarwatcher.ts" />
 
 /// <reference path="roomcommunicator.ts" />
