@@ -13,20 +13,19 @@ module wm.multi {
         networkClient: network.NetworkClient;
         remoteAvatarWatcher: multi.RemoteAvatarWatcher;
         roomCommunicator: multi.RoomCommunicator;
-        avatarRoomMover: multi.RemoteAvatarRoomMover;
-
-
 
         constructor(roomState: verse.RoomState, controls: verse.VerseControls) {
 
             this.remoteUserState = new RemoteUserState();
 
             this.networkClient = new network.NetworkClient();
-            this.remoteAvatarWatcher = new multi.RemoteAvatarWatcher(this.remoteUserState, this.networkClient.p2p);
+            this.remoteAvatarWatcher = new multi.RemoteAvatarWatcher(this.remoteUserState, this.networkClient.p2p, roomState);
             this.roomCommunicator = new multi.RoomCommunicator(this.remoteUserState, this.networkClient.p2p, roomState)
-            this.avatarRoomMover = new multi.RemoteAvatarRoomMover(this.remoteUserState, roomState);
 
+            //Clear movement history when moving through portals
             this.remoteUserState.onRemoteUserRoomSwitch.add((from, to, id) => this.remoteUserState.getAvatarForId(id).clearBuffer());
+
+            //Start broadcasting position
             multi.PositionBroadcaster.start(controls.cameraObject, this.networkClient.p2p);
 
         }

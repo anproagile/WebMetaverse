@@ -29,7 +29,7 @@
             return this.avatars[id];
         }
 
-        public removeAvatarForId(id: string) {
+        public destroyAvatarForId(id: string) {
             this.onAvatarDestroy.trigger(id);
             delete this.avatars[id];
         }
