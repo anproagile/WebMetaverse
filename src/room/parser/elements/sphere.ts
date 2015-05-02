@@ -1,11 +1,14 @@
 ﻿module wm.room {
 
-    class Box extends wm.room.Element{
+    class Sphere extends wm.room.Element {
 
         constructor(htmlElement?: HTMLElement) {
             super();
 
-            var geometry = new THREE.BoxGeometry(1, 1, 1);
+            var segmentsAttr = htmlElement.getAttribute('segments') || 6;
+            var segments = Number(segmentsAttr);
+
+            var geometry = new THREE.SphereGeometry(0.5, segments, segments);
             var material = new THREE.MeshLambertMaterial({
                 color: 0xEEEEEE
             });

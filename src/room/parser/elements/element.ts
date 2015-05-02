@@ -34,7 +34,6 @@
             this.threeObject.quaternion.setFromEuler(rotationEuler);
         }
 
-
         /** 
         * Sets basic transform properties from element attributes 
         * (position, rotation, scale)
