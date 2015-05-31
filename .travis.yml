@@ -5,17 +5,13 @@ install:
 - npm install -g grunt-cli
 - npm install -g bower
 - npm install
-- cd site
-- npm install
-- bower install
-- cd ..
 script: 
 - grunt typescript
 - cd site
 - grunt
 - cd ..
 after_success:
-- bash deployminimal.sh
+- bash deploy.sh
 branches: "-master"
 env:
   global:
