@@ -5,7 +5,7 @@ install:
 - npm install -g grunt-cli
 - npm install -g bower
 - npm install
-after_success:
+script:
 - bash deploy.sh
 branches: "-master"
 env:
