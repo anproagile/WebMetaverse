@@ -5,11 +5,6 @@ install:
 - npm install -g grunt-cli
 - npm install -g bower
 - npm install
-script: 
-- grunt typescript
-- cd site
-- grunt
-- cd ..
 after_success:
 - bash deploy.sh
 branches: "-master"
