@@ -1,7 +1,8 @@
 #!/bin/bash
 rm -rf build|| exit 0;
-mkdir build; 
-grunt full
+mkdir build;
+tsc --sourceRoot src --out build/webmetaverse.js --sourcemap --target ES5 src/webmetaverse.ts
+grunt copy
 ( cd build
  git init
  git config --global user.name "WM Bot"

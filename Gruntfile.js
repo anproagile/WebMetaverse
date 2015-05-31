@@ -5,11 +5,11 @@ module.exports = function(grunt) {
     pkg: grunt.file.readJSON('package.json'),
 	typescript: {
 		base: {
-		  src: ['src/**/*.ts'],
+		 src: ['src/**/*.ts'],
 		  dest: 'build/webmetaverse.js',
 		  options: {
 			target: 'es5', //or es3
-			basePath: 'path/to/typescript/files',
+			//rootDir: 'src',
 			sourceMap: true,
 			declaration: false
 		  }
