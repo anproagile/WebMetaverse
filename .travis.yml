@@ -15,7 +15,7 @@ script:
 - grunt
 - cd ..
 after_success:
-- bash deploy.sh
+- bash deployminimal.sh
 branches: "-master"
 env:
   global:
