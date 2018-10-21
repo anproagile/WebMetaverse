@@ -9,4 +9,4 @@ script:
 branches: "-master"
 env:
   global:
-  - secure: BzM+lZsDUKuucTkDeXa3l+hzc4KfT6YLY3BJO0PxiINuRTzn24kKNmCxZzaQu5kltwYq0p+CzkbKA/Bbx5MAgD46VHEzi28eveOKoO884AykTXp5w6oGOD9cBfymusTj1SKob1Wb5AGmLij2wdP3TcbxB2X8aID5dnDA24w77y8=
+  - secure: todo
